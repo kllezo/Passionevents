@@ -1,0 +1,170 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { brand } from "@/content/media";
+import { UniverseLink } from "@/components/shared/UniverseTransition";
+import { usePathnameState } from "@/components/shared/PathnameSync";
+import { gsap, useGSAP, media } from "@/motion/gsap";
+import { useLenis } from "@/motion/SmoothScroll";
+import { LiveWordmark } from "./LiveWordmark";
+import { SoundToggle } from "./LiveSound";
+
+const links = [
+  { href: "/concerts", label: "Live" },
+  { href: "/concerts/events", label: "Shows" },
+  { href: "/concerts/about", label: "About" },
+  { href: "/concerts/partners", label: "Partners" },
+];
+
+function ReturnLink({ className, onClick }: { className?: string; onClick?: () => void }) {
+  return (
+    <UniverseLink href="/" to="events" onClick={onClick} className={`group inline-flex items-center gap-3 ${className ?? ""}`} data-cursor="Return">
+      <span className="relative size-9 overflow-hidden rounded-full ring-1 ring-white/20 transition-all duration-500 group-hover:ring-blush">
+        <Image src={brand.mark.src} alt="" fill sizes="36px" className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0" />
+      </span>
+      <span className="font-grotesk text-[0.7rem] uppercase tracking-[0.22em] text-white/70 transition-colors group-hover:text-white">
+        <span className="hidden xl:inline">Return to </span>Passion Events
+      </span>
+    </UniverseLink>
+  );
+}
+
+export function LiveNav() {
+  const [pathnameRaw, pathnameSync] = usePathnameState();
+  const pathname = pathnameRaw ?? "";
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const tl = useRef<gsap.core.Timeline | null>(null);
+  const lenis = useLenis();
+
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 30);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- route change closes the menu
+    setOpen(false);
+  }, [pathname]);
+
+  useGSAP(
+    () => {
+      const el = menuRef.current!;
+      const mm = gsap.matchMedia();
+      mm.add(media.ok, () => {
+        tl.current = gsap
+          .timeline({ paused: true })
+          .set(el, { display: "flex" })
+          .fromTo(el, { clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }, { clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)", duration: 0.55, ease: "expo.inOut" })
+          .from(el.querySelectorAll("[data-ml]"), { xPercent: -110, skewX: -12, duration: 0.6, stagger: 0.05, ease: "expo.out" }, 0.25)
+          .from(el.querySelectorAll("[data-mm]"), { autoAlpha: 0, duration: 0.4 }, 0.5);
+      });
+      mm.add(media.reduced, () => {
+        tl.current = gsap.timeline({ paused: true }).set(el, { display: "flex" });
+      });
+    },
+    { scope: menuRef }
+  );
+
+  useEffect(() => {
+    if (!tl.current) return;
+    if (open) {
+      tl.current.timeScale(1).play();
+      lenis?.stop();
+    } else {
+      if (tl.current.progress() > 0) tl.current.timeScale(2).reverse();
+      lenis?.start();
+    }
+    return () => {
+      if (open) lenis?.start();
+    };
+  }, [open, lenis]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const active = (href: string) => (href === "/concerts" ? pathname === "/concerts" : pathname.startsWith(href));
+
+  return (
+    <>
+      {pathnameSync}
+      <header className={`fixed inset-x-0 top-0 z-[90] transition-colors duration-500 ${scrolled && !open ? "bg-void/70 backdrop-blur-md" : "bg-transparent"}`}>
+        <nav aria-label="Passion Live" className="mx-auto flex h-20 max-w-[1700px] items-center justify-between gap-6 px-5 md:px-10">
+          <Link href="/concerts" className="relative z-[95] text-2xl text-white md:text-[1.7rem]" aria-label="Passion Live home" data-cursor="Live">
+            <LiveWordmark />
+          </Link>
+          <ul className="hidden items-center gap-1 lg:flex">
+            {links.map((l) => (
+              <li key={l.href}>
+                <Link
+                  href={l.href}
+                  aria-current={active(l.href) ? "page" : undefined}
+                  className="glitch relative block px-4 py-2 font-grotesk text-[0.78rem] uppercase tracking-[0.24em] text-white/70 transition-colors hover:text-white aria-[current=page]:text-white"
+                  data-text={l.label}
+                >
+                  {l.label}
+                  <span className={`absolute inset-x-4 -bottom-0.5 h-[2px] origin-left bg-volt transition-transform duration-300 ${active(l.href) ? "scale-x-100" : "scale-x-0"}`} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-center gap-3">
+            <span className="hidden md:block">
+              <SoundToggle />
+            </span>
+            <span className="hidden lg:block">
+              <ReturnLink />
+            </span>
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-controls="live-menu"
+              className="relative z-[95] flex h-11 items-center gap-3 border border-white/20 px-4 font-grotesk text-[0.7rem] uppercase tracking-[0.22em] text-white lg:hidden"
+            >
+              {open ? "Close" : "Menu"}
+              <span className="flex flex-col gap-1" aria-hidden="true">
+                <span className={`block h-px w-4 bg-volt transition-transform ${open ? "translate-y-[2.5px] rotate-45" : ""}`} />
+                <span className={`block h-px w-4 bg-volt transition-transform ${open ? "-translate-y-[2.5px] -rotate-45" : ""}`} />
+              </span>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <div
+        ref={menuRef}
+        id="live-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Passion Live menu"
+        inert={!open}
+        className="live-grid-bg fixed inset-0 z-[85] hidden flex-col justify-between overflow-y-auto bg-void px-5 pb-10 pt-28 lg:hidden"
+      >
+        <ul className="space-y-1">
+          {links.map((l, i) => (
+            <li key={l.href} className="overflow-hidden">
+              <Link href={l.href} data-ml="" className="flex items-baseline gap-4 font-display text-[clamp(3.4rem,17vw,7rem)] uppercase leading-[0.95] text-white">
+                <span className="font-grotesk text-sm text-volt">0{i + 1}</span>
+                <span className={active(l.href) ? "text-volt" : ""}>{l.label}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div data-mm="" className="mt-10 flex flex-col gap-6">
+          <SoundToggle className="self-start" />
+          <ReturnLink onClick={() => setOpen(false)} />
+        </div>
+      </div>
+    </>
+  );
+}
