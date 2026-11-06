@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Pic } from "@/components/shared/Pic";
 import type { ReactNode } from "react";
 import type { SiteImage } from "@/content/media";

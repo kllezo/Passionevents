@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Pic } from "@/components/shared/Pic";
 import Link from "next/link";
 import { stock } from "@/content/media";

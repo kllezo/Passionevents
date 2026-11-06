@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Pic } from "@/components/shared/Pic";
 import { stock } from "@/content/media";
 import { ImageReveal, Parallax, ScrubWords } from "@/motion/primitives";
