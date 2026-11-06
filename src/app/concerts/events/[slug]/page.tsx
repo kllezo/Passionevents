@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { getPublishedEventBySlug } from "@/lib/events";
 import { artistList } from "@/lib/event-format";
 import { EVENT_STATUS_LABEL, type EventStatus } from "@/lib/constants";
@@ -101,7 +100,8 @@ async function ShowContent({ params }: { params: PageProps<"/concerts/events/[sl
                     {d.day} {d.month} {d.year}
                   </dd>
                   <dd className="font-grotesk text-sm text-fog">
-                    {d.weekday} · {d.time}
+                    {d.weekday}
+                    {d.hasTime ? ` · ${d.time}` : ""}
                   </dd>
                 </div>
               )}
@@ -162,10 +162,10 @@ async function ShowContent({ params }: { params: PageProps<"/concerts/events/[sl
   );
 }
 
-export default function ShowPage({ params }: PageProps<"/concerts/events/[slug]">) {
-  return (
-    <Suspense fallback={<div className="min-h-[90svh] animate-pulse bg-graphite" />}>
-      <ShowContent params={params} />
-    </Suspense>
-  );
+// Resolve the record before streaming starts so unknown slugs return a real
+// HTTP 404 (not a 200 with a not-found body). Detail pages may block briefly.
+export const instant = false;
+
+export default async function ShowPage({ params }: PageProps<"/concerts/events/[slug]">) {
+  return <ShowContent params={params} />;
 }

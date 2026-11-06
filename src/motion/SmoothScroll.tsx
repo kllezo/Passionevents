@@ -31,7 +31,15 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     gsap.ticker.lagSmoothing(0);
     // eslint-disable-next-line react-hooks/set-state-in-effect -- expose the instance to consumers
     setLenis(instance);
+    // Overlays (opening sequence) can pause smooth scrolling.
+    const lock = () => instance.stop();
+    const unlock = () => instance.start();
+    window.addEventListener("pe:lock-scroll", lock);
+    window.addEventListener("pe:unlock-scroll", unlock);
+    if (document.documentElement.classList.contains("intro-pending")) instance.stop();
     return () => {
+      window.removeEventListener("pe:lock-scroll", lock);
+      window.removeEventListener("pe:unlock-scroll", unlock);
       gsap.ticker.remove(tick);
       instance.destroy();
       setLenis(null);

@@ -15,5 +15,7 @@ export function liveDateParts(d: Date | null) {
     year: f({ year: "numeric" }),
     weekday: f({ weekday: "short" }).toUpperCase(),
     time: f({ hour: "numeric", minute: "2-digit" }),
+    /** False when only a date was entered (stored as midnight IST). */
+    hasTime: f({ hour: "2-digit", minute: "2-digit", hourCycle: "h23" }) !== "00:00",
   };
 }

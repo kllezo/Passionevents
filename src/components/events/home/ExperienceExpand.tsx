@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import { useRef } from "react";
 import { stock } from "@/content/media";
 import { site } from "@/lib/site";
@@ -64,7 +64,7 @@ export function ExperienceExpand() {
         </p>
         <div data-frame="" className="absolute inset-0 overflow-hidden" style={{ clipPath: "inset(0% 0% 0% 0%)" }}>
           <div data-frame-img="" className="absolute inset-0">
-            <Image src={stock.longTable.src} alt={stock.longTable.alt} fill sizes="100vw" className="object-cover" />
+            <Pic image={stock.longTable} sizes="100vw" className="" />
           </div>
           <div data-veil="" className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/35 to-ink/10" />
         </div>

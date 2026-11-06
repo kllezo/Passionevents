@@ -57,7 +57,7 @@ export function EventPoster({ e, index = 0 }: { e: PublicEvent; index?: number }
         </h3>
         <p className="font-grotesk text-sm text-fog">
           {[e.venue, e.city].filter(Boolean).join(" — ")}
-          {date ? ` · ${date.weekday} ${date.time}` : ""}
+          {date ? ` · ${date.weekday}${date.hasTime ? ` ${date.time}` : ""}` : ""}
         </p>
         {e.summary && <p className="line-clamp-3 text-sm leading-relaxed text-white/60">{e.summary}</p>}
         <div className="mt-auto flex items-center gap-3 pt-2">

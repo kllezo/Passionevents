@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import { useRef } from "react";
 import { brand } from "@/content/media";
 import { gsap, useGSAP } from "@/motion/gsap";
@@ -32,11 +32,13 @@ export function EventsIntro() {
       const el = root.current!;
       const q = gsap.utils.selector(el);
       document.documentElement.style.overflow = "hidden";
+      window.dispatchEvent(new Event("pe:lock-scroll"));
 
       const tl = gsap.timeline({
         defaults: { ease: "power2.out" },
         onComplete: () => {
           document.documentElement.style.overflow = "";
+          window.dispatchEvent(new Event("pe:unlock-scroll"));
           gsap.set(el, { display: "none" });
         },
       });
@@ -62,6 +64,7 @@ export function EventsIntro() {
 
       return () => {
         document.documentElement.style.overflow = "";
+        window.dispatchEvent(new Event("pe:unlock-scroll"));
       };
     },
     { scope: root }
@@ -70,7 +73,9 @@ export function EventsIntro() {
   const skip = () => {
     const tl = tlRef.current;
     if (!tl) return;
-    tl.seek("lift");
+    // Start the hero explicitly: seeking can skip the callback on the "lift" label.
+    markIntroDone();
+    tl.seek("lift", true);
     tl.timeScale(2);
     lenis?.start();
   };
@@ -96,7 +101,7 @@ export function EventsIntro() {
           <SprigGroup g={sprigBottom} strokeWidth={5} />
         </svg>
         <div data-logo="" className="absolute inset-0">
-          <Image src={brand.logo.src} alt="" fill sizes="(max-width: 768px) 78vw, 64vh" className="object-contain" preload />
+          <Pic image={brand.logo} alt="" sizes="(max-width: 768px) 78vw, 64vh" className="object-contain" preload />
         </div>
       </div>
       <p data-intro-caption="" className="eyebrow absolute bottom-10 left-1/2 -translate-x-1/2 text-rose-deep">

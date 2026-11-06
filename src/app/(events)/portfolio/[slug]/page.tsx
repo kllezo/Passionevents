@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { getPublishedEventBySlug } from "@/lib/events";
 import { EVENT_CATEGORY_LABEL, type EventCategory } from "@/lib/constants";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
@@ -122,10 +121,10 @@ async function StoryContent({ params }: { params: PageProps<"/portfolio/[slug]">
   );
 }
 
-export default function PortfolioStoryPage({ params }: PageProps<"/portfolio/[slug]">) {
-  return (
-    <Suspense fallback={<div className="min-h-[92svh] animate-pulse bg-cream" />}>
-      <StoryContent params={params} />
-    </Suspense>
-  );
+// Resolve the record before streaming starts so unknown slugs return a real
+// HTTP 404 (not a 200 with a not-found body). Detail pages may block briefly.
+export const instant = false;
+
+export default async function PortfolioStoryPage({ params }: PageProps<"/portfolio/[slug]">) {
+  return <StoryContent params={params} />;
 }

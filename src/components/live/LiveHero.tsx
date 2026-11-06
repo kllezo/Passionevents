@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import { useRef } from "react";
 import { stock } from "@/content/media";
 import { gsap, SplitText, useGSAP, media } from "@/motion/gsap";
@@ -86,7 +86,7 @@ export function LiveHero() {
       {/* concert photograph slab */}
       <div data-photo="" className="absolute right-[4%] top-[12%] h-[34%] w-[44%] overflow-hidden md:right-[6%] md:top-[16%] md:h-[58%] md:w-[38%]" style={{ clipPath: "polygon(12% 0, 100% 0, 88% 100%, 0 100%)" }}>
         <div data-photo-img="" className="absolute inset-0">
-          <Image src={stock.liveHero.src} alt={stock.liveHero.alt} fill preload sizes="(max-width: 768px) 50vw, 40vw" className="object-cover" quality={85} />
+          <Pic image={stock.liveHero} preload sizes="(max-width: 768px) 50vw, 40vw" className="" quality={85} />
         </div>
         <div className="absolute inset-0 bg-gradient-to-tr from-violet/50 via-transparent to-volt/30 mix-blend-color" />
         <div className="scanlines absolute inset-0" />

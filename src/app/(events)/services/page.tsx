@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import Link from "next/link";
 import { stock } from "@/content/media";
 import { categories, faqs } from "@/content/events";
@@ -51,7 +51,7 @@ export default function ServicesPage() {
                   </span>
                   <span className="text-stone md:col-span-4">{c.short}</span>
                   <span className="relative hidden size-16 overflow-hidden rounded-full md:col-span-1 md:block md:justify-self-end">
-                    <Image src={c.image.src} alt="" fill sizes="64px" className="object-cover transition-transform duration-1000 group-hover:scale-125" />
+                    <Pic image={c.image} alt="" sizes="64px" className="transition-transform duration-1000 group-hover:scale-125" />
                   </span>
                 </>
               );
@@ -84,7 +84,7 @@ export default function ServicesPage() {
       <section id="production" className="scroll-mt-24 bg-ink py-28 text-ivory md:py-36">
         <div className="mx-auto grid max-w-[1600px] gap-14 px-5 md:px-10 lg:grid-cols-12 lg:items-center">
           <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] lg:col-span-6">
-            <Image src={stock.productionStage.src} alt={stock.productionStage.alt} fill sizes="(max-width: 1024px) 92vw, 45vw" className="object-cover" />
+            <Pic image={stock.productionStage} sizes="(max-width: 1024px) 92vw, 45vw" className="" />
           </div>
           <div className="lg:col-span-5 lg:col-start-8">
             <SectionLabel index="03" tone="ivory">

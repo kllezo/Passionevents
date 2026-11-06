@@ -9,3 +9,4 @@ uploads/
 node_modules/
 .claude/
 admin-credentials.local.txt
+.pgdata/

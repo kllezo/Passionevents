@@ -10,7 +10,8 @@ export async function POST(req: NextRequest) {
 
   // Same-origin only (defence in depth on top of SameSite cookies).
   const origin = req.headers.get("origin");
-  if (origin && new URL(origin).host !== req.headers.get("host")) {
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
+  if (origin && new URL(origin).host !== host) {
     return NextResponse.json({ error: "Cross-origin uploads are not allowed." }, { status: 403 });
   }
   if (!rateLimit(`upload:${admin.id}`, 120, 10 * 60 * 1000).ok) {

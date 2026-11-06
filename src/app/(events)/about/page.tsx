@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import Link from "next/link";
 import { stock } from "@/content/media";
 import { categories } from "@/content/events";
@@ -68,7 +69,7 @@ export default function AboutPage() {
               const body = (
                 <>
                   <ImageReveal shape={i % 2 ? "arch" : "up"} delay={(i % 3) * 0.1} className={`aspect-[4/5] w-full rounded-[1.25rem] ${i % 2 ? "arch" : ""}`}>
-                    <Image src={c.image.src} alt={c.image.alt} fill sizes="(max-width: 768px) 92vw, 30vw" className="object-cover transition-transform duration-[1.6s] group-hover:scale-105" />
+                    <Pic image={c.image} sizes="(max-width: 768px) 92vw, 30vw" className="transition-transform duration-[1.6s] group-hover:scale-105" />
                   </ImageReveal>
                   <p className="mt-5 font-serif text-sm italic text-rose">{c.index}</p>
                   <h3 className="mt-1 font-serif text-3xl text-ink group-hover:text-rose-deep">{c.title}</h3>

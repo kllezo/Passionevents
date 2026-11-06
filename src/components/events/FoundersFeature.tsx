@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import { foundersList } from "@/content/founders";
 import { ImageReveal, Parallax } from "@/motion/primitives";
 import { RevealText } from "@/motion/RevealText";
@@ -31,7 +32,7 @@ export function FoundersFeature({ index = "07", detailed = false }: { index?: st
             {tanush.image && (
               <>
                 <ImageReveal shape="arch" parallax={5} className="arch aspect-[3/4] w-full bg-cream">
-                  <Image src={tanush.image.src} alt={tanush.image.alt} fill sizes="(max-width: 1024px) 92vw, 40vw" className="object-cover object-top" />
+                  <Pic image={tanush.image} sizes="(max-width: 1024px) 92vw, 40vw" className="object-top" />
                 </ImageReveal>
                 <svg viewBox="0 0 500 660" className="pointer-events-none absolute inset-[-4%] h-[108%] w-[108%] overflow-visible" aria-hidden="true">
                   <ellipse cx="250" cy="330" rx="236" ry="316" fill="none" stroke="var(--color-rose)" strokeWidth="1.2" transform="rotate(-5 250 330)" />
@@ -74,7 +75,7 @@ export function FoundersFeature({ index = "07", detailed = false }: { index?: st
             <div className="mt-14 flex items-center gap-6 border-t border-ink/10 pt-10">
               <div className="relative grid size-24 shrink-0 place-items-center rounded-full border border-rose/50 bg-cream">
                 {ramya.image ? (
-                  <Image src={ramya.image.src} alt={ramya.image.alt} fill className="rounded-full object-cover" sizes="96px" />
+                  <Pic image={ramya.image} className="rounded-full object-cover" sizes="96px" />
                 ) : (
                   <span className="font-script text-5xl text-coral">R</span>
                 )}

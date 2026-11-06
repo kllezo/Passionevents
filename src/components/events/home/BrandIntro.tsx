@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import { stock } from "@/content/media";
 import { ImageReveal, Parallax, ScrubWords } from "@/motion/primitives";
 import { RevealText } from "@/motion/RevealText";
@@ -33,12 +34,12 @@ export function BrandIntro() {
           <div className="relative h-[560px] md:h-[720px] lg:col-span-5">
             <Parallax speed={6} className="absolute right-0 top-0 h-[78%] w-[72%]">
               <ImageReveal shape="arch" className="arch h-full w-full" parallax={6}>
-                <Image src={stock.ceremonyStage.src} alt={stock.ceremonyStage.alt} fill sizes="(max-width: 1024px) 70vw, 30vw" className="object-cover" />
+                <Pic image={stock.ceremonyStage} sizes="(max-width: 1024px) 70vw, 30vw" className="" />
               </ImageReveal>
             </Parallax>
             <Parallax speed={22} className="absolute bottom-[4%] left-0 h-[42%] w-[48%]">
               <ImageReveal shape="up" delay={0.2} className="h-full w-full rounded-[1.5rem] border-[6px] border-ivory shadow-2xl">
-                <Image src={stock.vaseBloom.src} alt={stock.vaseBloom.alt} fill sizes="(max-width: 1024px) 50vw, 20vw" className="object-cover" />
+                <Pic image={stock.vaseBloom} sizes="(max-width: 1024px) 50vw, 20vw" className="" />
               </ImageReveal>
             </Parallax>
             <Parallax speed={-10} className="absolute bottom-0 right-[6%]">

@@ -44,13 +44,25 @@ export function UniverseTransitionProvider({ children }: { children: ReactNode }
   const eventsLabel = useRef<HTMLDivElement>(null);
   const pending = useRef<{ href: string; started: number } | null>(null);
   const busy = useRef(false);
+  const failsafe = useRef<number | undefined>(undefined);
+
+  /** Never leave the curtain down: lift it if the route change doesn't land. */
+  const armFailsafe = () => {
+    window.clearTimeout(failsafe.current);
+    failsafe.current = window.setTimeout(() => {
+      pending.current = null;
+      busy.current = false;
+      if (overlay.current) gsap.to(overlay.current, { autoAlpha: 0, duration: 0.3, onComplete: () => void gsap.set(overlay.current, { display: "none" }) });
+    }, 6000);
+  };
 
   const go = useCallback<Ctx["go"]>(
     (href, to, origin) => {
       if (busy.current) return;
-      const target = href.split("#")[0] || "/";
+      const target = new URL(href, window.location.origin).pathname;
       if (target === window.location.pathname) return;
       busy.current = true;
+      armFailsafe();
       router.prefetch(href);
       const o = overlay.current!;
       const toLive = to === "live";
@@ -112,6 +124,7 @@ export function UniverseTransitionProvider({ children }: { children: ReactNode }
     const p = pending.current;
     if (!p || pathname !== p.href) return;
     pending.current = null;
+    window.clearTimeout(failsafe.current);
     const wait = Math.max(0, 900 - (performance.now() - p.started));
     const o = overlay.current!;
     gsap.to(o, {

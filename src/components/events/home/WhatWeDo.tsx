@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import Link from "next/link";
 import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
@@ -104,7 +104,7 @@ function CategoryCard({ c }: { c: Category }) {
         <div className="relative">
           <div data-card-media="" className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] lg:aspect-auto lg:h-[min(52svh,560px)]">
             <div data-card-img="" className="absolute inset-[0_-10%] transition-transform duration-[1.6s] ease-[var(--ease-silk)] group-hover:scale-[1.06]">
-              <Image src={c.image.src} alt={c.image.alt} fill sizes="(max-width: 1024px) 92vw, 36vw" className="object-cover" />
+              <Pic image={c.image} sizes="(max-width: 1024px) 92vw, 36vw" className="" />
             </div>
             <div className={`absolute inset-0 ${live ? "bg-gradient-to-t from-void/80 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/60 via-transparent to-transparent"}`} />
             <span className="absolute left-6 top-[18%] font-serif text-7xl font-light italic text-ivory/90 md:text-8xl">{c.index}</span>

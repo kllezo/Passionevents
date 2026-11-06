@@ -69,7 +69,8 @@ export function ImageReveal({
   );
   return (
     <div ref={ref} className={`relative overflow-hidden ${className ?? ""}`} style={style}>
-      <div data-inner className={`absolute inset-[-10%_0] will-change-transform ${innerClassName ?? ""}`}>
+      {/* Extra bleed only when the image parallaxes, so static images keep their framing. */}
+      <div data-inner className={`absolute ${parallax ? "inset-[-10%_0]" : "inset-0"} will-change-transform ${innerClassName ?? ""}`}>
         {children}
       </div>
     </div>

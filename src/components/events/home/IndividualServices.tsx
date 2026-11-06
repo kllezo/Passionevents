@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import { useEffect, useRef, useState } from "react";
 import { serviceGroups } from "@/content/events";
 import { gsap, media } from "@/motion/gsap";
@@ -92,7 +93,7 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
               <span className="font-serif text-sm italic text-rose md:col-span-1">{String(i + 1).padStart(2, "0")}</span>
               <div className="flex items-center gap-4 md:col-span-5">
                 <span className="relative size-14 shrink-0 overflow-hidden rounded-full md:hidden">
-                  <Image src={g.image.src} alt="" fill sizes="56px" className="object-cover" />
+                  <Pic image={g.image} alt="" sizes="56px" className="" />
                 </span>
                 <h3 className="font-serif text-[clamp(1.8rem,3.4vw,3.2rem)] leading-none text-ink transition-all duration-700 ease-[var(--ease-silk)] group-hover:translate-x-3 group-hover:italic group-hover:text-rose-deep">
                   {g.title}

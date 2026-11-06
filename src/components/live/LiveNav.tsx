@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { brand } from "@/content/media";
@@ -22,7 +22,7 @@ function ReturnLink({ className, onClick }: { className?: string; onClick?: () =
   return (
     <UniverseLink href="/" to="events" onClick={onClick} className={`group inline-flex items-center gap-3 ${className ?? ""}`} data-cursor="Return">
       <span className="relative size-9 overflow-hidden rounded-full ring-1 ring-white/20 transition-all duration-500 group-hover:ring-blush">
-        <Image src={brand.mark.src} alt="" fill sizes="36px" className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0" />
+        <Pic image={brand.mark} alt="" sizes="36px" className="grayscale transition-all duration-500 group-hover:grayscale-0" />
       </span>
       <span className="font-grotesk text-[0.7rem] uppercase tracking-[0.22em] text-white/70 transition-colors group-hover:text-white">
         <span className="hidden xl:inline">Return to </span>Passion Events

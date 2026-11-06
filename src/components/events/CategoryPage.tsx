@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import Link from "next/link";
 import { Suspense } from "react";
 import { categories, type Category } from "@/content/events";
@@ -123,7 +124,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
             {c.gallery.map((img, i) => (
               <Parallax key={img.src} speed={i % 2 ? 10 : 4} className={i === 0 ? "col-span-2 md:col-span-6" : i === 1 ? "md:col-span-3 md:mt-24" : "md:col-span-3"}>
                 <ImageReveal shape={i % 2 ? "arch" : "up"} delay={i * 0.1} className={`${i === 0 ? "aspect-[4/3]" : "aspect-[3/4]"} w-full rounded-[1.25rem] ${i % 2 ? "arch" : ""}`}>
-                  <Image src={img.src} alt={img.alt} fill sizes="(max-width: 768px) 50vw, 30vw" className="object-cover" />
+                  <Pic image={img} sizes="(max-width: 768px) 50vw, 30vw" className="" />
                 </ImageReveal>
               </Parallax>
             ))}
@@ -150,14 +151,14 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
       <section className="bg-ivory py-24">
         <div className="mx-auto max-w-[1600px] px-5 md:px-10">
           <p className="eyebrow text-rose-deep">Also from Passion Events</p>
-          <ul className="mt-8 grid gap-6 md:grid-cols-3">
+          <ul className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {others.map((o) => (
               <li key={o.key}>
                 <Link href={o.href} className="group flex items-center gap-5" data-cursor="Discover">
                   <span className="relative size-24 shrink-0 overflow-hidden rounded-full">
-                    <Image src={o.image.src} alt="" fill sizes="96px" className="object-cover transition-transform duration-1000 group-hover:scale-110" />
+                    <Pic image={o.image} alt="" sizes="96px" className="transition-transform duration-1000 group-hover:scale-110" />
                   </span>
-                  <span>
+                  <span className="min-w-0">
                     <span className="block font-serif text-3xl text-ink transition-colors group-hover:text-rose-deep">{o.title}</span>
                     <span className="mt-1 block text-sm text-stone">{o.short}</span>
                   </span>

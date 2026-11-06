@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import type { ReactNode } from "react";
 import type { SiteImage } from "@/content/media";
 import { ImageReveal, Parallax } from "@/motion/primitives";
@@ -46,7 +47,7 @@ export function PageHero({
     return (
       <section data-nav-theme="dark" className="relative flex min-h-[100svh] items-end overflow-hidden bg-ink pb-16 pt-32 text-ivory md:pb-24">
         <ImageReveal shape="center" immediate className="!absolute inset-0" parallax={8}>
-          <Image src={image.src} alt={image.alt} fill preload sizes="100vw" className="object-cover" quality={85} />
+          <Pic image={image} preload sizes="100vw" className="" quality={85} />
         </ImageReveal>
         <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-ink/20" />
         <div className="relative mx-auto w-full max-w-[1600px] px-5 md:px-10">
@@ -79,12 +80,12 @@ export function PageHero({
         </div>
         <div className="relative lg:col-span-5">
           <ImageReveal shape="arch" immediate delay={0.2} parallax={6} className="arch ml-auto aspect-[4/5] w-[86%] bg-cream">
-            <Image src={image.src} alt={image.alt} fill preload sizes="(max-width: 1024px) 80vw, 36vw" className="object-cover" quality={85} />
+            <Pic image={image} preload sizes="(max-width: 1024px) 80vw, 36vw" className="" quality={85} />
           </ImageReveal>
           {secondary && (
             <Parallax speed={20} className="absolute -bottom-8 left-0 w-[42%]">
               <ImageReveal shape="up" immediate delay={0.6} className="aspect-square w-full rounded-full border-[6px] border-ivory shadow-2xl">
-                <Image src={secondary.src} alt={secondary.alt} fill sizes="240px" className="object-cover" />
+                <Pic image={secondary} sizes="240px" className="" />
               </ImageReveal>
             </Parallax>
           )}

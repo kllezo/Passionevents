@@ -26,6 +26,9 @@ export function EventsCursor({ variant = "events" }: { variant?: "events" | "liv
   useEffect(() => {
     if (!enabled) return;
     const root = document.documentElement;
+    // Reference-count so overlapping universe layouts never leave two cursors.
+    const count = Number(root.dataset.cursorCount ?? "0") + 1;
+    root.dataset.cursorCount = String(count);
     root.classList.add("has-custom-cursor");
     const d = dot.current!;
     const r = ring.current!;
@@ -80,7 +83,9 @@ export function EventsCursor({ variant = "events" }: { variant?: "events" | "liv
     window.addEventListener("pointerdown", down, { passive: true });
     document.addEventListener("pointerleave", leaveWindow);
     return () => {
-      root.classList.remove("has-custom-cursor");
+      const left = Math.max(0, Number(root.dataset.cursorCount ?? "1") - 1);
+      root.dataset.cursorCount = String(left);
+      if (left === 0) root.classList.remove("has-custom-cursor");
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerover", over);
       window.removeEventListener("pointerdown", down);

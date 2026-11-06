@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import { useRef } from "react";
 import { stock } from "@/content/media";
 import { gsap, SplitText, useGSAP, media } from "@/motion/gsap";
@@ -147,7 +147,7 @@ export function EventsHero() {
         <div className="relative mx-auto aspect-[4/5] w-full max-w-[520px] lg:col-span-5 lg:max-w-none">
           <div data-arch="" data-hero-hidden="" className="absolute inset-[6%_10%_0_8%] overflow-hidden rounded-t-full shadow-[0_40px_90px_-40px_rgb(148_96_108/0.55)]" style={{ clipPath: "inset(0% 0% 0% 0% round 999px 999px 0 0)" }}>
             <div data-arch-img="" className="absolute inset-[-8%_0] will-change-transform">
-              <Image src={stock.heroCanopy.src} alt={stock.heroCanopy.alt} fill preload sizes="(max-width: 1024px) 90vw, 40vw" className="object-cover" quality={85} />
+              <Pic image={stock.heroCanopy} preload sizes="(max-width: 1024px) 90vw, 40vw" className="" quality={85} />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
           </div>
@@ -164,7 +164,7 @@ export function EventsHero() {
           </svg>
 
           <div data-orb="" data-depth="-34" className="absolute -left-[4%] top-[18%] size-[34%] overflow-hidden rounded-full border-[6px] border-ivory shadow-xl">
-            <Image src={stock.tableFloral.src} alt={stock.tableFloral.alt} fill sizes="200px" className="object-cover" />
+            <Pic image={stock.tableFloral} sizes="200px" className="" />
           </div>
 
           <div data-badge="" className="absolute -bottom-6 -right-2 grid size-28 place-items-center rounded-full bg-ivory/95 shadow-[0_20px_50px_-25px_rgb(148_96_108/0.6)] md:-right-6 md:size-36">

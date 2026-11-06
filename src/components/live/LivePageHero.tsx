@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import type { ReactNode } from "react";
 import type { SiteImage } from "@/content/media";
 import { RevealText } from "@/motion/RevealText";
@@ -9,7 +9,7 @@ export function LivePageHero({ eyebrow, title, intro, image }: { eyebrow: string
     <section className="relative flex min-h-[78svh] items-end overflow-hidden bg-void pb-16 pt-36 md:pb-24">
       {image && (
         <div className="absolute inset-y-0 right-0 w-full md:w-[55%]" style={{ clipPath: "polygon(18% 0, 100% 0, 100% 100%, 0 100%)" }}>
-          <Image src={image.src} alt={image.alt} fill preload sizes="(max-width: 768px) 100vw, 55vw" className="object-cover opacity-50" />
+          <Pic image={image} preload sizes="(max-width: 768px) 100vw, 55vw" className="opacity-50" />
           <div className="absolute inset-0 bg-gradient-to-r from-void via-void/40 to-transparent" />
           <div className="scanlines absolute inset-0" />
         </div>

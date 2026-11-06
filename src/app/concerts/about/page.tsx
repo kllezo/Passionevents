@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Pic } from "@/components/shared/Pic";
 import { stock } from "@/content/media";
 import { foundersList } from "@/content/founders";
 import { pageMetadata } from "@/lib/seo";
@@ -83,7 +83,7 @@ export default function LiveAboutPage() {
           <div className="mx-auto grid max-w-[1700px] gap-12 px-5 md:px-10 lg:grid-cols-12 lg:items-center">
             <div className="relative lg:col-span-5">
               <div className="neon-border relative aspect-[3/4] overflow-hidden">
-                <Image src={tanush.image.src} alt={tanush.image.alt} fill sizes="(max-width: 1024px) 92vw, 40vw" className="object-cover object-top" />
+                <Pic image={tanush.image} sizes="(max-width: 1024px) 92vw, 40vw" className="object-top" />
                 <div className="absolute inset-0 bg-gradient-to-t from-void/70 via-transparent to-transparent" />
               </div>
               <p className="mt-3 font-grotesk text-xs text-white/40">{tanush.image.credit}</p>

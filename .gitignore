@@ -51,3 +51,6 @@ next-env.d.ts
 
 # local admin credentials
 admin-credentials.local.txt
+
+# local embedded postgres
+.pgdata/
