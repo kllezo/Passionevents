@@ -2,18 +2,26 @@
 
 The app is a standard Next.js 16 server (`npm run build && npm start`, Node 20.9+). It needs three things that a laptop provides for free but production must provide explicitly:
 
-## 1. A persistent database
-SQLite (`prisma/dev.db`) is fine on a single VPS with a persistent disk. For serverless/multi-instance hosting use Postgres:
+## Vercel (current setup)
 
-1. In `prisma/schema.prisma` set `provider = "postgresql"`.
-2. Set `DATABASE_URL` to the hosted URL (Neon, Supabase, RDS…).
-3. `npx prisma migrate deploy` (create a fresh migration first with `npx prisma migrate dev` against Postgres).
-4. `npm run admin:create` once against the production database.
+Project: `acm4/passionevents`. The build runs `npm run vercel-build` = `prisma generate && prisma migrate deploy && next build`.
+
+| Need | Provided by | Env vars |
+| --- | --- | --- |
+| Database | Neon Postgres (Vercel Marketplace) | `DATABASE_URL` (pooled), `DATABASE_URL_UNPOOLED` (migrations) |
+| Uploads | Vercel Blob store `passionevents-uploads` | `BLOB_READ_WRITE_TOKEN` |
+| Admin sessions | generated secret | `SESSION_SECRET` |
+
+- Uploaded images go to Blob when `BLOB_READ_WRITE_TOKEN` is set; otherwise to `UPLOAD_DIR` on local disk.
+- Vercel caps request bodies at ~4.5 MB, so the admin form resizes photos in the browser before upload.
+- Local development uses the same Postgres: `vercel env pull .env.local`, then `npm run dev`.
+- Create the first admin against production: pull env vars, then `npm run admin:create -- you@example.com "long passphrase" "Name"`.
+
+## 1. A persistent database
+Postgres is required (the schema uses `provider = "postgresql"`). Any Postgres works — set `DATABASE_URL` and `DATABASE_URL_UNPOOLED` (same value if there is no pooler).
 
 ## 2. Persistent upload storage
-Uploads are written to `UPLOAD_DIR` and served by `/api/media/...`.
-- **VPS / Docker:** mount a volume and point `UPLOAD_DIR` at it.
-- **Serverless (e.g. Vercel):** the filesystem is ephemeral — swap `storeImage` / `readUpload` in `src/lib/uploads.ts` for an object store (S3, Cloudflare R2, Vercel Blob). Both functions are isolated so only that file changes.
+Vercel Blob (above), or a mounted volume via `UPLOAD_DIR` on a VPS.
 
 ## 3. Secrets
 `SESSION_SECRET` (required), plus any optional contact / Resend variables. Never commit `.env`.

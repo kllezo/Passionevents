@@ -8,13 +8,14 @@ const optionalUrl = z
   .nullable()
   .refine((v) => v === null || /^https?:\/\//i.test(v), "Must be a full URL starting with https://");
 
-/** Uploaded media paths are always served from /api/media/... */
+/** Uploaded media: local /api/media/... paths or public Vercel Blob URLs. */
+const uploadedUrl = /^(\/api\/media\/[\w\-/.]+|https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\/uploads\/[\w\-/.]+)$/i;
 const mediaPath = z
   .string()
   .trim()
   .transform((v) => (v === "" ? null : v))
   .nullable()
-  .refine((v) => v === null || /^\/api\/media\/[\w\-/.]+$/.test(v) || /^https:\/\//.test(v), "Invalid image reference");
+  .refine((v) => v === null || uploadedUrl.test(v), "Invalid image reference");
 
 const optionalDate = z
   .string()
@@ -49,7 +50,7 @@ export const eventSchema = z.object({
   bookingUrl: optionalUrl,
   featured: z.boolean().default(false),
   gallery: z
-    .array(z.object({ url: z.string().regex(/^\/api\/media\/[\w\-/.]+$/), alt: z.string().max(200).default("") }))
+    .array(z.object({ url: z.string().regex(uploadedUrl), alt: z.string().max(200).default("") }))
     .max(60)
     .default([]),
 });

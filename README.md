@@ -13,7 +13,8 @@ Two digital universes for one brand:
 ```bash
 npm install
 cp .env.example .env          # then fill SESSION_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD
-npx prisma migrate dev        # creates prisma/dev.db
+vercel env pull .env.local    # Postgres + Blob credentials from Vercel (or set your own)
+npx prisma migrate deploy     # applies migrations
 npm run admin:create          # creates the admin from ADMIN_* env vars
 npm run dev                   # http://localhost:3000
 ```
@@ -22,7 +23,7 @@ Production: `npm run build && npm start`. See **[docs/SETUP.md](docs/SETUP.md)**
 
 ## Stack
 
-Next.js 16 (App Router, Cache Components, Turbopack) · TypeScript · Tailwind CSS v4 · GSAP 3.15 (ScrollTrigger, SplitText, DrawSVG) · Lenis · Prisma 6 + SQLite · Zod · jose (signed session cookies) · bcryptjs · sharp · lucide-react.
+Next.js 16 (App Router, Cache Components, Turbopack) · TypeScript · Tailwind CSS v4 · GSAP 3.15 (ScrollTrigger, SplitText, DrawSVG) · Lenis · Prisma 6 + PostgreSQL (Neon) · Vercel Blob · Zod · jose (signed session cookies) · bcryptjs · sharp · lucide-react.
 
 Three.js was deliberately **not** added: every 3D-feeling effect (guitar, stage beams, lasers) is SVG/Canvas 2D, which keeps the bundle small and mobile-friendly.
 

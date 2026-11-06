@@ -1,16 +1,21 @@
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "public";
+
 -- CreateTable
 CREATE TABLE "AdminUser" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "lastLoginAt" DATETIME
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastLoginAt" TIMESTAMP(3),
+
+    CONSTRAINT "AdminUser_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Event" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "experience" TEXT NOT NULL DEFAULT 'LIVE',
     "status" TEXT NOT NULL DEFAULT 'DRAFT',
@@ -22,38 +27,41 @@ CREATE TABLE "Event" (
     "description" TEXT NOT NULL DEFAULT '',
     "venue" TEXT NOT NULL DEFAULT '',
     "city" TEXT NOT NULL DEFAULT '',
-    "startsAt" DATETIME,
-    "endsAt" DATETIME,
+    "startsAt" TIMESTAMP(3),
+    "endsAt" TIMESTAMP(3),
     "posterUrl" TEXT,
     "coverUrl" TEXT,
     "bookingUrl" TEXT,
     "featured" BOOLEAN NOT NULL DEFAULT false,
-    "publishedAt" DATETIME,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "publishedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Media" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "eventId" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "alt" TEXT NOT NULL DEFAULT '',
     "width" INTEGER,
     "height" INTEGER,
     "sortOrder" INTEGER NOT NULL DEFAULT 0,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "Media_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Media_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Enquiry" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "fullName" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "category" TEXT NOT NULL,
-    "eventDate" DATETIME,
+    "eventDate" TIMESTAMP(3),
     "location" TEXT NOT NULL DEFAULT '',
     "guestCount" INTEGER,
     "budget" TEXT NOT NULL DEFAULT '',
@@ -61,7 +69,9 @@ CREATE TABLE "Enquiry" (
     "details" TEXT NOT NULL DEFAULT '',
     "source" TEXT NOT NULL DEFAULT 'events',
     "status" TEXT NOT NULL DEFAULT 'NEW',
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Enquiry_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -78,3 +88,7 @@ CREATE INDEX "Media_eventId_sortOrder_idx" ON "Media"("eventId", "sortOrder");
 
 -- CreateIndex
 CREATE INDEX "Enquiry_status_createdAt_idx" ON "Enquiry"("status", "createdAt");
+
+-- AddForeignKey
+ALTER TABLE "Media" ADD CONSTRAINT "Media_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+

@@ -3,9 +3,15 @@ import path from "node:path";
 import { mkdir, writeFile, readFile, stat } from "node:fs/promises";
 import { randomUUID } from "node:crypto";
 import sharp, { type Metadata as SharpMetadata } from "sharp";
+import { put } from "@vercel/blob";
 
 export const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
 const ALLOWED_FORMATS = new Set(["jpeg", "png", "webp", "avif", "heif", "gif", "tiff"]);
+
+/** Vercel Blob is used whenever its token is configured (required on Vercel); otherwise local disk. */
+export function usingBlob() {
+  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+}
 
 export function uploadRoot() {
   return path.resolve(/*turbopackIgnore: true*/ process.cwd(), process.env.UPLOAD_DIR || "./uploads");
@@ -42,6 +48,15 @@ export async function storeImage(file: File, kind: "poster" | "cover" | "gallery
     .toBuffer({ resolveWithObject: true });
 
   const month = new Date().toISOString().slice(0, 7);
+  if (usingBlob()) {
+    const blob = await put(`uploads/${month}/${kind}-${randomUUID()}.webp`, data, {
+      access: "public",
+      contentType: "image/webp",
+      addRandomSuffix: false,
+      cacheControlMaxAge: 60 * 60 * 24 * 365,
+    });
+    return { url: blob.url, width: info.width, height: info.height, bytes: data.length };
+  }
   const dir = path.join(uploadRoot(), month);
   await mkdir(dir, { recursive: true });
   const name = `${kind}-${randomUUID()}.webp`;
@@ -63,4 +78,9 @@ export async function readUpload(segments: string[]) {
   } catch {
     return null;
   }
+}
+
+/** Public Vercel Blob URLs created by storeImage. */
+export function isBlobUrl(url: string) {
+  return /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\/uploads\//i.test(url);
 }

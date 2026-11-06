@@ -6,6 +6,6 @@ import Image, { type ImageProps } from "next/image";
  */
 export function MediaImage(props: ImageProps) {
   const src = typeof props.src === "string" ? props.src : "";
-  const uploaded = src.startsWith("/api/media/");
+  const uploaded = src.startsWith("/api/media/") || src.includes(".public.blob.vercel-storage.com/");
   return <Image {...props} unoptimized={uploaded || props.unoptimized} alt={props.alt} />;
 }

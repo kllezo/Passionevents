@@ -44,7 +44,38 @@ function toISTInput(iso: string | null) {
 }
 const fromISTInput = (v: string) => (v ? `${v}:00+05:30` : "");
 
-async function upload(file: File, kind: "poster" | "cover" | "gallery") {
+/**
+ * Hosting platforms cap request bodies (Vercel: ~4.5 MB), so large photos are
+ * resized in the browser first. The server still validates and re-encodes.
+ */
+async function shrink(file: File): Promise<File> {
+  const MAX_EDGE = 2600;
+  const LIMIT = 3.5 * 1024 * 1024;
+  try {
+    const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
+    const scale = Math.min(1, MAX_EDGE / Math.max(bmp.width, bmp.height));
+    if (scale === 1 && file.size <= LIMIT) {
+      bmp.close();
+      return file;
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bmp.width * scale);
+    canvas.height = Math.round(bmp.height * scale);
+    canvas.getContext("2d")!.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+    bmp.close();
+    for (const q of [0.9, 0.8, 0.7]) {
+      const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/webp", q));
+      if (blob && blob.size <= LIMIT) return new File([blob], file.name.replace(/\.\w+$/, "") + ".webp", { type: "image/webp" });
+    }
+  } catch {
+    // Not decodable in the browser (e.g. HEIC) — let the server decide.
+  }
+  return file;
+}
+
+async function upload(original: File, kind: "poster" | "cover" | "gallery") {
+  const file = await shrink(original);
+  if (file.size > 4.4 * 1024 * 1024) throw new Error("This image is too large to upload. Please export it under 4 MB.");
   const fd = new FormData();
   fd.append("file", file);
   fd.append("kind", kind);
