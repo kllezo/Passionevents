@@ -8,3 +8,4 @@ uploads/
 .next/
 node_modules/
 .claude/
+admin-credentials.local.txt

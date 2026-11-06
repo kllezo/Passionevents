@@ -48,3 +48,6 @@ next-env.d.ts
 !.env.example
 
 .vercel
+
+# local admin credentials
+admin-credentials.local.txt
