@@ -2,6 +2,7 @@ import { EventsIntro } from "@/components/events/home/EventsIntro";
 import { EventsHero } from "@/components/events/home/EventsHero";
 import { BrandIntro } from "@/components/events/home/BrandIntro";
 import { ProofBand } from "@/components/events/home/ProofBand";
+import { FlyThrough } from "@/components/events/home/FlyThrough";
 import { CinematicShowcase } from "@/components/events/home/CinematicShowcase";
 import { WhatWeDo } from "@/components/events/home/WhatWeDo";
 import { IndividualServices } from "@/components/events/home/IndividualServices";
@@ -32,6 +33,7 @@ export default function HomePage() {
       <EventsHero />
       <ProofBand />
       <BrandIntro />
+      <FlyThrough />
       <WhatWeDo />
       <IndividualServices index="03" />
       <CinematicShowcase />

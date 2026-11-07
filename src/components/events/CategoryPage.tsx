@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { categories, type Category } from "@/content/events";
 import { getPortfolioEvents, safeRead } from "@/lib/events";
-import { ImageReveal, Parallax } from "@/motion/primitives";
 import { RevealText } from "@/motion/RevealText";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { PageHero } from "./PageHero";
+import { FanDeck } from "./FanDeck";
 import { SectionLabel } from "./SectionLabel";
 import { EnquirySection } from "./EnquirySection";
 import { Approach } from "./home/Approach";
@@ -108,28 +108,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
       </section>
 
       {/* Moodboard — inspiration imagery, not presented as our work */}
-      <section className="bg-cream py-24 md:py-32" aria-labelledby="mood-title">
-        <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <SectionLabel>Moodboard</SectionLabel>
-              <h2 id="mood-title" className="mt-6 font-serif text-4xl font-light text-ink md:text-6xl">
-                The feeling we design <em className="text-rose-deep">towards.</em>
-              </h2>
-            </div>
-            <p className="max-w-sm text-sm text-stone">Inspiration imagery. Our own event photography lives in the portfolio below.</p>
-          </div>
-          <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-12 md:gap-6">
-            {c.gallery.map((img, i) => (
-              <Parallax key={img.src} speed={i % 2 ? 10 : 4} className={i === 0 ? "col-span-2 md:col-span-6" : i === 1 ? "md:col-span-3 md:mt-24" : "md:col-span-3"}>
-                <ImageReveal shape={i % 2 ? "arch" : "up"} delay={i * 0.1} className={`${i === 0 ? "aspect-[4/3]" : "aspect-[3/4]"} w-full rounded-[1.25rem] ${i % 2 ? "arch" : ""}`}>
-                  <Pic image={img} sizes="(max-width: 768px) 50vw, 30vw" className="" />
-                </ImageReveal>
-              </Parallax>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FanDeck images={[c.image, ...c.gallery]} word={c.title} script={c.script} />
 
       {/* Real work from the admin dashboard */}
       <section className="bg-ivory py-28 md:py-36" aria-labelledby="work-title">
