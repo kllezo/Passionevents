@@ -83,7 +83,6 @@ export function LiveFooter() {
           href="/"
           to="events"
           className="group flex flex-col items-start justify-between gap-6 rounded-[1.5rem] bg-ivory p-8 text-ink md:flex-row md:items-center md:px-12"
-          data-cursor="Return"
         >
           <span className="flex items-center gap-6">
             <Image src={brand.logoSmall.src} alt="Passion Events" width={brand.logoSmall.width} height={brand.logoSmall.height} className="h-auto w-20" />

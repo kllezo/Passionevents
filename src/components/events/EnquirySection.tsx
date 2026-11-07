@@ -34,10 +34,10 @@ export function EnquirySection({
         <div className="lg:col-span-4">
           <div className="lg:sticky lg:top-32">
             <SectionLabel index={index}>Enquire</SectionLabel>
-            <RevealText as="h2" id="enquire-title" className="mt-8 font-serif text-[clamp(3rem,6vw,6rem)] font-light leading-[0.92] text-ink">
+            <RevealText as="h2" id="enquire-title" className="mt-8 font-serif text-[clamp(2.6rem,4.6vw,4.8rem)] font-light leading-[0.98] text-ink">
               {title ?? (
                 <>
-                  Let&apos;s make it <em className="text-rose-deep">special.</em>
+                  Let&apos;s make your next event <em className="text-rose-deep">unforgettable.</em>
                 </>
               )}
             </RevealText>

@@ -93,11 +93,6 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 
-/* Hide native cursor only where the custom cursor is active */
-@media (pointer: fine) {
-  html.has-custom-cursor, html.has-custom-cursor a, html.has-custom-cursor button { cursor: none; }
-  html.has-custom-cursor input, html.has-custom-cursor textarea, html.has-custom-cursor select { cursor: auto; }
-}
 
 /* ── Passion Events utilities ─────────────────────────────────────────────── */
 .paper-grain {
@@ -138,7 +133,8 @@ html.lenis, html.lenis body { height: auto; }
 .text-pretty { text-wrap: pretty; }
 
 /* SplitText line masks */
-.split-line-mask { overflow: clip; padding-bottom: .06em; margin-bottom: -.06em; }
+/* Generous bleed so descenders (g, p, y) and italic overhangs are never clipped by the mask. */
+.split-line-mask { overflow: clip; padding: .04em .08em .2em; margin: -.04em -.08em -.2em; }
 
 /* ── Passion Live utilities ───────────────────────────────────────────────── */
 .live-grid-bg {

@@ -55,7 +55,7 @@ export function Collaborate({ index = "07", showCta = true }: { index?: string; 
         <ul className="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           {collaborators.map((c, i) => (
             <li key={c.key} className={`group relative min-h-[420px] overflow-hidden ${i === 0 ? "lg:col-span-2" : ""}`}>
-              <Link href={`/concerts/partners?type=${c.key}#partner-form`} className="absolute inset-0 flex flex-col justify-end p-6" data-cursor="Collab">
+              <Link href={`/concerts/partners?type=${c.key}#partner-form`} className="absolute inset-0 flex flex-col justify-end p-6">
                 <Pic image={c.image} sizes="(max-width: 768px) 92vw, 30vw" className="opacity-50 grayscale transition-all duration-700 group-hover:scale-105 group-hover:opacity-80 group-hover:grayscale-0" />
                 <span className="absolute inset-0 bg-gradient-to-t from-void via-void/50 to-transparent" />
                 <span className="relative font-grotesk text-xs tracking-[0.3em] text-volt">0{i + 1}</span>

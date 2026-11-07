@@ -139,7 +139,6 @@ export function EventsNav() {
             href="/"
             className={`relative z-[95] flex items-center gap-3 rounded-full transition-colors duration-500 ${onDark && !scrolled && !open ? "bg-ivory/90 p-1" : ""}`}
             aria-label="Passion Events — home"
-            data-cursor="Home"
           >
             <Image
               src={brand.logoSmall.src}
@@ -164,7 +163,6 @@ export function EventsNav() {
                     href={l.href}
                     to="live"
                     className="group flex items-center gap-2 px-4 py-2 text-[0.78rem] font-semibold uppercase tracking-[0.2em]"
-                    data-cursor="Enter Live"
                   >
                     <span className="relative size-1.5 rounded-full bg-coral">
                       <span className="absolute inset-0 animate-ping rounded-full bg-coral/60" />
@@ -240,7 +238,7 @@ export function EventsNav() {
 
           <div className="flex items-center gap-3">
             <div className="hidden lg:block">
-              <EventsButton href="/contact#enquire" cursor="Begin" variant={onDark && !scrolled ? "ivory" : "solid"}>
+              <EventsButton href="/contact#enquire" variant={onDark && !scrolled ? "ivory" : "solid"}>
                 Plan your event
               </EventsButton>
             </div>

@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { categories, type Category } from "@/content/events";
 import { UniverseLink } from "@/components/shared/UniverseTransition";
-import { gsap, useGSAP, media } from "@/motion/gsap";
+import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
 import { RevealText } from "@/motion/RevealText";
 import { SectionLabel } from "../SectionLabel";
 import { Bloom } from "../botanical/Sprig";
@@ -44,21 +44,23 @@ export function WhatWeDo() {
           ease: "none",
           scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: () => `+=${distance()}`, scrub: true },
         });
+        const cardStops: (() => void)[] = [];
         q<HTMLElement>("[data-card]").forEach((card) => {
           const img = card.querySelector("[data-card-img]");
           gsap.fromTo(img, { xPercent: -8 }, { xPercent: 8, ease: "none", scrollTrigger: { trigger: card, containerAnimation: tween, start: "left right", end: "right left", scrub: true } });
-          gsap.from(card.querySelector("[data-card-media]"), {
-            clipPath: "inset(100% 0% 0% 0%)",
-            duration: 1.4,
-            ease: "expo.inOut",
-            scrollTrigger: { trigger: card, containerAnimation: tween, start: "left 85%", once: true },
-          });
+          const frame = card.querySelector("[data-card-media]");
+          const reveal = gsap.fromTo(frame, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut", paused: true });
+          // Visibility-based: fires even when the reader jumps past the card (anchor links, fast scroll).
+          cardStops.push(whenVisible(frame!, () => reveal.play(), "0px -10% 0px 0px"));
         });
+        return () => cardStops.forEach((s) => s());
       });
       mm.add(media.mobile, () => {
-        q<HTMLElement>("[data-card-media]").forEach((m) =>
-          gsap.from(m, { clipPath: "inset(100% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut", scrollTrigger: { trigger: m, start: "top 85%", once: true } })
-        );
+        const stops = q<HTMLElement>("[data-card-media]").map((m) => {
+          const t = gsap.fromTo(m, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut", paused: true });
+          return whenVisible(m, () => t.play());
+        });
+        return () => stops.forEach((s) => s());
       });
     },
     { scope: root }
@@ -70,7 +72,7 @@ export function WhatWeDo() {
         <div data-track="" className="flex flex-col gap-16 px-5 py-28 md:px-10 lg:h-full lg:w-max lg:flex-row lg:items-center lg:gap-[4vw] lg:py-0 lg:pl-10 lg:pr-[10vw]">
           {/* Intro panel */}
           <div className="flex shrink-0 flex-col justify-center lg:w-[34vw]">
-            <SectionLabel index="03">What we do</SectionLabel>
+            <SectionLabel index="02">What we do</SectionLabel>
             <RevealText as="h2" id="what-title" className="mt-8 font-serif text-[clamp(3rem,6vw,6.4rem)] font-light leading-[0.92] tracking-[-0.02em] text-ink">
               Six worlds. <em className="text-rose-deep">One team.</em>
             </RevealText>
@@ -141,11 +143,11 @@ function CategoryCard({ c }: { c: Category }) {
 
 function CardLink({ live, href, label, children }: { live: boolean; href: string; label: string; children: React.ReactNode }) {
   return live ? (
-    <UniverseLink href={href} to="live" className="block" data-cursor="Enter Live" aria-label={label}>
+    <UniverseLink href={href} to="live" className="block" aria-label={label}>
       {children}
     </UniverseLink>
   ) : (
-    <Link href={href} className="block" data-cursor="Discover" aria-label={label}>
+    <Link href={href} className="block" aria-label={label}>
       {children}
     </Link>
   );

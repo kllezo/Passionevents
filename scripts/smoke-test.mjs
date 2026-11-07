@@ -1,0 +1,64 @@
+/**
+ * HTTP smoke test for every public route, key content and API guards.
+ *
+ *   node scripts/smoke-test.mjs                      # http://localhost:3000
+ *   node scripts/smoke-test.mjs https://your-domain  # production
+ *
+ * Exits non-zero on any failure. Does not write to the database.
+ */
+const base = (process.argv[2] || "http://localhost:3000").replace(/\/$/, "");
+
+const pages = [
+  ["/", ["Big or small", "Your event is our passion", "What we do", "How we", "Let&#x27;s make your next event"]],
+  ["/about", ["Every event"]],
+  ["/services", ["One team"]],
+  ["/weddings", ["Weddings"]],
+  ["/corporate-events", ["Corporate Events"]],
+  ["/private-events", ["Private Celebrations"]],
+  ["/destination-events", ["Destination Events"]],
+  ["/portfolio", ["Stories we"]],
+  ["/founders", ["Sai Tanush"]],
+  ["/contact", ["Enquire"]],
+  ["/concerts", ["Turn the night", "We produce the", "starts with us"]],
+  ["/concerts/events", ["Every"]],
+  ["/concerts/about", ["Built for the"]],
+  ["/concerts/partners", ["Pitch us"]],
+  ["/admin/login", ["Studio dashboard"]],
+  ["/robots.txt", ["Sitemap"]],
+  ["/sitemap.xml", ["<urlset"]],
+  ["/manifest.webmanifest", ["Passion Events"]],
+];
+
+const failures = [];
+const check = (ok, msg) => {
+  if (!ok) failures.push(msg);
+  console.log(`${ok ? "✓" : "✗"} ${msg}`);
+};
+
+for (const [path, needles] of pages) {
+  const res = await fetch(base + path, { redirect: "manual" });
+  const body = await res.text();
+  check(res.status === 200, `${path} → ${res.status}`);
+  for (const n of needles) check(body.includes(n), `${path} contains "${n.replace("&#x27;", "'")}"`);
+  check(!/Application error|Internal Server Error/i.test(body), `${path} has no error page`);
+}
+
+for (const path of ["/does-not-exist", "/portfolio/does-not-exist", "/concerts/events/does-not-exist"]) {
+  const res = await fetch(base + path);
+  check(res.status === 404, `${path} → ${res.status} (expect 404)`);
+}
+
+const admin = await fetch(base + "/admin", { redirect: "manual" });
+check([307, 308].includes(admin.status) && (admin.headers.get("location") || "").includes("/admin/login"), `/admin redirects to login when signed out (${admin.status})`);
+
+const upload = await fetch(base + "/api/admin/upload", { method: "POST", body: new FormData() });
+check(upload.status === 401, `upload API rejects anonymous requests (${upload.status})`);
+
+const bad = await fetch(base + "/api/enquiries", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ fullName: "" }) });
+check(bad.status === 400, `enquiry API validates input (${bad.status})`);
+
+const traversal = await fetch(base + "/api/media/..%2F.env");
+check(traversal.status === 404, `media API blocks path traversal (${traversal.status})`);
+
+console.log(`\n${failures.length ? `${failures.length} FAILED` : "All checks passed"} against ${base}`);
+process.exit(failures.length ? 1 : 0);

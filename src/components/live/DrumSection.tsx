@@ -212,7 +212,6 @@ export function DrumSection() {
                   }
                 }}
                 aria-label={`Hit ${p.label} (key ${p.key})`}
-                data-cursor="Hit"
                 className="absolute rounded-full focus-visible:outline-2 focus-visible:outline-offset-4"
                 style={{
                   left: `${((p.cx - p.r) / 1010) * 100}%`,

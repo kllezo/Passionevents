@@ -52,8 +52,8 @@ export function EventsHero() {
         gsap.set(q("[data-headline]"), { visibility: "visible" });
 
         tl.from(q("[data-eyebrow]"), { autoAlpha: 0, y: 16, duration: 1 }, 0)
-          .from(split.lines, { yPercent: 115, rotate: 3, transformOrigin: "0 0", duration: 1.5, stagger: 0.12 }, 0.05)
-          .from(q("[data-script]"), { clipPath: "inset(0% 100% 0% 0%)", duration: 1.6, ease: "power3.inOut" }, 0.6)
+          .from(split.lines, { yPercent: 135, rotate: 3, transformOrigin: "0 0", duration: 1.5, stagger: 0.12 }, 0.05)
+          .fromTo(q("[data-script]"), { clipPath: "inset(-20% 100% -20% 0%)" }, { clipPath: "inset(-20% 0% -20% 0%)", duration: 1.6, ease: "power3.inOut" }, 0.6)
           .from(q("[data-sub]"), { autoAlpha: 0, y: 24, duration: 1.1 }, 0.7)
           .from(q("[data-cta] > *"), { autoAlpha: 0, y: 24, duration: 1, stagger: 0.1 }, 0.85)
           .fromTo(q("[data-arch]"), { clipPath: "inset(100% 0% 0% 0% round 999px 999px 0 0)" }, { clipPath: "inset(0% 0% 0% 0% round 999px 999px 0 0)", duration: 1.8, ease: "expo.inOut" }, 0)
@@ -79,25 +79,6 @@ export function EventsHero() {
         };
       });
 
-      // Botanicals lean subtly toward the cursor (desktop only).
-      mm.add(`${media.desktop} and ${media.finePointer}`, () => {
-        const layers = q<HTMLElement>("[data-depth]");
-        const setters = layers.map((l) => ({
-          x: gsap.quickTo(l, "x", { duration: 1.6, ease: "power3" }),
-          y: gsap.quickTo(l, "y", { duration: 1.6, ease: "power3" }),
-          d: Number(l.dataset.depth),
-        }));
-        const move = (e: PointerEvent) => {
-          const nx = e.clientX / window.innerWidth - 0.5;
-          const ny = e.clientY / window.innerHeight - 0.5;
-          setters.forEach((s) => {
-            s.x(nx * s.d);
-            s.y(ny * s.d);
-          });
-        };
-        window.addEventListener("pointermove", move, { passive: true });
-        return () => window.removeEventListener("pointermove", move);
-      });
     },
     { scope: root }
   );
@@ -131,12 +112,12 @@ export function EventsHero() {
           </p>
           <div data-cta="" className="mt-10 flex flex-wrap items-center gap-4">
             <span data-hero-hidden="">
-              <EventsButton href="/contact#enquire" cursor="Begin">
+              <EventsButton href="/contact#enquire">
                 Plan your event
               </EventsButton>
             </span>
             <span data-hero-hidden="">
-              <EventsButton href="/portfolio" variant="outline" cursor="Explore">
+              <EventsButton href="/portfolio" variant="outline">
                 Explore our work
               </EventsButton>
             </span>
@@ -152,19 +133,19 @@ export function EventsHero() {
             <div className="absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
           </div>
 
-          <svg data-depth="14" viewBox="0 0 500 620" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
+          <svg viewBox="0 0 500 620" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
             <ellipse data-ring="" cx="262" cy="330" rx="250" ry="300" fill="none" stroke="var(--color-rose)" strokeWidth="1.6" transform="rotate(-8 262 330)" />
             <ellipse data-ring="" cx="250" cy="325" rx="238" ry="292" fill="none" stroke="var(--color-blush)" strokeWidth="1.1" transform="rotate(-4 250 325)" />
           </svg>
-          <svg data-depth="26" viewBox="0 0 360 560" className="pointer-events-none absolute -left-[12%] bottom-[2%] h-[78%] w-auto overflow-visible" aria-hidden="true">
+          <svg viewBox="0 0 360 560" className="pointer-events-none absolute -left-[12%] bottom-[2%] h-[78%] w-auto overflow-visible" aria-hidden="true">
             <SprigGroup g={sprigA} strokeWidth={1.6} />
           </svg>
-          <svg data-depth="-20" viewBox="0 0 350 260" className="pointer-events-none absolute -right-[6%] top-0 w-[58%] overflow-visible" aria-hidden="true">
+          <svg viewBox="0 0 350 260" className="pointer-events-none absolute -right-[6%] top-0 w-[58%] overflow-visible" aria-hidden="true">
             <SprigGroup g={sprigB} strokeWidth={1.4} />
           </svg>
 
-          <div data-orb="" data-depth="-34" className="absolute -left-[4%] top-[18%] size-[34%] overflow-hidden rounded-full border-[6px] border-ivory shadow-xl">
-            <Pic image={stock.tableFloral} sizes="200px" className="" />
+          <div data-orb="" className="absolute -left-[4%] top-[18%] size-[34%] overflow-hidden rounded-full border-[6px] border-ivory shadow-xl">
+            <Pic image={stock.liveCrowd} sizes="240px" className="" />
           </div>
 
           <div data-badge="" className="absolute -bottom-6 -right-2 grid size-28 place-items-center rounded-full bg-ivory/95 shadow-[0_20px_50px_-25px_rgb(148_96_108/0.6)] md:-right-6 md:size-36">

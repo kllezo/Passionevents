@@ -25,7 +25,7 @@ export function Approach({ index = "05" }: { index?: string }) {
         const steps = q<HTMLElement>("[data-step]");
         const blooms = q<SVGGElement>("[data-node]");
         gsap.set(words.slice(1), { yPercent: 100, autoAlpha: 0 });
-        gsap.set(steps.slice(1), { opacity: 0.22 });
+        gsap.set(steps.slice(1), { opacity: 0.55 });
         gsap.set(blooms, { scale: 0, transformOrigin: "50% 50%" });
         gsap.set(blooms[0], { scale: 1 });
 
@@ -39,7 +39,7 @@ export function Approach({ index = "05" }: { index?: string }) {
           const at = i - 0.15;
           tl.to(words[i - 1], { yPercent: -100, autoAlpha: 0, duration: 0.5 }, at)
             .to(words[i], { yPercent: 0, autoAlpha: 1, duration: 0.5 }, at)
-            .to(steps[i - 1], { opacity: 0.22, duration: 0.4 }, at)
+            .to(steps[i - 1], { opacity: 0.55, duration: 0.4 }, at)
             .to(steps[i], { opacity: 1, duration: 0.4 }, at)
             .to(blooms[i], { scale: 1, rotate: 72, duration: 0.5, ease: "back.out(2)" }, at);
         }
@@ -57,11 +57,11 @@ export function Approach({ index = "05" }: { index?: string }) {
           <div className="lg:col-span-6">
             <SectionLabel index={index}>Our approach</SectionLabel>
             <RevealText as="h2" id="approach-title" className="mt-8 max-w-xl font-serif text-[clamp(2.4rem,4.4vw,4.4rem)] font-light leading-[1] text-ink">
-              How a celebration <em className="text-rose-deep">comes to life.</em>
+              How we <em className="text-rose-deep">work.</em>
             </RevealText>
-            <div className="relative mt-14 hidden h-[clamp(6rem,13vw,13rem)] overflow-hidden lg:block" aria-hidden="true">
+            <div className="relative mt-14 hidden h-[clamp(5rem,7.4vw,8.6rem)] overflow-hidden lg:block" aria-hidden="true">
               {approach.map((a) => (
-                <span key={a.step} data-word="" className="absolute inset-0 font-serif text-[clamp(6rem,13vw,13rem)] font-light uppercase leading-[0.9] tracking-[-0.03em] text-ink">
+                <span key={a.step} data-word="" className="absolute inset-0 whitespace-nowrap font-serif text-[clamp(4.2rem,6.6vw,7.6rem)] font-light uppercase leading-[1.08] tracking-[-0.02em] text-ink">
                   {a.step}
                 </span>
               ))}

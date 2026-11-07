@@ -11,6 +11,7 @@ import { GuitarSection } from "@/components/live/GuitarSection";
 import { DrumSection } from "@/components/live/DrumSection";
 import { WhatWeHandle, Collaborate } from "@/components/live/HandleAndCollab";
 import { FinalCTA } from "@/components/live/FinalCTA";
+import { ProductionShowcase } from "@/components/live/ProductionShowcase";
 
 const liveTitle = "Passion Live — Concerts, Live Music & Artist Bookings in India";
 export const metadata = {
@@ -93,6 +94,7 @@ export default function LiveHome() {
         </Suspense>
       </section>
 
+      <ProductionShowcase />
       <DrumSection />
       <WhatWeHandle />
       <Collaborate />

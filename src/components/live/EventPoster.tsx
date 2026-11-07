@@ -27,13 +27,11 @@ export function EventPoster({ e, index = 0 }: { e: PublicEvent; index?: number }
 
   return (
     <article className="neon-border group relative flex flex-col rounded-[4px] bg-graphite">
-      <Link href={`/concerts/events/${e.slug}`} className="relative block aspect-[3/4] overflow-hidden rounded-t-[4px]" data-cursor="View">
+      <Link href={`/concerts/events/${e.slug}`} className="relative block aspect-[3/4] overflow-hidden rounded-t-[4px]">
         {img ? (
           <MediaImage src={img} alt={`${e.title} poster`} fill sizes="(max-width: 768px) 92vw, (max-width: 1280px) 45vw, 30vw" className="object-cover transition-transform duration-700 ease-[var(--ease-silk)] group-hover:scale-[1.07]" />
         ) : (
-          <div className="live-grid-bg absolute inset-0 grid place-items-center bg-gradient-to-br from-violet/40 via-void to-volt/30">
-            <span className="px-6 text-center font-display text-5xl uppercase leading-none text-white/90">{e.title}</span>
-          </div>
+          <PosterArt title={e.title} artist={artists[0]} city={e.city} />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-void via-void/10 to-transparent" />
         {/* light reflection sweep */}
@@ -72,5 +70,28 @@ export function EventPoster({ e, index = 0 }: { e: PublicEvent; index?: number }
         </div>
       </div>
     </article>
+  );
+}
+
+/** Designed stand-in until the real poster is uploaded: stage beams + artist type. */
+export function PosterArt({ title, artist, city, large = false }: { title: string; artist?: string; city?: string; large?: boolean }) {
+  return (
+    <div className="absolute inset-0 overflow-hidden bg-void">
+      <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_0%,rgb(139_92_255/0.55),transparent_70%),radial-gradient(70%_50%_at_50%_100%,rgb(255_90_31/0.45),transparent_70%)]" />
+      {[-28, -10, 10, 28].map((r, i) => (
+        <span
+          key={r}
+          className="absolute left-1/2 top-[-10%] h-[90%] w-[2px] origin-top opacity-70"
+          style={{ transform: `rotate(${r}deg)`, background: `linear-gradient(${["#ff2e88", "#2ec5ff", "#8b5cff", "#ff5a1f"][i]}, transparent)` }}
+          aria-hidden="true"
+        />
+      ))}
+      <div className="live-grid-bg absolute inset-0 opacity-50" />
+      <div className="absolute inset-x-5 bottom-[22%] text-center">
+        {city && <p className="font-grotesk text-[0.65rem] uppercase tracking-[0.35em] text-volt">Live in {city}</p>}
+        <p className={`mt-3 font-display uppercase leading-[0.88] text-white ${large ? "text-[clamp(3.4rem,7vw,7rem)]" : "text-[clamp(2.6rem,5vw,3.6rem)]"}`}>{artist || title}</p>
+        {artist && <p className="mt-3 font-grotesk text-xs uppercase tracking-[0.3em] text-white/60">{title.replace(artist, "").replace(/^[\s—-]+/, "") || "Live in concert"}</p>}
+      </div>
+    </div>
   );
 }

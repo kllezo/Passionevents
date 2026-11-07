@@ -1,7 +1,8 @@
 import { EventsIntro } from "@/components/events/home/EventsIntro";
 import { EventsHero } from "@/components/events/home/EventsHero";
 import { BrandIntro } from "@/components/events/home/BrandIntro";
-import { ExperienceExpand } from "@/components/events/home/ExperienceExpand";
+import { ProofBand } from "@/components/events/home/ProofBand";
+import { CinematicShowcase } from "@/components/events/home/CinematicShowcase";
 import { WhatWeDo } from "@/components/events/home/WhatWeDo";
 import { IndividualServices } from "@/components/events/home/IndividualServices";
 import { Approach } from "@/components/events/home/Approach";
@@ -29,15 +30,16 @@ export default function HomePage() {
       <JsonLd data={[organizationJsonLd(), faqJsonLd(faqs)]} />
       <EventsIntro />
       <EventsHero />
+      <ProofBand />
       <BrandIntro />
-      <ExperienceExpand />
       <WhatWeDo />
-      <IndividualServices />
-      <Approach />
-      <PortfolioPreview />
-      <FoundersFeature />
-      <WhyUs />
-      <EnquirySection />
+      <IndividualServices index="03" />
+      <CinematicShowcase />
+      <Approach index="04" />
+      <PortfolioPreview index="05" />
+      <FoundersFeature index="06" />
+      <WhyUs index="07" />
+      <EnquirySection index="08" />
     </>
   );
 }

@@ -109,10 +109,10 @@ export function LiveHero() {
             From intimate live performances to electrifying concert experiences, Passion Live brings artists, audiences and unforgettable moments together.
           </p>
           <div data-cta="" className="flex flex-wrap gap-4 md:col-span-6 md:justify-end">
-            <LiveButton href="/concerts/events" cursor="Shows">
+            <LiveButton href="/concerts/events">
               Explore upcoming shows
             </LiveButton>
-            <LiveButton href="/concerts/partners" variant="outline" cursor="Collab">
+            <LiveButton href="/concerts/partners" variant="outline">
               Partner with us
             </LiveButton>
           </div>

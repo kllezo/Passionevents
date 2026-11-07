@@ -59,15 +59,15 @@ export default function ServicesPage() {
               return (
                 <li key={c.key}>
                   {c.key === "concerts" ? (
-                    <UniverseLink href={c.href} to="live" className={cls} data-cursor="Enter Live">
+                    <UniverseLink href={c.href} to="live" className={cls}>
                       {row}
                     </UniverseLink>
                   ) : c.key === "production" ? (
-                    <a href="#production" className={cls} data-cursor="Read">
+                    <a href="#production" className={cls}>
                       {row}
                     </a>
                   ) : (
-                    <Link href={c.href} className={cls} data-cursor="Discover">
+                    <Link href={c.href} className={cls}>
                       {row}
                     </Link>
                   )}

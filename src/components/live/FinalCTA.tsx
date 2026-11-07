@@ -46,14 +46,14 @@ export function FinalCTA() {
         <h2 id="final-title" data-final="" data-reveal="" className="font-display text-[clamp(3rem,9.2vw,11rem)] uppercase leading-[0.86] text-white">
           The next great night
           <br />
-          <span className="text-volt neon-text-volt">starts here.</span>
+          <span className="text-volt neon-text-volt">starts with us.</span>
         </h2>
         <div data-final-cta="" className="mt-12 flex flex-wrap justify-center gap-4">
-          <LiveButton href="/concerts/events" cursor="Shows">
-            Explore upcoming shows
+          <LiveButton href="/concerts/partners#partner-form">
+            Let&apos;s create a show
           </LiveButton>
-          <LiveButton href="/concerts/partners" variant="outline" cursor="Collab">
-            Partner with us
+          <LiveButton href="/concerts/events" variant="outline">
+            Upcoming shows
           </LiveButton>
         </div>
       </div>

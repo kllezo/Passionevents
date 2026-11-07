@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { Magnetic } from "@/motion/primitives";
 
 type Variant = "solid" | "outline" | "ghost" | "ivory";
 
@@ -13,21 +12,19 @@ const styles: Record<Variant, string> = {
 };
 
 /**
- * Editorial pill CTA: magnetic, label rolls upward on hover, arrow tilts.
+ * Editorial pill CTA: label rolls upward on hover, arrow tilts.
  */
 export function EventsButton({
   href,
   children,
   variant = "solid",
   className,
-  cursor = "Open",
   external,
 }: {
   href: string;
   children: ReactNode;
   variant?: Variant;
   className?: string;
-  cursor?: string;
   external?: boolean;
 }) {
   const inner = (
@@ -45,16 +42,16 @@ export function EventsButton({
   );
   const cls = `group inline-flex items-center gap-4 rounded-full py-2.5 pl-7 pr-2.5 text-[0.8rem] font-semibold uppercase tracking-[0.18em] transition-colors duration-500 ${styles[variant]} ${className ?? ""}`;
   return (
-    <Magnetic>
+    <>
       {external ? (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={cls} data-cursor={cursor}>
+        <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
           {inner}
         </a>
       ) : (
-        <Link href={href} className={cls} data-cursor={cursor}>
+        <Link href={href} className={cls}>
           {inner}
         </Link>
       )}
-    </Magnetic>
+    </>
   );
 }

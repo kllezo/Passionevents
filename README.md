@@ -19,6 +19,10 @@ npm run admin:create          # creates the admin from ADMIN_* env vars
 npm run dev                   # http://localhost:3000
 ```
 
+Local Postgres without Docker: `npm run db:local` (embedded PostgreSQL on port 5433; see `scripts/dev-db.mjs`).
+
+Checks: `npx tsc --noEmit`, `npx eslint src`, `npm run test:smoke [base-url]` (routes, 404s, API guards).
+
 Production: `npm run build && npm start`. See **[docs/SETUP.md](docs/SETUP.md)**, **[docs/CONTENT.md](docs/CONTENT.md)** and **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
 
 ## Stack

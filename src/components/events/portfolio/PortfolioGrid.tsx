@@ -38,7 +38,7 @@ export function PortfolioGrid({ events }: { events: PublicEvent[] }) {
         const img = e.coverUrl ?? e.posterUrl ?? e.media[0]?.url;
         return (
           <article key={e.id} className={`group ${layout[i % layout.length].col}`}>
-            <Link href={`/portfolio/${e.slug}`} data-cursor="View story" className="block">
+            <Link href={`/portfolio/${e.slug}`} className="block">
               <ImageReveal shape={i % 2 ? "arch" : "up"} className={`${layout[i % layout.length].aspect} w-full rounded-[1.5rem] bg-cream ${i % 2 ? "arch" : ""}`}>
                 {img ? (
                   <MediaImage src={img} alt={e.media[0]?.alt || e.title} fill sizes="(max-width: 768px) 92vw, 50vw" className="object-cover transition-transform duration-[1.6s] ease-[var(--ease-silk)] group-hover:scale-105" />

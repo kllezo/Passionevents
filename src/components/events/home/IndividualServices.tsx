@@ -1,62 +1,19 @@
 "use client";
 
-import Image from "next/image";
-import { Pic } from "@/components/shared/Pic";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { serviceGroups } from "@/content/events";
-import { gsap, media } from "@/motion/gsap";
+import { Pic } from "@/components/shared/Pic";
 import { RevealText } from "@/motion/RevealText";
 import { SectionLabel } from "../SectionLabel";
 import { EventsButton } from "../Button";
 
 /**
- * Bookable services as an editorial index. On desktop a framed photograph
- * follows the cursor and crossfades as you move between rows.
+ * Capability index. Hovering, focusing or tapping a row swaps the large
+ * photograph in the sticky panel; nothing follows the pointer.
  */
 export function IndividualServices({ showIntro = true, index = "04" }: { showIntro?: boolean; index?: string }) {
-  const listRef = useRef<HTMLUListElement>(null);
-  const floatRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState<number | null>(null);
-  const [follow, setFollow] = useState(false);
-
-  useEffect(() => {
-    const ok = window.matchMedia(`${media.desktop} and ${media.finePointer}`);
-    const update = () => setFollow(ok.matches);
-    update();
-    ok.addEventListener("change", update);
-    return () => ok.removeEventListener("change", update);
-  }, []);
-
-  useEffect(() => {
-    if (!follow) return;
-    const f = floatRef.current!;
-    const list = listRef.current!;
-    gsap.set(f, { xPercent: -50, yPercent: -50, scale: 0.6, autoAlpha: 0 });
-    const x = gsap.quickTo(f, "x", { duration: 0.7, ease: "power3" });
-    const y = gsap.quickTo(f, "y", { duration: 0.7, ease: "power3" });
-    const r = gsap.quickTo(f, "rotate", { duration: 0.9, ease: "power3" });
-    let lastX = 0;
-    const move = (e: PointerEvent) => {
-      const b = list.getBoundingClientRect();
-      x(e.clientX - b.left);
-      y(e.clientY - b.top);
-      r(gsap.utils.clamp(-10, 10, (e.clientX - lastX) * 0.6));
-      lastX = e.clientX;
-    };
-    const enter = () => gsap.to(f, { autoAlpha: 1, scale: 1, duration: 0.6, ease: "expo.out" });
-    const leave = () => {
-      gsap.to(f, { autoAlpha: 0, scale: 0.6, duration: 0.5, ease: "expo.out" });
-      setActive(null);
-    };
-    list.addEventListener("pointermove", move);
-    list.addEventListener("pointerenter", enter);
-    list.addEventListener("pointerleave", leave);
-    return () => {
-      list.removeEventListener("pointermove", move);
-      list.removeEventListener("pointerenter", enter);
-      list.removeEventListener("pointerleave", leave);
-    };
-  }, [follow]);
+  const [active, setActive] = useState(0);
+  const current = serviceGroups[active];
 
   return (
     <section className="relative bg-ivory py-28 md:py-40" aria-labelledby="services-title">
@@ -64,7 +21,7 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
         {showIntro && (
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-8">
-              <SectionLabel index={index}>Individual services</SectionLabel>
+              <SectionLabel index={index}>Our capabilities</SectionLabel>
               <RevealText as="h2" id="services-title" className="mt-8 font-serif text-[clamp(2.8rem,6.6vw,7rem)] font-light leading-[0.92] tracking-[-0.02em] text-ink">
                 One team. <em className="text-rose-deep">Every detail.</em> Every experience.
               </RevealText>
@@ -72,60 +29,84 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
             <div className="grid gap-8 self-end sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1">
               <div className="border-t border-ink/15 pt-5">
                 <p className="font-serif text-2xl italic text-ink">Book a single service</p>
-                <p className="mt-2 text-stone">Need only décor, a photographer, a band or the cars? Book exactly what you need.</p>
+                <p className="mt-2 text-stone">Only need décor, a photographer, a band or transport? Book exactly what you need.</p>
               </div>
               <div className="border-t border-ink/15 pt-5">
                 <p className="font-serif text-2xl italic text-ink">Or hand us everything</p>
-                <p className="mt-2 text-stone">End-to-end planning and execution — every vendor, every guest, every cue.</p>
+                <p className="mt-2 text-stone">Concept to close — every vendor, every guest, every cue managed by one team.</p>
               </div>
             </div>
           </div>
         )}
 
-        <ul ref={listRef} className="relative mt-20 border-t border-ink/15" aria-label="Services you can book">
-          {serviceGroups.map((g, i) => (
-            <li
-              key={g.title}
-              onPointerEnter={() => setActive(i)}
-              className="group relative grid gap-4 border-b border-ink/15 py-7 md:grid-cols-12 md:items-center md:py-9"
-            >
-              <span className="absolute inset-x-0 bottom-[-1px] h-px origin-left scale-x-0 bg-rose transition-transform duration-700 ease-[var(--ease-silk)] group-hover:scale-x-100" />
-              <span className="font-serif text-sm italic text-rose md:col-span-1">{String(i + 1).padStart(2, "0")}</span>
-              <div className="flex items-center gap-4 md:col-span-5">
-                <span className="relative size-14 shrink-0 overflow-hidden rounded-full md:hidden">
-                  <Pic image={g.image} alt="" sizes="56px" className="" />
-                </span>
-                <h3 className="font-serif text-[clamp(1.8rem,3.4vw,3.2rem)] leading-none text-ink transition-all duration-700 ease-[var(--ease-silk)] group-hover:translate-x-3 group-hover:italic group-hover:text-rose-deep">
-                  {g.title}
-                </h3>
+        <div className="mt-20 grid gap-12 lg:grid-cols-12">
+          <ul className="border-t border-ink/15 lg:col-span-7" aria-label="Services you can book">
+            {serviceGroups.map((g, i) => {
+              const on = i === active;
+              return (
+                <li key={g.title} className="border-b border-ink/15">
+                  <button
+                    type="button"
+                    onPointerEnter={() => setActive(i)}
+                    onFocus={() => setActive(i)}
+                    onClick={() => setActive(i)}
+                    aria-pressed={on}
+                    className="group grid w-full grid-cols-[2.5rem_1fr] items-baseline gap-x-4 py-6 text-left md:py-7"
+                  >
+                    <span className={`font-serif text-lg italic transition-colors ${on ? "text-coral-deep" : "text-rose-deep"}`}>{String(i + 1).padStart(2, "0")}</span>
+                    <span>
+                      <span
+                        className={`block font-serif text-[clamp(1.7rem,3vw,2.9rem)] leading-tight transition-all duration-700 ease-[var(--ease-silk)] ${
+                          on ? "translate-x-2 italic text-rose-deep" : "text-ink group-hover:translate-x-1"
+                        }`}
+                      >
+                        {g.title}
+                      </span>
+                      <span className={`grid transition-[grid-template-rows] duration-700 ease-[var(--ease-silk)] ${on ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                        <span className="overflow-hidden">
+                          <span className="mt-3 flex flex-wrap gap-2 pb-1">
+                            {g.items.map((it) => (
+                              <span key={it} className="rounded-full border border-ink/15 px-3 py-1 text-[0.82rem] text-ink/80">
+                                {it}
+                              </span>
+                            ))}
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="lg:col-span-5">
+            <div className="lg:sticky lg:top-28">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-cream shadow-[0_40px_90px_-50px_rgb(148_96_108/0.6)] max-lg:hidden">
+                {serviceGroups.map((g, i) => (
+                  <div
+                    key={g.title}
+                    className={`absolute inset-0 transition-[opacity,transform] duration-[900ms] ease-[var(--ease-silk)] ${i === active ? "scale-100 opacity-100" : "scale-[1.06] opacity-0"}`}
+                    aria-hidden={i !== active}
+                  >
+                    <Pic image={g.image} sizes="(max-width: 1024px) 0px, 40vw" />
+                  </div>
+                ))}
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent p-7 pt-24">
+                  <p className="eyebrow text-blush">Now viewing</p>
+                  <p className="mt-2 font-serif text-3xl text-ivory">{current.title}</p>
+                </div>
               </div>
-              <p className="text-[0.95rem] leading-relaxed text-stone md:col-span-6 md:text-right">{g.items.join(" · ")}</p>
-            </li>
-          ))}
-
-          {follow && (
-            <div ref={floatRef} className="pointer-events-none absolute left-0 top-0 z-10 h-[300px] w-[240px] overflow-hidden rounded-t-full rounded-b-2xl shadow-2xl" aria-hidden="true">
-              {serviceGroups.map((g, i) => (
-                <Image
-                  key={g.title}
-                  src={g.image.src}
-                  alt=""
-                  fill
-                  sizes="240px"
-                  className={`object-cover transition-[opacity,transform] duration-700 ease-[var(--ease-silk)] ${active === i ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
-                />
-              ))}
+              <p className="mt-6 text-stone">
+                Also available: guest management, car rentals, anchors and anything else your event needs — just ask.
+              </p>
+              <div className="mt-6">
+                <EventsButton href="/services" variant="outline">
+                  All services
+                </EventsButton>
+              </div>
             </div>
-          )}
-        </ul>
-
-        <div className="mt-14 flex flex-wrap items-center justify-between gap-6">
-          <p className="max-w-xl text-stone">
-            Also available: guest management, car rentals, anchors, return gifts and anything else your event needs — just ask.
-          </p>
-          <EventsButton href="/services" variant="outline" cursor="View">
-            All services
-          </EventsButton>
+          </div>
         </div>
       </div>
     </section>

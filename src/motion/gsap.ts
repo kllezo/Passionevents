@@ -36,3 +36,23 @@ export function prefersReducedMotion() {
 }
 
 export { gsap, ScrollTrigger, SplitText, DrawSVGPlugin, useGSAP };
+
+/**
+ * Runs `cb` once when `el` scrolls into view. Based on real visibility
+ * (IntersectionObserver), so layout shifts from pinned sections, late images
+ * or route changes can never leave a reveal stuck in its hidden state.
+ */
+export function whenVisible(el: Element, cb: () => void, rootMargin = "0px 0px -8% 0px") {
+  let done = false;
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (done || !entries.some((e) => e.isIntersecting)) return;
+      done = true;
+      io.disconnect();
+      cb();
+    },
+    { rootMargin }
+  );
+  io.observe(el);
+  return () => io.disconnect();
+}

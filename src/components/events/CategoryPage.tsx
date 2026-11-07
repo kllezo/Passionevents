@@ -2,7 +2,7 @@ import { Pic } from "@/components/shared/Pic";
 import Link from "next/link";
 import { Suspense } from "react";
 import { categories, type Category } from "@/content/events";
-import { getPortfolioEvents } from "@/lib/events";
+import { getPortfolioEvents, safeRead } from "@/lib/events";
 import { ImageReveal, Parallax } from "@/motion/primitives";
 import { RevealText } from "@/motion/RevealText";
 import { JsonLd } from "@/components/shared/JsonLd";
@@ -26,7 +26,7 @@ const categoryDbKey: Record<Category["key"], string> = {
 };
 
 async function CategoryWork({ category }: { category: Category }) {
-  const events = await getPortfolioEvents(categoryDbKey[category.key]);
+  const events = await safeRead("category work", () => getPortfolioEvents(categoryDbKey[category.key]), []);
   if (events.length === 0) {
     return (
       <div className="rounded-[2rem] border border-dashed border-rose/40 bg-cream/60 p-10 text-center md:p-16">
@@ -80,7 +80,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
               {c.description}
             </RevealText>
             <div className="mt-10">
-              <EventsButton href="#enquire" cursor="Begin">
+              <EventsButton href="#enquire">
                 Enquire about {c.title.toLowerCase()}
               </EventsButton>
             </div>
@@ -153,7 +153,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
           <ul className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {others.map((o) => (
               <li key={o.key}>
-                <Link href={o.href} className="group flex items-center gap-5" data-cursor="Discover">
+                <Link href={o.href} className="group flex items-center gap-5">
                   <span className="relative size-24 shrink-0 overflow-hidden rounded-full">
                     <Pic image={o.image} alt="" sizes="96px" className="transition-transform duration-1000 group-hover:scale-110" />
                   </span>

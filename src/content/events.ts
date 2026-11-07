@@ -120,26 +120,10 @@ export const serviceGroups: ServiceGroup[] = [
 export const allServices = serviceGroups.flatMap((g) => g.items);
 
 export const approach = [
-  {
-    step: "Discover",
-    index: "01",
-    text: "We start by listening — the occasion, the people, the feeling you want guests to leave with, the budget and the non-negotiables.",
-  },
-  {
-    step: "Plan",
-    index: "02",
-    text: "A clear plan with venues, vendors, timelines and costs. You choose a single service or hand us the complete event.",
-  },
-  {
-    step: "Create",
-    index: "03",
-    text: "Design, decor, stage and experience come together — moodboards, floral concepts, layouts and artist line-ups refined with you.",
-  },
-  {
-    step: "Execute",
-    index: "04",
-    text: "On the day, our team runs the show — vendors, guests, artists and timings — so you can be present in the moment.",
-  },
+  { step: "Discover", index: "01", text: "We understand the occasion, the audience, the requirements and what you expect the day to feel like." },
+  { step: "Plan", index: "02", text: "We develop the concept, schedule, budget and coordination plan — venues, vendors and timelines agreed up front." },
+  { step: "Create", index: "03", text: "Design, décor, stage and production elements come together, along with artists and the guest experience." },
+  { step: "Execute", index: "04", text: "On the day our team coordinates every vendor, artist and guest and runs the event to plan." },
 ];
 
 export const whyUs = [

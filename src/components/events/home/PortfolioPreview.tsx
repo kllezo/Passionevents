@@ -1,18 +1,18 @@
 import { Suspense } from "react";
-import { getPortfolioEvents } from "@/lib/events";
+import { getPortfolioEvents, safeRead } from "@/lib/events";
 import { RevealText } from "@/motion/RevealText";
 import { PortfolioGrid } from "../portfolio/PortfolioGrid";
 import { SectionLabel } from "../SectionLabel";
 import { EventsButton } from "../Button";
 
 async function PortfolioItems() {
-  const events = await getPortfolioEvents();
+  const events = await safeRead("portfolio preview", () => getPortfolioEvents(), []);
   return (
     <>
       <PortfolioGrid events={events.slice(0, 4)} />
       {events.length > 4 && (
         <div className="mt-16 flex justify-center">
-          <EventsButton href="/portfolio" variant="outline" cursor="View all">
+          <EventsButton href="/portfolio" variant="outline">
             View the full portfolio
           </EventsButton>
         </div>
@@ -32,7 +32,7 @@ export function PortfolioPreview({ index = "06" }: { index?: string }) {
               Stories we&apos;ve <em className="text-rose-deep">told.</em>
             </RevealText>
           </div>
-          <EventsButton href="/portfolio" variant="ghost" cursor="View">
+          <EventsButton href="/portfolio" variant="ghost">
             Explore our work
           </EventsButton>
         </div>

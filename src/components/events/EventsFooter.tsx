@@ -132,7 +132,6 @@ export function EventsFooter() {
         <UniverseLink
           href="/concerts"
           to="live"
-          data-cursor="Enter"
           className="group relative flex flex-col items-start justify-between gap-6 overflow-hidden rounded-[2rem] bg-void px-8 py-10 text-white md:flex-row md:items-center md:px-14"
         >
           <span className="absolute inset-0 bg-[radial-gradient(60%_120%_at_80%_50%,rgb(139_92_255/0.45),transparent_60%),radial-gradient(40%_90%_at_95%_80%,rgb(255_90_31/0.45),transparent_60%)] opacity-70 transition-opacity duration-700 group-hover:opacity-100" />

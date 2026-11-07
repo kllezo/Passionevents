@@ -78,11 +78,11 @@ export default function AboutPage() {
               return (
                 <li key={c.key}>
                   {c.key === "concerts" ? (
-                    <UniverseLink href={c.href} to="live" className="group block" data-cursor="Enter Live">
+                    <UniverseLink href={c.href} to="live" className="group block">
                       {body}
                     </UniverseLink>
                   ) : (
-                    <Link href={c.href} className="group block" data-cursor="Discover">
+                    <Link href={c.href} className="group block">
                       {body}
                     </Link>
                   )}

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { stock } from "@/content/media";
-import { getPortfolioEvents } from "@/lib/events";
+import { getPortfolioEvents, safeRead } from "@/lib/events";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { PageHero } from "@/components/events/PageHero";
 import { PortfolioExplorer } from "@/components/events/portfolio/PortfolioExplorer";
@@ -15,7 +15,7 @@ export const metadata = pageMetadata({
 });
 
 async function PortfolioList() {
-  const events = await getPortfolioEvents();
+  const events = await safeRead("portfolio", () => getPortfolioEvents(), []);
   return <PortfolioExplorer events={events} />;
 }
 

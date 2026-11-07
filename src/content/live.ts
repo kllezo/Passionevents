@@ -1,15 +1,15 @@
 import { stock } from "./media";
 
 export const liveHandles = [
-  { title: "Artist bookings", text: "Singers, bands, DJs and performers — contracted, briefed and looked after." },
-  { title: "Concert planning", text: "Formats, run-of-show, permissions, timelines and budgets." },
-  { title: "Venue coordination", text: "Clubs, arenas, lawns and halls — matched to the show." },
-  { title: "Stage production", text: "Stage design, truss, LED walls and fabrication." },
-  { title: "Sound", text: "System design, monitoring and engineers for every room size." },
-  { title: "Lighting", text: "Movers, lasers, haze and programmed looks that hit on cue." },
-  { title: "Event promotion", text: "Announcements, artist assets and launch campaigns." },
-  { title: "Audience experience", text: "Entry, flow, hospitality and the moments between sets." },
-  { title: "Complete concert execution", text: "One team from the first call to the final encore." },
+  { title: "Concert planning", text: "Format, run-of-show, permissions, budget and timeline for every show." },
+  { title: "Artist coordination", text: "Singers and bands booked, briefed and looked after from soundcheck to encore." },
+  { title: "Live show production", text: "Stage, truss, LED, sound and lighting brought together by one production team." },
+  { title: "Stage production", text: "Stage design and build sized to the venue and the artist." },
+  { title: "Sound & lighting", text: "Systems, engineers and lighting looks that land on cue." },
+  { title: "Venue coordination", text: "Clubs, halls and arenas — load-in, permissions and show-day logistics." },
+  { title: "Promotions & ticketing", text: "Announcements, artist reveals and ticketing on platforms like BookMyShow and District." },
+  { title: "Audience experience", text: "Entry, flow, hospitality and safety on the night." },
+  { title: "Concert execution", text: "One team on the ground from doors to the final song." },
 ];
 
 export const collaborators = [

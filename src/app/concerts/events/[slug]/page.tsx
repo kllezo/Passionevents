@@ -120,11 +120,11 @@ async function ShowContent({ params }: { params: PageProps<"/concerts/events/[sl
             </dl>
             <div className="mt-10 flex flex-wrap gap-4">
               {canBook && (
-                <LiveButton href={e.bookingUrl!} external cursor="Tickets">
+                <LiveButton href={e.bookingUrl!} external>
                   Book tickets
                 </LiveButton>
               )}
-              <LiveButton href="/concerts/events" variant="outline" cursor="Shows">
+              <LiveButton href="/concerts/events" variant="outline">
                 All shows
               </LiveButton>
             </div>

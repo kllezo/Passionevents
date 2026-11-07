@@ -31,7 +31,7 @@ export function StageCanvas({ className, intensity = 1, beams: beamCount = 5 }: 
   }, []);
 
   const ref = useCanvasLoop(
-    ({ ctx, w, h, t, pointer, mobile }) => {
+    ({ ctx, w, h, t, mobile }) => {
       ctx.globalCompositeOperation = "source-over";
       ctx.clearRect(0, 0, w, h);
 
@@ -81,15 +81,6 @@ export function StageCanvas({ className, intensity = 1, beams: beamCount = 5 }: 
         ctx.fillRect(ox - 40, -40, 80, 80);
       }
 
-      // follow spot
-      if (pointer.active && !mobile) {
-        const fg = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 260);
-        fg.addColorStop(0, `rgba(255,140,90,${0.13 * intensity})`);
-        fg.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = fg;
-        ctx.fillRect(pointer.x - 260, pointer.y - 260, 520, 520);
-      }
-
       // dust
       const pc = mobile ? 18 : particles.length;
       for (let i = 0; i < pc; i++) {
@@ -103,8 +94,7 @@ export function StageCanvas({ className, intensity = 1, beams: beamCount = 5 }: 
         ctx.fill();
       }
       ctx.globalCompositeOperation = "source-over";
-    },
-    { trackPointer: true }
+    }
   );
 
   return <canvas ref={ref} className={`pointer-events-none ${className ?? ""}`} aria-hidden="true" />;

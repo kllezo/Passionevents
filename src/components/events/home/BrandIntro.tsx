@@ -17,13 +17,13 @@ export function BrandIntro() {
             </h2>
             <ScrubWords
               className="mt-10 font-serif text-[clamp(2rem,4.2vw,4.1rem)] font-light leading-[1.12] tracking-[-0.01em] text-ink"
-              text="Passion Events creates and manages events of every kind — weddings, corporate events, private celebrations, destination events and live concerts. Whether it is fifty guests or five thousand, we bring the same care to every detail."
+              text="From concept to execution, Passion Events brings people, creativity, production and logistics together to create memorable experiences — weddings, corporate events, private celebrations and live concerts, planned and run by one team."
             />
             <div className="mt-12 flex flex-col gap-8 md:flex-row md:items-end md:gap-14">
               <RevealText as="p" className="max-w-md text-lg leading-relaxed text-stone">
-                Book a single service or hand us the whole celebration. One team plans, designs, coordinates and runs the day — so you get to enjoy it.
+                We are an event planning, production and execution partner. Book a single service, or hand us the whole event and we take it from the first call to the last guest leaving.
               </RevealText>
-              <EventsButton href="/about" variant="outline" cursor="Read">
+              <EventsButton href="/about" variant="outline">
                 Our story
               </EventsButton>
             </div>

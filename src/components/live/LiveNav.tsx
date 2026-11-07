@@ -20,7 +20,7 @@ const links = [
 
 function ReturnLink({ className, onClick }: { className?: string; onClick?: () => void }) {
   return (
-    <UniverseLink href="/" to="events" onClick={onClick} className={`group inline-flex items-center gap-3 ${className ?? ""}`} data-cursor="Return">
+    <UniverseLink href="/" to="events" onClick={onClick} className={`group inline-flex items-center gap-3 ${className ?? ""}`}>
       <span className="relative size-9 overflow-hidden rounded-full ring-1 ring-white/20 transition-all duration-500 group-hover:ring-blush">
         <Pic image={brand.mark} alt="" sizes="36px" className="grayscale transition-all duration-500 group-hover:grayscale-0" />
       </span>
@@ -99,7 +99,7 @@ export function LiveNav() {
       {pathnameSync}
       <header className={`fixed inset-x-0 top-0 z-[90] transition-colors duration-500 ${scrolled && !open ? "bg-void/70 backdrop-blur-md" : "bg-transparent"}`}>
         <nav aria-label="Passion Live" className="mx-auto flex h-20 max-w-[1700px] items-center justify-between gap-6 px-5 md:px-10">
-          <Link href="/concerts" className="relative z-[95] text-2xl text-white md:text-[1.7rem]" aria-label="Passion Live home" data-cursor="Live">
+          <Link href="/concerts" className="relative z-[95] text-2xl text-white md:text-[1.7rem]" aria-label="Passion Live home">
             <LiveWordmark />
           </Link>
           <ul className="hidden items-center gap-1 lg:flex">

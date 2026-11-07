@@ -1,5 +1,7 @@
-import { getUpcomingLiveEvents, getPastLiveEvents, getVerifiedArtists } from "@/lib/events";
+import { getUpcomingLiveEvents, getPastLiveEvents, getVerifiedArtists, safeRead } from "@/lib/events";
+import { featuredArtists } from "@/content/proof";
 import { EventPoster } from "./EventPoster";
+import { FeaturedShow } from "./FeaturedShow";
 import { PastGallery } from "./PastGallery";
 import { ArtistsList } from "./ArtistsList";
 import { LiveButton } from "./LiveButton";
@@ -7,10 +9,11 @@ import { Waveform } from "./Waveform";
 
 /** Upcoming shows grid (published LIVE events only). */
 export async function UpcomingShows({ limit }: { limit?: number }) {
-  const events = await getUpcomingLiveEvents(limit);
+  const events = await safeRead("upcoming shows", () => getUpcomingLiveEvents(limit), []);
   if (events.length === 0) return <ShowsEmpty />;
+  if (events.length === 1) return <FeaturedShow e={events[0]} />;
   return (
-    <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+    <div className={`grid gap-6 sm:grid-cols-2 ${events.length > 2 ? "xl:grid-cols-3" : ""}`}>
       {events.map((e, i) => (
         <EventPoster key={e.id} e={e} index={i} />
       ))}
@@ -39,13 +42,16 @@ export function ShowsEmpty() {
 }
 
 export async function PastExperiences() {
-  const events = await getPastLiveEvents();
+  const events = await safeRead("past shows", () => getPastLiveEvents(), []);
   return <PastGallery events={events} />;
 }
 
 export async function Artists() {
-  const artists = await getVerifiedArtists();
-  return <ArtistsList artists={artists} />;
+  const fromShows = await safeRead("artists", () => getVerifiedArtists(), []);
+  // Add artists verified from the company's own profile that have no published show yet.
+  const known = new Set(fromShows.map((a) => a.name.toLowerCase()));
+  const extra = featuredArtists.filter((a) => !known.has(a.name.toLowerCase())).map((a) => ({ name: a.name, image: null, events: [] }));
+  return <ArtistsList artists={[...fromShows, ...extra]} />;
 }
 
 export function GridSkeleton() {

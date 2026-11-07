@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { site } from "@/lib/site";
 import { UniverseMarker } from "@/components/shared/UniverseTransition";
-import { EventsCursor } from "@/components/events/Cursor";
 import { LiveNav } from "@/components/live/LiveNav";
 import { LiveFooter } from "@/components/live/LiveFooter";
 import { LiveSoundProvider } from "@/components/live/LiveSound";
@@ -22,7 +21,6 @@ export default function LiveLayout({ children }: LayoutProps<"/concerts">) {
     <LiveSoundProvider>
       <div className="universe-live min-h-screen bg-void font-grotesk text-white">
         <UniverseMarker value="live" />
-        <EventsCursor variant="live" />
         <LiveNav />
         <main id="main">{children}</main>
         <LiveFooter />

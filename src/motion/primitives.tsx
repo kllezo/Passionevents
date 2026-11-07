@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
-import { gsap, ScrollTrigger, useGSAP, media } from "./gsap";
+import { gsap, ScrollTrigger, useGSAP, media, whenVisible } from "./gsap";
 
 /* ── Image reveal ─────────────────────────────────────────────────────────── */
 type RevealShape = "up" | "down" | "left" | "center" | "arch";
@@ -50,12 +50,10 @@ export function ImageReveal({
       const inner = el.querySelector<HTMLElement>("[data-inner]");
       const mm = gsap.matchMedia();
       mm.add(media.ok, () => {
-        const tl = gsap.timeline({
-          delay,
-          scrollTrigger: immediate ? undefined : { trigger: el, start: "top 88%", once: true },
-        });
+        const tl = gsap.timeline({ delay, paused: !immediate });
         tl.fromTo(el, { clipPath: clipFrom[shape] }, { clipPath: clipTo[shape], duration: 1.6, ease: "expo.inOut" });
         if (inner) tl.from(inner, { scale: 1.35, duration: 2.1, ease: "expo.out" }, 0.1);
+        const stopWatching = immediate ? () => {} : whenVisible(el, () => tl.play());
         if (parallax && inner) {
           gsap.fromTo(
             inner,
@@ -63,6 +61,7 @@ export function ImageReveal({
             { yPercent: parallax, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } }
           );
         }
+        return stopWatching;
       });
     },
     { scope: ref }
@@ -100,44 +99,6 @@ export function Parallax({ children, speed = 15, className }: { children: ReactN
   );
 }
 
-/* ── Magnetic ─────────────────────────────────────────────────────────────── */
-/**
- * Pulls its child gently toward the cursor (desktop fine pointers only). The
- * hit area never moves, so the control stays easy to click.
- */
-export function Magnetic({ children, strength = 0.32, className }: { children: ReactNode; strength?: number; className?: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (!window.matchMedia(media.finePointer).matches || window.matchMedia(media.reduced).matches) return;
-    const target = el.firstElementChild as HTMLElement | null;
-    if (!target) return;
-    const xTo = gsap.quickTo(target, "x", { duration: 0.8, ease: "elastic.out(1, 0.4)" });
-    const yTo = gsap.quickTo(target, "y", { duration: 0.8, ease: "elastic.out(1, 0.4)" });
-    const move = (e: PointerEvent) => {
-      const r = el.getBoundingClientRect();
-      xTo((e.clientX - (r.left + r.width / 2)) * strength);
-      yTo((e.clientY - (r.top + r.height / 2)) * strength);
-    };
-    const leave = () => {
-      xTo(0);
-      yTo(0);
-    };
-    el.addEventListener("pointermove", move);
-    el.addEventListener("pointerleave", leave);
-    return () => {
-      el.removeEventListener("pointermove", move);
-      el.removeEventListener("pointerleave", leave);
-    };
-  }, [strength]);
-  return (
-    <span ref={ref} className={`inline-block ${className ?? ""}`}>
-      {children}
-    </span>
-  );
-}
-
 /* ── Counter ──────────────────────────────────────────────────────────────── */
 export function Counter({ to, suffix = "", className, duration = 2.4 }: { to: number; suffix?: string; className?: string; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -148,16 +109,18 @@ export function Counter({ to, suffix = "", className, duration = 2.4 }: { to: nu
       mm.add(media.ok, () => {
         const obj = { v: 0 };
         el.textContent = `0${suffix}`;
-        gsap.to(obj, {
+        const tween = gsap.to(obj, {
           v: to,
           duration,
           ease: "expo.out",
-          scrollTrigger: { trigger: el, start: "top 85%", once: true },
+          paused: true,
           onUpdate: () => {
             el.textContent = `${Math.round(obj.v)}${suffix}`;
           },
         });
+        const stop = whenVisible(el, () => tween.play());
         return () => {
+          stop();
           el.textContent = `${to}${suffix}`;
         };
       });

@@ -1,5 +1,6 @@
 import "server-only";
 import { connection } from "next/server";
+import { unstable_rethrow } from "next/navigation";
 import { db } from "@/lib/db";
 import type { Event, Media } from "@prisma/client";
 
@@ -101,3 +102,18 @@ export async function getSitemapEvents() {
 }
 
 export { artistList } from "./event-format";
+
+/**
+ * Runs a public read and falls back instead of throwing, so a database hiccup
+ * degrades one section to its empty state rather than replacing the page.
+ */
+export async function safeRead<T>(label: string, read: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await read();
+  } catch (err) {
+    // Let Next.js control-flow signals (prerender bail-outs, notFound, redirect) through.
+    unstable_rethrow(err);
+    console.error(`[events] ${label} failed`, err);
+    return fallback;
+  }
+}

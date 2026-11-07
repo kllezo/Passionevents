@@ -141,7 +141,6 @@ export function SoundToggle({ className }: { className?: string }) {
       onClick={toggle}
       aria-pressed={enabled}
       className={`inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 font-grotesk text-[0.7rem] uppercase tracking-[0.2em] text-white/80 transition-colors hover:border-volt hover:text-white aria-pressed:border-volt aria-pressed:text-volt ${className ?? ""}`}
-      data-cursor={enabled ? "Mute" : "Sound"}
     >
       {enabled ? <Volume2 className="size-3.5" /> : <VolumeX className="size-3.5" />}
       Sound {enabled ? "on" : "off"}

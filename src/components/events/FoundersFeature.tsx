@@ -88,7 +88,7 @@ export function FoundersFeature({ index = "07", detailed = false }: { index?: st
 
             {!detailed && (
               <div className="mt-12">
-                <EventsButton href="/founders" variant="outline" cursor="Meet">
+                <EventsButton href="/founders" variant="outline">
                   Meet the founders
                 </EventsButton>
               </div>

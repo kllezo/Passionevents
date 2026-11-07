@@ -60,7 +60,7 @@ export function EventsIntro() {
         .addLabel("lift", 3.05)
         .add(() => markIntroDone(), "lift")
         .to(q("[data-stage]"), { scale: 0.86, autoAlpha: 0, duration: 0.8, ease: "power3.in" }, "lift")
-        .to(el, { clipPath: "inset(0% 0% 100% 0%)", duration: 1.0, ease: "power4.inOut" }, "lift+=0.2");
+        .fromTo(el, { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: 1.0, ease: "power4.inOut", immediateRender: false }, "lift+=0.2");
 
       return () => {
         document.documentElement.style.overflow = "";

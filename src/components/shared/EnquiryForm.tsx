@@ -282,7 +282,6 @@ export function EnquiryForm({
             type="submit"
             disabled={status === "submitting"}
             className={`inline-flex min-w-[220px] items-center justify-center gap-3 rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition-colors disabled:opacity-60 ${t.submit}`}
-            data-cursor="Send"
           >
             {status === "submitting" ? (
               <>

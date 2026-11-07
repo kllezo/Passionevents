@@ -14,8 +14,9 @@
     "brand:assets": "python scripts/generate-brand-assets.py",
     "typecheck": "tsc --noEmit",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && prisma migrate deploy && node scripts/ensure-admin.mjs && next build",
-    "db:local": "node scripts/dev-db.mjs"
+    "vercel-build": "prisma generate && prisma migrate deploy && node scripts/ensure-admin.mjs && node scripts/seed-verified.mjs && next build",
+    "db:local": "node scripts/dev-db.mjs",
+    "test:smoke": "node scripts/smoke-test.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

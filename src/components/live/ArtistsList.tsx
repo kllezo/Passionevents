@@ -28,19 +28,27 @@ export function ArtistsList({ artists }: { artists: VerifiedArtist[] }) {
       <ul className="lg:col-span-7" onPointerLeave={() => undefined}>
         {artists.map((a, i) => (
           <li key={a.name} className="border-b border-white/10">
-            <Link
-              href={`/concerts/events/${a.events[0].slug}`}
-              onPointerEnter={() => setActive(i)}
-              onFocus={() => setActive(i)}
-              className="glitch group flex items-baseline justify-between gap-6 py-5"
-              data-text={a.name}
-              data-cursor="Shows"
-            >
+            {a.events.length > 0 ? (
+              <Link
+                href={`/concerts/events/${a.events[0].slug}`}
+                onPointerEnter={() => setActive(i)}
+                onFocus={() => setActive(i)}
+                className="glitch group flex items-baseline justify-between gap-6 py-5"
+                data-text={a.name}
+              >
               <span className={`font-display text-[clamp(2.4rem,6vw,5.5rem)] uppercase leading-none transition-colors ${i === active ? "text-volt" : "text-white"}`}>{a.name}</span>
               <span className="shrink-0 font-grotesk text-xs uppercase tracking-[0.25em] text-white/40">
                 {a.events.length} {a.events.length === 1 ? "show" : "shows"}
               </span>
-            </Link>
+              </Link>
+            ) : (
+              <div onPointerEnter={() => setActive(i)} className="glitch flex items-baseline justify-between gap-6 py-5" data-text={a.name}>
+              <span className={`font-display text-[clamp(2.4rem,6vw,5.5rem)] uppercase leading-none transition-colors ${i === active ? "text-volt" : "text-white"}`}>{a.name}</span>
+              <span className="shrink-0 font-grotesk text-xs uppercase tracking-[0.25em] text-white/40">
+                Collaborated
+              </span>
+              </div>
+            )}
           </li>
         ))}
       </ul>
