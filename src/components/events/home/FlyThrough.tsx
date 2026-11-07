@@ -106,12 +106,22 @@ export function FlyThrough() {
 
         <div className="absolute inset-0 [perspective:900px] [perspective-origin:50%_50%]">
           <div className="absolute inset-0 [transform-style:preserve-3d]">
-            {cards.map((c) => (
+            {cards.map((c, i) => (
               <figure
                 key={c.label}
                 data-card=""
-                className="absolute aspect-[4/5] overflow-hidden rounded-[1.25rem] shadow-[0_40px_80px_-30px_rgb(0_0_0/0.8)] will-change-transform"
-                style={{ left: `calc(50% + ${c.x}vw)`, top: `calc(50% + ${c.y}vh)`, width: `clamp(150px, ${c.w}vw, 380px)`, opacity: 0 }}
+                className="absolute left-[calc(50%+var(--xm))] top-[calc(50%+var(--ym))] aspect-[4/5] w-[42vw] max-w-[260px] overflow-hidden rounded-[1.25rem] shadow-[0_40px_80px_-30px_rgb(0_0_0/0.8)] will-change-transform lg:left-[calc(50%+var(--x))] lg:top-[calc(50%+var(--y))] lg:w-[var(--w)] lg:max-w-none"
+                style={
+                  {
+                    "--x": `${c.x}vw`,
+                    "--y": `${c.y}vh`,
+                    "--w": `clamp(150px, ${c.w}vw, 380px)`,
+                    // Phones: photographs fly past above and below the headline, never across it.
+                    "--xm": `${Math.max(-26, Math.min(26, c.x * 0.85))}vw`,
+                    "--ym": `${(c.y >= 0 ? 1 : -1) * (25 + (i % 3) * 4)}vh`,
+                    opacity: 0,
+                  } as React.CSSProperties
+                }
               >
                 <Pic image={c.image} sizes="380px" tone="dark" />
                 <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/80 to-transparent px-4 pb-3 pt-10 font-serif text-xl italic">

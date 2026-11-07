@@ -40,25 +40,46 @@ export function PrivateOccasions() {
         ).to(bits, { y: "+=220", autoAlpha: 0, duration: 1.8, ease: "power1.in", stagger: 0.01 }, 0.9);
 
         let burstPlayed = false;
-        const landing = gsap.timeline({
-          scrollTrigger: { trigger: q("[data-grid]")[0], start: "top 95%", end: desktop ? "top 30%" : "top 55%", scrub: 1 },
-          // Confetti once the cards have landed (scrub-smoothed playhead reaches the end).
-          onUpdate: () => {
-            if (!burstPlayed && landing.progress() > 0.97) {
-              burstPlayed = true;
-              burst.play();
-            }
-          },
-        });
-        landing.from(cards, {
-          x: () => rand(-260, 260) * (desktop ? 1 : 0.4),
-          y: () => rand(160, 420),
-          rotate: () => rand(-38, 38),
-          scale: 0.7,
-          autoAlpha: 0,
-          ease: "power3.out",
-          stagger: { each: 0.08, from: "random" },
-        });
+        const playBurst = () => {
+          if (burstPlayed) return;
+          burstPlayed = true;
+          burst.play();
+        };
+        if (desktop) {
+          const landing = gsap.timeline({
+            scrollTrigger: { trigger: q("[data-grid]")[0], start: "top 95%", end: "top 30%", scrub: 1 },
+            // Confetti once the cards have landed (scrub-smoothed playhead reaches the end).
+            onUpdate: () => landing.progress() > 0.97 && playBurst(),
+          });
+          landing.from(cards, {
+            x: () => rand(-260, 260),
+            y: () => rand(160, 420),
+            rotate: () => rand(-38, 38),
+            scale: 0.7,
+            autoAlpha: 0,
+            ease: "power3.out",
+            stagger: { each: 0.08, from: "random" },
+          });
+        } else {
+          // Phones: one column, so each invitation is tossed in from alternating sides as it arrives.
+          cards.forEach((card, i) => {
+            gsap.from(card, {
+              xPercent: i % 2 ? 70 : -70,
+              y: 60,
+              rotate: i % 2 ? 16 : -16,
+              scale: 0.85,
+              autoAlpha: 0,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 98%",
+                end: "top 68%",
+                scrub: 0.8,
+                onLeave: i === cards.length - 1 ? playBurst : undefined,
+              },
+            });
+          });
+        }
 
         gsap.to(q("[data-balloon]"), { y: () => rand(-60, -120), x: () => rand(-20, 20), rotate: () => rand(-6, 6), duration: () => rand(3.5, 5.5), ease: "sine.inOut", yoyo: true, repeat: -1 });
       });
@@ -94,7 +115,7 @@ export function PrivateOccasions() {
         </div>
 
         <div data-grid="" className="relative mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <span data-burst="" className="pointer-events-none absolute left-1/2 top-1/2 z-20 size-0" aria-hidden="true">
+          <span data-burst="" className="pointer-events-none absolute left-1/2 top-1/2 z-20 size-0 max-lg:top-[88%]" aria-hidden="true">
             {Array.from({ length: 46 }, (_, i) => (
               <span
                 key={i}

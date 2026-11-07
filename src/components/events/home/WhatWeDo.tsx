@@ -2,9 +2,10 @@
 
 import { Pic } from "@/components/shared/Pic";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { useCoverflow } from "@/motion/useCoverflow";
 import { ArrowUpRight } from "lucide-react";
-import { categories, type Category } from "@/content/events";
+import { categories } from "@/content/events";
 import { UniverseLink } from "@/components/shared/UniverseTransition";
 import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
 import { RevealText } from "@/motion/RevealText";
@@ -98,11 +99,10 @@ export function WhatWeDo() {
       });
 
       mm.add(media.mobile, () => {
-        const stops = q<HTMLElement>("[data-card-media]").map((m) => {
-          const t = gsap.fromTo(m, { clipPath: "inset(100% 0% 0% 0% round 999px 999px 24px 24px)" }, { clipPath: "inset(0% 0% 0% 0% round 999px 999px 24px 24px)", duration: 1.4, ease: "expo.inOut", paused: true });
-          return whenVisible(m, () => t.play());
-        });
-        return () => stops.forEach((s) => s());
+        // The strip arrives from the right the first time it is seen.
+        const cards = q<HTMLElement>("[data-cf] > a");
+        const t = gsap.fromTo(cards, { x: 160, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 1.3, stagger: 0.08, ease: "expo.out", paused: true });
+        return whenVisible(cards[0], () => t.play(), "0px 0px -15% 0px");
       });
     },
     { scope: root, dependencies: [n] }
@@ -201,50 +201,79 @@ export function WhatWeDo() {
         </div>
       </div>
 
-      {/* Tablet / mobile: editorial column */}
-      <div className="flex flex-col gap-16 px-5 py-28 md:px-10 lg:hidden">
-        <div>
-          <SectionLabel index="02">What we do</SectionLabel>
-          <RevealText as="h2" className="mt-8 font-serif text-[clamp(3rem,6vw,6.4rem)] font-light leading-[0.92] tracking-[-0.02em] text-ink">
-            Six worlds. <em className="text-rose-deep">One team.</em>
-          </RevealText>
-          <p className="mt-8 max-w-md text-lg leading-relaxed text-stone">
-            Passion Events is not only a wedding planner. From boardrooms to ballrooms to concert stages — we plan, design and run events across every category.
-          </p>
-        </div>
-        {categories.map((c) => (
-          <MobileCard key={c.key} c={c} />
-        ))}
-      </div>
+      {/* Tablet / mobile: swipeable coverflow of worlds */}
+      <MobileWorlds />
     </section>
   );
 }
 
-function MobileCard({ c }: { c: Category }) {
-  const live = c.key === "concerts";
+function MobileWorlds() {
+  const strip = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  useCoverflow(strip, { rotate: 14, scale: 0.12, dim: 0.5, onActive: setActive });
+
   return (
-    <article className="relative">
-      <CardLink live={live} href={c.href} label={`${c.title} — discover more`} className="block">
-        <div data-card-media="" className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] md:aspect-[16/11]">
-          <Pic image={c.image} sizes="92vw" />
-          <div className={`absolute inset-0 ${live ? "bg-gradient-to-t from-void/80 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/60 via-transparent to-transparent"}`} />
-          <span className="absolute left-6 top-[22%] font-serif text-7xl font-light italic text-ivory/90">{c.index}</span>
-          <span className="absolute bottom-5 right-6 font-script text-5xl text-ivory/95">{c.script}</span>
-        </div>
-        <h3 className="mt-7 font-serif text-4xl leading-none text-ink">{c.title}</h3>
-        <p className="mt-4 text-[0.97rem] leading-relaxed text-stone">{c.description}</p>
-        <ul className="mt-5 flex flex-wrap gap-2">
-          {c.services.slice(0, 4).map((s) => (
-            <li key={s} className="rounded-full border border-ink/12 px-3 py-1 text-xs text-ink/75">
-              {s}
-            </li>
+    <div className="relative overflow-hidden py-24 lg:hidden">
+      <div className="pointer-events-none absolute inset-x-0 top-1/3 h-[60%] bg-[radial-gradient(60%_50%_at_50%_40%,rgb(235_195_200/0.6),transparent_70%)]" />
+      <div className="relative px-5 md:px-10">
+        <SectionLabel index="02">What we do</SectionLabel>
+        <RevealText as="h2" className="mt-6 font-serif text-[clamp(2.9rem,9vw,4.4rem)] font-light leading-[0.92] tracking-[-0.02em] text-ink">
+          Six worlds. <em className="text-rose-deep">One team.</em>
+        </RevealText>
+        <p className="mt-5 max-w-md text-[0.98rem] leading-relaxed text-stone">
+          Not only a wedding planner — from boardrooms to ballrooms to concert stages, we plan, design and run every category.
+        </p>
+      </div>
+
+      <div className="relative mt-10 flex items-end justify-between px-5 md:px-10" aria-hidden="true">
+        <span className="font-serif text-5xl font-light italic text-ink">{categories[active].index}</span>
+        <span className="mb-2 flex gap-1.5">
+          {categories.map((c, i) => (
+            <span key={c.key} className={`h-1 rounded-full transition-all duration-500 ${i === active ? "w-7 bg-rose-deep" : "w-2 bg-ink/15"}`} />
           ))}
-        </ul>
-        <span className="mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink">
-          {live ? "Enter Passion Live" : "Discover more"} <ArrowUpRight className="size-4" />
         </span>
-      </CardLink>
-    </article>
+      </div>
+
+      <div ref={strip} className="relative mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[12vw] pb-4 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {categories.map((c) => {
+          const live = c.key === "concerts";
+          return (
+            <article key={c.key} data-cf="" className="w-[76vw] max-w-[380px] shrink-0 snap-center will-change-transform">
+              <CardLink live={live} href={c.href} label={`${c.title} — discover more`} className="block">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] border-[5px] border-ivory shadow-[0_40px_70px_-40px_rgb(94_52_64/0.7)]">
+                  <Pic image={c.image} sizes="76vw" />
+                  <div className={`absolute inset-0 ${live ? "bg-gradient-to-t from-void/85 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/70 via-transparent to-transparent"}`} />
+                  <span className="absolute right-5 top-[20%] font-script text-4xl text-ivory/95">{c.script}</span>
+                  <span className="absolute inset-x-5 bottom-5">
+                    <span className="block font-serif text-3xl leading-tight text-ivory">{c.title}</span>
+                    <span className="mt-1 block text-sm text-ivory/80">{c.short}</span>
+                  </span>
+                </div>
+              </CardLink>
+            </article>
+          );
+        })}
+      </div>
+
+      {/* Details of the centred world */}
+      <div className="relative mt-6 min-h-[10rem] px-5 md:px-10" aria-live="polite">
+        {categories.map((c, i) => (
+          <div key={c.key} className={`absolute inset-x-5 top-0 transition-[opacity,transform] duration-500 md:inset-x-10 ${i === active ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"}`} aria-hidden={i !== active}>
+            <ul className="flex flex-wrap gap-2">
+              {c.services.slice(0, 4).map((s) => (
+                <li key={s} className="rounded-full border border-ink/12 bg-ivory/70 px-3 py-1 text-xs text-ink/75">
+                  {s}
+                </li>
+              ))}
+            </ul>
+            <CardLink live={c.key === "concerts"} href={c.href} label={`${c.title} — discover more`} className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink" tabIndex={i === active ? undefined : -1}>
+              {c.key === "concerts" ? "Enter Passion Live" : "Discover more"} <ArrowUpRight className="size-4" />
+            </CardLink>
+          </div>
+        ))}
+      </div>
+      <p className="relative mt-2 px-5 text-[0.65rem] uppercase tracking-[0.3em] text-stone md:px-10">Swipe to explore →</p>
+    </div>
   );
 }
 

@@ -63,7 +63,7 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
   );
 
   return (
-    <section ref={root} className="relative bg-ivory py-28 md:py-40" aria-labelledby="services-title">
+    <section ref={root} className="relative bg-ivory py-28 [--cap-step:0.55rem] [--cap-top:4.5rem] md:py-40 md:[--cap-step:0.9rem] md:[--cap-top:6.5rem]" aria-labelledby="services-title">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         {showIntro && (
           <div className="grid gap-12 lg:grid-cols-12">
@@ -91,24 +91,24 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
           </h2>
         )}
 
-        <ol className="mt-20 space-y-6 md:space-y-0" aria-label="Services you can book">
+        <ol className="mt-14 md:mt-20" aria-label="Services you can book">
           {serviceGroups.map((g, i) => {
             const t = themes[i % themes.length];
             return (
               <li
                 key={g.title}
                 data-cap-card=""
-                className="md:sticky md:h-[72svh] md:min-h-[460px] md:pb-[6svh]"
-                style={{ top: `calc(6.5rem + ${i * 0.9}rem)`, zIndex: i + 1 }}
+                className="sticky h-[76svh] min-h-[480px] pb-[3svh] md:h-[72svh] md:min-h-[460px] md:pb-[6svh]"
+                style={{ top: `calc(var(--cap-top) + ${i} * var(--cap-step))`, zIndex: i + 1 }}
               >
                 <div
                   data-cap-inner=""
-                  className={`relative grid h-full origin-top overflow-hidden rounded-[2rem] shadow-[0_-30px_80px_-50px_rgb(94_52_64/0.55)] md:grid-cols-12 ${t.card}`}
+                  className={`relative grid h-full origin-top grid-rows-[auto_1fr] overflow-hidden rounded-[1.75rem] shadow-[0_-30px_80px_-50px_rgb(94_52_64/0.55)] md:grid-rows-1 md:grid-cols-12 md:rounded-[2rem] ${t.card}`}
                 >
-                  <div className="relative flex flex-col justify-between gap-10 p-7 md:col-span-6 md:p-12 xl:p-16">
+                  <div className="relative flex flex-col justify-between gap-5 p-6 md:col-span-6 md:gap-10 md:p-12 xl:p-16">
                     <div className="flex items-start justify-between gap-6">
                       <span className="block overflow-hidden">
-                        <span data-cap-head="" className={`block font-serif text-[clamp(4rem,9vw,9rem)] font-light italic leading-[0.85] ${t.num}`}>
+                        <span data-cap-head="" className={`block font-serif text-[clamp(3.2rem,9vw,9rem)] font-light italic leading-[0.85] ${t.num}`}>
                           {String(i + 1).padStart(2, "0")}
                         </span>
                       </span>
@@ -118,20 +118,20 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
                     </div>
                     <div>
                       <span className="block overflow-hidden pb-2">
-                        <h3 data-cap-head="" className="font-serif text-[clamp(2.2rem,4.4vw,4.4rem)] leading-[0.98]">
+                        <h3 data-cap-head="" className="font-serif text-[clamp(2rem,4.4vw,4.4rem)] leading-[0.98]">
                           {g.title}
                         </h3>
                       </span>
-                      <ul className="mt-6 flex flex-wrap gap-2">
+                      <ul className="mt-4 flex flex-wrap gap-2 md:mt-6">
                         {g.items.map((it) => (
-                          <li key={it} data-cap-chip="" className={`rounded-full border px-4 py-1.5 text-sm ${t.chip}`}>
+                          <li key={it} data-cap-chip="" className={`rounded-full border px-3 py-1 text-xs md:px-4 md:py-1.5 md:text-sm ${t.chip}`}>
                             {it}
                           </li>
                         ))}
                       </ul>
                     </div>
                   </div>
-                  <div className="relative min-h-[300px] overflow-hidden md:col-span-6 md:m-4 md:ml-0 md:min-h-0 md:rounded-[1.5rem]">
+                  <div className="relative m-3 mt-0 min-h-0 overflow-hidden rounded-[1.25rem] md:col-span-6 md:m-4 md:ml-0 md:rounded-[1.5rem]">
                     <div data-cap-img="" className="absolute inset-0 will-change-transform">
                       <Pic image={g.image} sizes="(max-width: 768px) 92vw, 46vw" />
                     </div>

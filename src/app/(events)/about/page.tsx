@@ -62,16 +62,16 @@ export default function AboutPage() {
           <h2 id="about-cats" className="mt-8 max-w-3xl font-serif text-[clamp(2.4rem,5vw,5rem)] font-light leading-[0.98] text-ink">
             More than weddings — <em className="text-rose-deep">every kind of occasion.</em>
           </h2>
-          <ul className="mt-16 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:mt-16 sm:gap-x-8 sm:gap-y-14 lg:grid-cols-3">
             {categories.map((c, i) => {
               const body = (
                 <>
                   <ImageReveal shape={i % 2 ? "arch" : "up"} delay={(i % 3) * 0.1} className={`aspect-[4/5] w-full rounded-[1.25rem] ${i % 2 ? "arch" : ""}`}>
                     <Pic image={c.image} sizes="(max-width: 768px) 92vw, 30vw" className="transition-transform duration-[1.6s] group-hover:scale-105" />
                   </ImageReveal>
-                  <p className="mt-5 font-serif text-sm italic text-rose">{c.index}</p>
-                  <h3 className="mt-1 font-serif text-3xl text-ink group-hover:text-rose-deep">{c.title}</h3>
-                  <p className="mt-2 text-stone">{c.short}</p>
+                  <p className="mt-4 font-serif text-sm italic text-rose sm:mt-5">{c.index}</p>
+                  <h3 className="mt-1 font-serif text-xl leading-tight text-ink group-hover:text-rose-deep sm:text-3xl">{c.title}</h3>
+                  <p className="mt-2 text-sm text-stone sm:text-base">{c.short}</p>
                 </>
               );
               return (

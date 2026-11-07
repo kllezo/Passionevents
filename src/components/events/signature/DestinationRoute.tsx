@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { destinationJourney } from "@/content/categoryStories";
-import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
+import { gsap, ScrollTrigger, useGSAP, media } from "@/motion/gsap";
 import { SectionLabel } from "../SectionLabel";
 
 const W = 1200;
@@ -76,11 +76,14 @@ export function DestinationRoute() {
         gsap.to(q("[data-cloud]"), { x: (i) => (i % 2 ? -60 : 60), duration: 9, ease: "sine.inOut", yoyo: true, repeat: -1 });
       });
       mm.add(media.mobile, () => {
-        const s = q<HTMLElement>("[data-m-leg]").map((el) => {
-          const t = gsap.fromTo(el, { autoAlpha: 0, x: 30 }, { autoAlpha: 1, x: 0, duration: 0.9, ease: "expo.out", paused: true });
-          return whenVisible(el, () => t.play());
+        const wrap = q<HTMLElement>("[data-m-route]")[0];
+        const st = { trigger: wrap, start: "top 65%", end: "bottom 65%", scrub: 0.6, invalidateOnRefresh: true };
+        gsap.fromTo(q("[data-m-line]"), { scaleY: 0 }, { scaleY: 1, ease: "none", scrollTrigger: st });
+        gsap.fromTo(q("[data-m-plane]"), { y: 0 }, { y: () => wrap.offsetHeight - 32, ease: "none", scrollTrigger: { ...st } });
+        q<HTMLElement>("[data-m-leg]").forEach((el) => {
+          ScrollTrigger.create({ trigger: el, start: "top 65%", onToggle: (self) => (el.dataset.on = String(self.isActive || self.progress === 1)), end: "max" });
+          gsap.fromTo(el, { autoAlpha: 0, x: 30 }, { autoAlpha: 1, x: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: el, start: "top 88%", once: true } });
         });
-        return () => s.forEach((f) => f());
       });
     },
     { scope: root, dependencies: [n] }
@@ -150,17 +153,24 @@ export function DestinationRoute() {
             ))}
           </div>
 
-          {/* Mobile route */}
-          <ol className="relative mt-12 space-y-8 border-l border-dashed border-[#9cc5b8] pl-8 lg:hidden">
-            {destinationJourney.map((s) => (
-              <li key={s.title} data-m-leg="" className="relative">
-                <span className="absolute -left-[2.45rem] top-1 size-4 rounded-full border-2 border-coral bg-ivory" />
-                <p className="font-serif text-lg italic text-coral-deep">{s.tag}</p>
-                <h3 className="font-serif text-3xl">{s.title}</h3>
-                <p className="mt-1 text-stone">{s.text}</p>
-              </li>
-            ))}
-          </ol>
+          {/* Mobile route: the line draws itself down the journey and the plane flies along it */}
+          <div data-m-route="" className="relative mt-12 lg:hidden">
+            <span className="absolute bottom-2 left-[7px] top-2 w-0 border-l-2 border-dashed border-[#9cc5b8]" aria-hidden="true" />
+            <span data-m-line="" className="absolute bottom-2 left-[7px] top-2 w-[2px] origin-top bg-coral" aria-hidden="true" />
+            <svg data-m-plane="" viewBox="-24 -20 48 40" className="absolute -left-[9px] top-0 z-10 size-8 rotate-90 text-ink" aria-hidden="true">
+              <path d="M-18 0 L14 -4 L22 0 L14 4 Z M-2 -3 L-10 -16 L-4 -16 L8 -3 Z M-2 3 L-10 16 L-4 16 L8 3 Z M-16 -2 L-22 -9 L-18 -9 L-12 -2 Z M-16 2 L-22 9 L-18 9 L-12 2 Z" fill="currentColor" />
+            </svg>
+            <ol className="space-y-10 pl-10">
+              {destinationJourney.map((s) => (
+                <li key={s.title} data-m-leg="" className="group relative">
+                  <span data-m-dot="" className="absolute -left-[2.45rem] top-1 size-4 rounded-full border-2 border-coral bg-ivory transition-colors duration-500 group-data-[on=true]:bg-coral" />
+                  <p className="font-serif text-lg italic text-coral-deep">{s.tag}</p>
+                  <h3 className="font-serif text-3xl">{s.title}</h3>
+                  <p className="mt-1 text-stone">{s.text}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </div>
     </section>

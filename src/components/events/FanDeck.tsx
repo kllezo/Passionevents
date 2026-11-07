@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { useCoverflow } from "@/motion/useCoverflow";
 import type { SiteImage } from "@/content/media";
 import { Pic } from "@/components/shared/Pic";
 import { gsap, useGSAP, media } from "@/motion/gsap";
@@ -88,21 +89,39 @@ export function FanDeck({ images, word, script }: { images: SiteImage[]; word: s
         <p className="absolute bottom-6 right-10 text-[0.65rem] uppercase tracking-[0.3em] text-ivory/40">Inspiration imagery — our own work lives in the portfolio</p>
       </div>
 
-      {/* Phones and tablets: swipeable strip */}
-      <div className="lg:hidden">
-        <p className="px-5 pt-16 font-serif text-4xl italic text-blush">{script}</p>
-        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-16 pt-8 [scrollbar-width:none]">
-          {images.map((img, i) => (
-            <figure
-              key={img.src}
-              className="relative aspect-[3/4] w-[72vw] max-w-[320px] shrink-0 snap-center overflow-hidden rounded-[1.25rem] border-4 border-ivory/90"
-              style={{ transform: `rotate(${i % 2 ? 2 : -2}deg)` }}
-            >
-              <Pic image={img} sizes="72vw" />
-            </figure>
-          ))}
-        </div>
-      </div>
+      {/* Phones and tablets: swipeable coverflow over the giant word */}
+      <MobileDeck images={images} word={word} script={script} />
     </section>
+  );
+}
+
+function MobileDeck({ images, word, script }: { images: SiteImage[]; word: string; script: string }) {
+  const strip = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  useCoverflow(strip, { rotate: 18, scale: 0.16, dim: 0.55, onActive: setActive });
+
+  return (
+    <div className="relative overflow-hidden py-16 lg:hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(70%_45%_at_50%_55%,rgb(191_133_146/0.3),transparent_70%)]" />
+      <p aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-serif text-[34vw] font-light italic leading-none text-ivory/[0.06]">
+        {word}
+      </p>
+      <p className="relative px-5 font-script text-5xl text-blush md:px-10">{script}</p>
+      <div ref={strip} className="relative mt-6 flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain px-[17vw] pb-6 pt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {images.map((img) => (
+          <figure key={img.src} data-cf="" className="relative aspect-[3/4] w-[66vw] max-w-[320px] shrink-0 snap-center overflow-hidden rounded-[1.25rem] border-[5px] border-ivory/95 bg-graphite shadow-[0_40px_70px_-35px_rgb(0_0_0/0.9)] will-change-transform">
+            <Pic image={img} sizes="66vw" tone="dark" />
+          </figure>
+        ))}
+      </div>
+      <div className="relative mt-2 flex items-center justify-between px-5 md:px-10">
+        <span className="flex gap-1.5" aria-hidden="true">
+          {images.map((img, i) => (
+            <span key={img.src} className={`h-1 rounded-full transition-all duration-500 ${i === active ? "w-7 bg-blush" : "w-2 bg-ivory/25"}`} />
+          ))}
+        </span>
+        <span className="text-[0.6rem] uppercase tracking-[0.28em] text-ivory/45">Inspiration imagery</span>
+      </div>
+    </div>
   );
 }

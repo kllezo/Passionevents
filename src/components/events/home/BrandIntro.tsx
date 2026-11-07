@@ -64,6 +64,8 @@ export function BrandIntro() {
         const layers = q<HTMLElement>("[data-layer]");
         const captions = q<HTMLElement>("[data-caption]");
         const total = words.length;
+        // Phones: no side arch, so the capsules themselves carry the imagery — larger.
+        const pillWidth = window.innerWidth < 1024 ? "2.5em" : "1.9em";
 
         gsap.set(words, { opacity: 0.13 });
         gsap.set(pills, { width: 0, marginRight: 0 });
@@ -80,11 +82,14 @@ export function BrandIntro() {
         // Each key word: open its capsule, wipe the arch, swap the caption.
         pills.forEach((pill, k) => {
           const at = Number(pill.dataset.at) / total;
-          tl.to(pill, { width: "1.9em", marginRight: "0.22em", duration: 0.5, ease: "power2.out" }, at);
+          tl.to(pill, { width: pillWidth, marginRight: "0.22em", duration: 0.5, ease: "power2.out" }, at);
           if (k > 0) {
-            tl.fromTo(layers[k], { clipPath: "circle(0% at 50% 60%)" }, { clipPath: "circle(80% at 50% 60%)", duration: 0.9, ease: "power2.inOut" }, at)
-              .to(captions[k - 1], { yPercent: -110, autoAlpha: 0, duration: 0.12 }, at)
-              .to(captions[k], { yPercent: 0, autoAlpha: 1, duration: 0.2 }, at + 0.12);
+            // Several key words sit side by side in the sentence, so the arch and caption
+            // changes get evenly spaced slots of their own (never overlapping).
+            const slot = (k / (pills.length - 1)) * 1.05;
+            tl.fromTo(layers[k], { clipPath: "circle(0% at 50% 60%)" }, { clipPath: "circle(80% at 50% 60%)", duration: 0.22, ease: "power2.inOut" }, slot - 0.1)
+              .to(captions[k - 1], { yPercent: -110, autoAlpha: 0, duration: 0.07 }, slot - 0.1)
+              .to(captions[k], { yPercent: 0, autoAlpha: 1, duration: 0.1 }, slot - 0.03);
           }
         });
 
@@ -120,9 +125,9 @@ export function BrandIntro() {
                     data-pill=""
                     data-at={t.at}
                     aria-hidden="true"
-                    className="relative mr-[0.22em] inline-block h-[0.78em] w-[1.9em] overflow-hidden rounded-full align-[-0.06em] shadow-[0_8px_20px_-10px_rgb(94_52_64/0.6)]"
+                    className="relative mr-[0.22em] inline-block h-[0.95em] w-[2.5em] overflow-hidden rounded-full align-[-0.12em] shadow-[0_8px_20px_-10px_rgb(94_52_64/0.6)] lg:h-[0.78em] lg:w-[1.9em] lg:align-[-0.06em]"
                   >
-                    <Pic image={t.image} alt="" sizes="120px" />
+                    <Pic image={t.image} alt="" sizes="160px" />
                   </span>
                 ) : (
                   <span key={i} data-w="" className={t.accent ? "italic text-rose-deep" : undefined}>
@@ -139,10 +144,13 @@ export function BrandIntro() {
                 Our story
               </EventsButton>
             </div>
+            <p className="mt-10 text-right font-script text-6xl text-coral lg:hidden" aria-hidden="true">
+              every detail
+            </p>
           </div>
 
-          {/* Arch that changes with the idea being read */}
-          <div className="relative lg:col-span-5">
+          {/* Arch that changes with the idea being read (desktop; phones use the larger capsules) */}
+          <div className="relative max-lg:hidden lg:col-span-5">
             <div className="lg:sticky lg:top-28">
               <div data-arch-wrap="" className="relative mx-auto aspect-[4/5] w-full max-w-[460px] overflow-hidden rounded-t-full bg-cream shadow-[0_40px_90px_-45px_rgb(148_96_108/0.6)]">
                 {keys.map((k, i) => (

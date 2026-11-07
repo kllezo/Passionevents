@@ -52,6 +52,18 @@ export function CinematicShowcase() {
         });
         tl.to({}, { duration: 0.4 });
       });
+
+      // Phones: each scene opens from a framed card to full bleed as it scrolls in,
+      // its photograph settling and its word rising out of a mask.
+      mm.add(media.mobile, () => {
+        q<HTMLElement>("[data-m-scene]").forEach((scene) => {
+          const tl = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: scene, start: "top 95%", end: "top 15%", scrub: 0.6 } });
+          tl.fromTo(scene.querySelector("[data-m-frame]"), { clipPath: "inset(10% 7% 10% 7% round 28px)" }, { clipPath: "inset(0% 0% 0% 0% round 0px)" }, 0)
+            .fromTo(scene.querySelector("[data-m-img]"), { scale: 1.3 }, { scale: 1 }, 0)
+            .fromTo(scene.querySelector("[data-m-word]"), { yPercent: 105 }, { yPercent: 0, ease: "power2.out" }, 0.35)
+            .fromTo(scene.querySelector("[data-m-line]"), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0 }, 0.55);
+        });
+      });
     },
     { scope: root }
   );
@@ -100,12 +112,22 @@ export function CinematicShowcase() {
       {/* Mobile / tablet: stacked panels */}
       <div className="lg:hidden">
         {scenes.map((s) => (
-          <Link key={s.word} href={s.href} className="relative flex min-h-[78svh] items-end overflow-hidden px-5 pb-12">
-            <Pic image={s.image} sizes="100vw" tone="dark" />
-            <span className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />
+          <Link key={s.word} href={s.href} data-m-scene="" className="relative flex min-h-[82svh] items-end overflow-hidden px-5 pb-12">
+            <span data-m-frame="" className="absolute inset-0 overflow-hidden">
+              <span data-m-img="" className="absolute inset-0 block will-change-transform">
+                <Pic image={s.image} sizes="100vw" tone="dark" />
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />
+            </span>
             <span className="relative">
-              <span className="block font-serif text-6xl font-light italic">{s.word}</span>
-              <span className="mt-3 block max-w-sm text-ivory/85">{s.line}</span>
+              <span className="block overflow-hidden pb-2">
+                <span data-m-word="" className="block font-serif text-6xl font-light italic">
+                  {s.word}
+                </span>
+              </span>
+              <span data-m-line="" className="mt-2 block max-w-sm text-ivory/85">
+                {s.line}
+              </span>
             </span>
           </Link>
         ))}

@@ -44,6 +44,17 @@ export function Approach({ index = "05" }: { index?: string }) {
             .to(blooms[i], { scale: 1, rotate: 72, duration: 0.5, ease: "back.out(2)" }, at);
         }
       });
+
+      mm.add(media.mobile, () => {
+        gsap.fromTo(q("[data-m-stem]"), { scaleY: 0 }, { scaleY: 1, ease: "none", scrollTrigger: { trigger: q("[data-m-list]")[0], start: "top 70%", end: "bottom 60%", scrub: 0.6 } });
+        q<HTMLElement>("[data-step]").forEach((li) => {
+          const bloom = li.querySelector("[data-m-bloom]");
+          gsap
+            .timeline({ scrollTrigger: { trigger: li, start: "top 72%", toggleActions: "play none none reverse" } })
+            .fromTo(bloom, { scale: 0, rotate: -120 }, { scale: 1, rotate: 0, duration: 0.8, ease: "back.out(2.2)" }, 0)
+            .fromTo(li.querySelectorAll("h3, p"), { x: 24, autoAlpha: 0.15 }, { x: 0, autoAlpha: 1, duration: 0.9, stagger: 0.08, ease: "expo.out" }, 0);
+        });
+      });
     },
     { scope: root }
   );
@@ -84,9 +95,16 @@ export function Approach({ index = "05" }: { index?: string }) {
                 </g>
               ))}
             </svg>
-            <ol className="space-y-12 lg:space-y-14 lg:pl-24">
+            <ol data-m-list="" className="relative space-y-12 max-lg:pl-10 lg:space-y-14 lg:pl-24">
+              {/* Phones: a stem that grows down the steps, a bloom opening at each */}
+              <span className="absolute bottom-2 left-3 top-2 w-px bg-ink/10 lg:hidden" aria-hidden="true">
+                <span data-m-stem="" className="absolute inset-0 origin-top bg-gradient-to-b from-mint-deep via-rose to-coral" />
+              </span>
               {approach.map((a) => (
-                <li key={a.step} data-step="" className="grid grid-cols-[auto_1fr] gap-6">
+                <li key={a.step} data-step="" className="relative grid grid-cols-[auto_1fr] gap-6">
+                  <svg data-m-bloom="" viewBox="-14 -14 28 28" className="absolute -left-[2.35rem] top-1 size-6 lg:hidden" aria-hidden="true">
+                    <Bloom r={11} />
+                  </svg>
                   <span className="font-serif text-2xl italic text-rose">{a.index}</span>
                   <div>
                     <h3 className="font-serif text-3xl uppercase tracking-[0.04em] text-ink md:text-4xl">{a.step}</h3>

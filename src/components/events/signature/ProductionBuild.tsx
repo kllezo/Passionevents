@@ -2,8 +2,31 @@
 
 import { useRef } from "react";
 import { productionBuild } from "@/content/categoryStories";
-import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
+import { gsap, useGSAP, media } from "@/motion/gsap";
 import { SectionLabel } from "../SectionLabel";
+
+/** The stage build, step by step: one timeline unit per build step. */
+function addBuild(tl: gsap.core.Timeline, q: (s: string) => Element[]) {
+  // 1 ground plan
+  tl.from(q("[data-grid] line"), { drawSVG: "0%", stagger: 0.02 }, 0)
+    // 2 deck
+    .from(q("[data-deck]"), { scaleY: 0, transformOrigin: "50% 100%" }, 1)
+    // 3 truss
+    .from(q("[data-truss] line, [data-truss] path"), { drawSVG: "0%", stagger: 0.03 }, 2)
+    // 4 lights
+    .from(q("[data-fixture]"), { scale: 0, transformOrigin: "50% 50%", stagger: 0.06, ease: "back.out(2)" }, 3)
+    .from(q("[data-wash]"), { opacity: 0 }, 3.4)
+    // 5 LED wall
+    .from(q("[data-led]"), { scaleX: 0, transformOrigin: "50% 50%" }, 4)
+    .from(q("[data-led-glow]"), { opacity: 0 }, 4.5)
+    // 6 sound
+    .from(q("[data-pa-l]"), { x: -200, opacity: 0 }, 5)
+    .from(q("[data-pa-r]"), { x: 200, opacity: 0 }, 5)
+    // 7 showtime
+    .from(q("[data-crowd]"), { y: 80, opacity: 0 }, 6)
+    .from(q("[data-beam]"), { opacity: 0, stagger: 0.05 }, 6)
+    .to(q("[data-house]"), { opacity: 0.85 }, 6);
+}
 
 /**
  * Production signature: a stage builds itself as the reader scrolls — ground
@@ -41,35 +64,29 @@ export function ProductionBuild() {
             onUpdate: (self) => setActive(Math.min(n - 1, Math.floor(self.progress * n))),
           },
         });
-        // 1 ground plan
-        tl.from(q("[data-grid] line"), { drawSVG: "0%", stagger: 0.02 }, 0)
-          // 2 deck
-          .from(q("[data-deck]"), { scaleY: 0, transformOrigin: "50% 100%" }, 1)
-          // 3 truss
-          .from(q("[data-truss] line, [data-truss] path"), { drawSVG: "0%", stagger: 0.03 }, 2)
-          // 4 lights
-          .from(q("[data-fixture]"), { scale: 0, transformOrigin: "50% 50%", stagger: 0.06, ease: "back.out(2)" }, 3)
-          .from(q("[data-wash]"), { opacity: 0 }, 3.4)
-          // 5 LED wall
-          .from(q("[data-led]"), { scaleX: 0, transformOrigin: "50% 50%" }, 4)
-          .from(q("[data-led-glow]"), { opacity: 0 }, 4.5)
-          // 6 sound
-          .from(q("[data-pa-l]"), { x: -200, opacity: 0 }, 5)
-          .from(q("[data-pa-r]"), { x: 200, opacity: 0 }, 5)
-          // 7 showtime
-          .from(q("[data-crowd]"), { y: 80, opacity: 0 }, 6)
-          .from(q("[data-beam]"), { opacity: 0, stagger: 0.05 }, 6)
-          .to(q("[data-house]"), { opacity: 0.85 }, 6);
+        addBuild(tl, q);
 
         gsap.to(q("[data-beam]"), { rotate: (i) => (i % 2 ? 18 : -18), transformOrigin: "50% 0%", duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: -1, stagger: 0.3 });
         gsap.to(q("[data-led-glow]"), { attr: { x: 630 }, duration: 3, ease: "sine.inOut", yoyo: true, repeat: -1 });
       });
+      // Phones: the stage stays docked at the top while the build list scrolls
+      // beneath it; each step builds that part of the stage.
       mm.add(media.mobile, () => {
-        const s = q<HTMLElement>("[data-build-step]").map((el) => {
-          const t = gsap.fromTo(el, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: "expo.out", paused: true });
-          return whenVisible(el, () => t.play());
+        const steps = q<HTMLElement>("[data-build-step]");
+        const setActive = (i: number) => steps.forEach((s, j) => (s.dataset.state = j < i ? "done" : j === i ? "live" : "next"));
+        setActive(0);
+        const tl = gsap.timeline({
+          defaults: { ease: "power2.out", duration: 1 },
+          scrollTrigger: {
+            trigger: q("[data-steps]")[0],
+            start: "top 70%",
+            end: "bottom 60%",
+            scrub: 0.8,
+            onUpdate: (self) => setActive(Math.min(n - 1, Math.floor(self.progress * n))),
+          },
         });
-        return () => s.forEach((f) => f());
+        addBuild(tl, q);
+        gsap.to(q("[data-beam]"), { rotate: (i) => (i % 2 ? 18 : -18), transformOrigin: "50% 0%", duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: -1, stagger: 0.3 });
       });
     },
     { scope: root, dependencies: [n] }
@@ -79,25 +96,25 @@ export function ProductionBuild() {
 
   return (
     <section ref={root} className="relative bg-[#0d0b10] text-ivory" aria-labelledby="build-title">
-      <div data-pin="" className="relative overflow-hidden lg:h-[100svh]">
-        <div className="relative mx-auto grid h-full max-w-[1600px] gap-12 px-5 py-24 md:px-10 lg:grid-cols-12 lg:items-center lg:py-0">
+      <div data-pin="" className="relative overflow-clip lg:h-[100svh] lg:overflow-hidden">
+        <div className="relative mx-auto grid h-full max-w-[1600px] gap-12 px-5 py-24 max-lg:flex max-lg:flex-col max-lg:gap-8 md:px-10 lg:grid-cols-12 lg:items-center lg:py-0">
           <div className="lg:col-span-4">
             <SectionLabel tone="ivory">From empty floor to showtime</SectionLabel>
             <h2 id="build-title" className="mt-6 font-serif text-[clamp(2.6rem,4.4vw,4.6rem)] font-light leading-[0.95]">
               We build the <em className="text-blush">whole show.</em>
             </h2>
-            <ol className="mt-10 space-y-1">
+            <ol data-steps="" className="mt-10 space-y-1 max-lg:space-y-8 max-lg:pb-[24svh]">
               {productionBuild.map((s) => (
                 <li
                   key={s.title}
                   data-build-step=""
                   data-state="next"
-                  className="group grid grid-cols-[2.5rem_1fr] gap-x-3 rounded-xl px-4 py-2.5 transition-[background-color,opacity] duration-500 lg:data-[state=done]:opacity-50 lg:data-[state=live]:bg-ivory/[0.07] lg:data-[state=next]:opacity-35"
+                  className="group grid grid-cols-[2.5rem_1fr] gap-x-3 rounded-xl px-4 py-2.5 transition-[background-color,opacity] duration-500 data-[state=done]:opacity-50 data-[state=live]:bg-ivory/[0.07] data-[state=next]:opacity-35"
                 >
                   <span className="font-serif text-lg italic text-blush">{s.tag}</span>
                   <span>
                     <span className="block font-serif text-xl">{s.title}</span>
-                    <span className="block max-h-0 overflow-hidden text-sm text-ivory/60 transition-[max-height] duration-500 group-data-[state=live]:max-h-20 max-lg:max-h-20">{s.text}</span>
+                    <span className="block max-h-0 overflow-hidden text-sm text-ivory/60 transition-[max-height] duration-500 group-data-[state=live]:max-h-20">{s.text}</span>
                   </span>
                 </li>
               ))}
@@ -105,7 +122,7 @@ export function ProductionBuild() {
           </div>
 
           {/* The stage */}
-          <div className="relative hidden lg:col-span-8 lg:block" aria-hidden="true">
+          <div className="relative max-lg:sticky max-lg:top-2 max-lg:z-10 max-lg:order-first max-lg:-mx-3 max-lg:rounded-2xl max-lg:bg-[#0d0b10]/95 max-lg:p-3 max-lg:backdrop-blur-md lg:col-span-8" aria-hidden="true">
             <svg viewBox="0 0 1000 640" className="w-full overflow-visible">
               <defs>
                 <linearGradient id="ledFill" x1="0" x2="1">
