@@ -6,6 +6,7 @@ All static content lives in `src/content/` — no component changes needed.
 | --- | --- |
 | `media.ts` | Every image on the site: brand logo variants, founder portrait, and the temporary stock imagery. |
 | `events.ts` | The six "What we do" categories (copy, services, images), individually bookable service groups, the Discover → Plan → Create → Execute approach, "Why Passion Events" points and FAQs. |
+| `categoryStories.ts` | Page-specific signature content: wedding rituals, the corporate run sheet (illustrative), private occasions, the destination journey and the production build steps. |
 | `founders.ts` | Founder names, roles, biographies, focus areas and portraits. |
 | `live.ts` | Passion Live "What we handle" items and collaboration cards. |
 | `../lib/site.ts` | Business name, tagline, base city, contact person, the "50+ events executed" figure. |

@@ -10,6 +10,7 @@ const staticRoutes = [
   "/corporate-events",
   "/private-events",
   "/destination-events",
+  "/event-production",
   "/portfolio",
   "/founders",
   "/contact",

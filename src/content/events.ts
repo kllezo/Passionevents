@@ -92,13 +92,13 @@ export const categories: Category[] = [
     index: "06",
     title: "Event Production & Management",
     script: "seamless",
-    href: "/services",
+    href: "/event-production",
     short: "The people, plans and production behind the moment.",
     description:
       "Need a production partner rather than a planner? We supply and run stages, sound, lighting, decor fabrication and on-ground teams, or manage your event end to end.",
     services: ["Stage design & fabrication", "Sound & lighting", "On-ground event teams", "Vendor coordination", "Run-of-show management", "Complete event management"],
     image: stock.productionStage,
-    gallery: [stock.productionSpots, stock.stageDesign],
+    gallery: [stock.productionSpots, stock.stageDesign, stock.liveHaze, stock.celebrationStage],
     enquiryCategory: "Other",
   },
 ];

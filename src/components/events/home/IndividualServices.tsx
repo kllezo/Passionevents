@@ -1,22 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useRef } from "react";
 import { serviceGroups } from "@/content/events";
 import { Pic } from "@/components/shared/Pic";
+import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
 import { RevealText } from "@/motion/RevealText";
 import { SectionLabel } from "../SectionLabel";
 import { EventsButton } from "../Button";
 
+const themes = [
+  { card: "bg-cream text-ink", chip: "border-ink/15 text-ink/80", num: "text-rose-deep", sub: "text-stone" },
+  { card: "bg-[#f6e4e2] text-ink", chip: "border-ink/15 text-ink/80", num: "text-coral-deep", sub: "text-stone" },
+  { card: "bg-ink text-ivory", chip: "border-ivory/25 text-ivory/85", num: "text-blush", sub: "text-ivory/65" },
+  { card: "bg-[#e8f1ea] text-ink", chip: "border-ink/15 text-ink/80", num: "text-rose-deep", sub: "text-stone" },
+];
+
 /**
- * Capability index. Hovering, focusing or tapping a row swaps the large
- * photograph in the sticky panel; nothing follows the pointer.
+ * Capabilities as a deck of stacking cards: each service group slides up and
+ * settles over the previous one, which sinks back and dims beneath it. The
+ * photograph inside zooms into place and the services pop in one by one.
+ * Built on CSS sticky (no pinning), so it stays smooth on every device.
  */
 export function IndividualServices({ showIntro = true, index = "04" }: { showIntro?: boolean; index?: string }) {
-  const [active, setActive] = useState(0);
-  const current = serviceGroups[active];
+  const root = useRef<HTMLElement>(null);
+  const n = serviceGroups.length;
+
+  useGSAP(
+    () => {
+      const q = gsap.utils.selector(root.current);
+      const mm = gsap.matchMedia();
+      mm.add(media.ok, () => {
+        const cards = q<HTMLElement>("[data-cap-card]");
+        const stops: (() => void)[] = [];
+        cards.forEach((card, i) => {
+          const next = cards[i + 1];
+          if (next) {
+            // The card underneath sinks back as the next one covers it.
+            gsap.to(card.querySelector("[data-cap-inner]"), {
+              scale: 0.9 + i * 0.008,
+              ease: "none",
+              scrollTrigger: { trigger: next, start: "top bottom", end: "top 20%", scrub: true },
+            });
+            gsap.to(card.querySelector("[data-cap-shade]"), {
+              opacity: 0.55,
+              ease: "none",
+              scrollTrigger: { trigger: next, start: "top bottom", end: "top 20%", scrub: true },
+            });
+          }
+          gsap.fromTo(card.querySelector("[data-cap-img]"), { scale: 1.35 }, { scale: 1, ease: "none", scrollTrigger: { trigger: card, start: "top bottom", end: "top 25%", scrub: true } });
+          const chips = card.querySelectorAll("[data-cap-chip]");
+          const head = card.querySelectorAll("[data-cap-head]");
+          const tl = gsap
+            .timeline({ paused: true })
+            .fromTo(head, { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.08, ease: "expo.out" }, 0)
+            .fromTo(chips, { autoAlpha: 0, y: 18, scale: 0.85 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.07, ease: "back.out(2)" }, 0.25);
+          stops.push(whenVisible(card, () => tl.play(), "0px 0px -30% 0px"));
+        });
+        return () => stops.forEach((s) => s());
+      });
+    },
+    { scope: root, dependencies: [n] }
+  );
 
   return (
-    <section className="relative bg-ivory py-28 md:py-40" aria-labelledby="services-title">
+    <section ref={root} className="relative bg-ivory py-28 md:py-40" aria-labelledby="services-title">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         {showIntro && (
           <div className="grid gap-12 lg:grid-cols-12">
@@ -38,75 +85,70 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
             </div>
           </div>
         )}
+        {!showIntro && (
+          <h2 id="services-title" className="sr-only">
+            Services you can book
+          </h2>
+        )}
 
-        <div className="mt-20 grid gap-12 lg:grid-cols-12">
-          <ul className="border-t border-ink/15 lg:col-span-7" aria-label="Services you can book">
-            {serviceGroups.map((g, i) => {
-              const on = i === active;
-              return (
-                <li key={g.title} className="border-b border-ink/15">
-                  <button
-                    type="button"
-                    onPointerEnter={() => setActive(i)}
-                    onFocus={() => setActive(i)}
-                    onClick={() => setActive(i)}
-                    aria-pressed={on}
-                    className="group grid w-full grid-cols-[2.5rem_1fr] items-baseline gap-x-4 py-6 text-left md:py-7"
-                  >
-                    <span className={`font-serif text-lg italic transition-colors ${on ? "text-coral-deep" : "text-rose-deep"}`}>{String(i + 1).padStart(2, "0")}</span>
-                    <span>
-                      <span
-                        className={`block font-serif text-[clamp(1.7rem,3vw,2.9rem)] leading-tight transition-all duration-700 ease-[var(--ease-silk)] ${
-                          on ? "translate-x-2 italic text-rose-deep" : "text-ink group-hover:translate-x-1"
-                        }`}
-                      >
-                        {g.title}
-                      </span>
-                      <span className={`grid transition-[grid-template-rows] duration-700 ease-[var(--ease-silk)] ${on ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-                        <span className="overflow-hidden">
-                          <span className="mt-3 flex flex-wrap gap-2 pb-1">
-                            {g.items.map((it) => (
-                              <span key={it} className="rounded-full border border-ink/15 px-3 py-1 text-[0.82rem] text-ink/80">
-                                {it}
-                              </span>
-                            ))}
-                          </span>
+        <ol className="mt-20 space-y-6 md:space-y-0" aria-label="Services you can book">
+          {serviceGroups.map((g, i) => {
+            const t = themes[i % themes.length];
+            return (
+              <li
+                key={g.title}
+                data-cap-card=""
+                className="md:sticky md:h-[72svh] md:min-h-[460px] md:pb-[6svh]"
+                style={{ top: `calc(6.5rem + ${i * 0.9}rem)`, zIndex: i + 1 }}
+              >
+                <div
+                  data-cap-inner=""
+                  className={`relative grid h-full origin-top overflow-hidden rounded-[2rem] shadow-[0_-30px_80px_-50px_rgb(94_52_64/0.55)] md:grid-cols-12 ${t.card}`}
+                >
+                  <div className="relative flex flex-col justify-between gap-10 p-7 md:col-span-6 md:p-12 xl:p-16">
+                    <div className="flex items-start justify-between gap-6">
+                      <span className="block overflow-hidden">
+                        <span data-cap-head="" className={`block font-serif text-[clamp(4rem,9vw,9rem)] font-light italic leading-[0.85] ${t.num}`}>
+                          {String(i + 1).padStart(2, "0")}
                         </span>
                       </span>
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-
-          <div className="lg:col-span-5">
-            <div className="lg:sticky lg:top-28">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-cream shadow-[0_40px_90px_-50px_rgb(148_96_108/0.6)] max-lg:hidden">
-                {serviceGroups.map((g, i) => (
-                  <div
-                    key={g.title}
-                    className={`absolute inset-0 transition-[opacity,transform] duration-[900ms] ease-[var(--ease-silk)] ${i === active ? "scale-100 opacity-100" : "scale-[1.06] opacity-0"}`}
-                    aria-hidden={i !== active}
-                  >
-                    <Pic image={g.image} sizes="(max-width: 1024px) 0px, 40vw" />
+                      <span className={`mt-3 text-xs uppercase tracking-[0.28em] ${t.sub}`}>
+                        {String(i + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block overflow-hidden pb-2">
+                        <h3 data-cap-head="" className="font-serif text-[clamp(2.2rem,4.4vw,4.4rem)] leading-[0.98]">
+                          {g.title}
+                        </h3>
+                      </span>
+                      <ul className="mt-6 flex flex-wrap gap-2">
+                        {g.items.map((it) => (
+                          <li key={it} data-cap-chip="" className={`rounded-full border px-4 py-1.5 text-sm ${t.chip}`}>
+                            {it}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                ))}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent p-7 pt-24">
-                  <p className="eyebrow text-blush">Now viewing</p>
-                  <p className="mt-2 font-serif text-3xl text-ivory">{current.title}</p>
+                  <div className="relative min-h-[300px] overflow-hidden md:col-span-6 md:m-4 md:ml-0 md:min-h-0 md:rounded-[1.5rem]">
+                    <div data-cap-img="" className="absolute inset-0 will-change-transform">
+                      <Pic image={g.image} sizes="(max-width: 768px) 92vw, 46vw" />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-ink/30 via-transparent to-transparent" />
+                  </div>
+                  <div data-cap-shade="" aria-hidden="true" className="pointer-events-none absolute inset-0 bg-ink opacity-0" />
                 </div>
-              </div>
-              <p className="mt-6 text-stone">
-                Also available: guest management, car rentals, anchors and anything else your event needs — just ask.
-              </p>
-              <div className="mt-6">
-                <EventsButton href="/services" variant="outline">
-                  All services
-                </EventsButton>
-              </div>
-            </div>
-          </div>
+              </li>
+            );
+          })}
+        </ol>
+
+        <div className="mt-16 flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+          <p className="max-w-xl text-stone">Also available: guest management, car rentals, anchors and anything else your event needs — just ask.</p>
+          <EventsButton href="/services" variant="outline">
+            All services
+          </EventsButton>
         </div>
       </div>
     </section>

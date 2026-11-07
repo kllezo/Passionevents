@@ -11,7 +11,12 @@ import { PageHero } from "./PageHero";
 import { FanDeck } from "./FanDeck";
 import { SectionLabel } from "./SectionLabel";
 import { EnquirySection } from "./EnquirySection";
-import { Approach } from "./home/Approach";
+import { HeroMotif, type MotifKind } from "./signature/HeroMotif";
+import { WeddingJourney } from "./signature/WeddingJourney";
+import { CorporateRunSheet } from "./signature/CorporateRunSheet";
+import { PrivateOccasions } from "./signature/PrivateOccasions";
+import { DestinationRoute } from "./signature/DestinationRoute";
+import { ProductionBuild } from "./signature/ProductionBuild";
 import { PortfolioGrid } from "./portfolio/PortfolioGrid";
 import { PortfolioSkeleton } from "./home/PortfolioPreview";
 import { EventsButton } from "./Button";
@@ -39,10 +44,21 @@ async function CategoryWork({ category }: { category: Category }) {
   return <PortfolioGrid events={events} />;
 }
 
+/** Each page's own ambient hero layer and signature section. */
+const pageIdentity: Partial<Record<Category["key"], { motif: MotifKind; Signature: () => React.JSX.Element }>> = {
+  weddings: { motif: "petals", Signature: WeddingJourney },
+  corporate: { motif: "beams", Signature: CorporateRunSheet },
+  private: { motif: "confetti", Signature: PrivateOccasions },
+  destination: { motif: "lanterns", Signature: DestinationRoute },
+  production: { motif: "spotlights", Signature: ProductionBuild },
+};
+
 /** Shared template for Weddings / Corporate / Private / Destination pages. */
 export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) {
   const c = categories.find((x) => x.key === categoryKey)!;
-  const others = categories.filter((x) => x.key !== categoryKey && x.key !== "concerts" && x.key !== "production");
+  const others = categories.filter((x) => x.key !== categoryKey && x.key !== "concerts");
+  const identity = pageIdentity[categoryKey];
+  const Signature = identity?.Signature;
   return (
     <>
       <JsonLd
@@ -70,6 +86,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
         script={c.script}
         image={c.image}
         intro={<p>{c.short}</p>}
+        overlay={identity && <HeroMotif kind={identity.motif} />}
       />
 
       {/* Narrative + services */}
@@ -109,6 +126,9 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
         </div>
       </section>
 
+      {/* Page signature — unique to each category */}
+      {Signature && <Signature />}
+
       {/* Moodboard — inspiration imagery, not presented as our work */}
       <FanDeck images={[c.image, ...c.gallery]} word={c.title} script={c.script} />
 
@@ -124,8 +144,6 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
           </Suspense>
         </div>
       </section>
-
-      <Approach index="" />
 
       {/* Other categories */}
       <section className="bg-ivory py-24">

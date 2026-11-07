@@ -5,7 +5,6 @@ import { categories } from "@/content/events";
 import { pageMetadata, breadcrumbJsonLd, organizationJsonLd } from "@/lib/seo";
 import { PageHero } from "@/components/events/PageHero";
 import { SectionLabel } from "@/components/events/SectionLabel";
-import { Approach } from "@/components/events/home/Approach";
 import { WhyUs } from "@/components/events/home/WhyUs";
 import { FoundersFeature } from "@/components/events/FoundersFeature";
 import { EnquirySection } from "@/components/events/EnquirySection";
@@ -93,10 +92,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <Approach index="03" />
-      <FoundersFeature index="04" />
-      <WhyUs index="05" />
-      <EnquirySection index="06" />
+      <FoundersFeature index="03" />
+      <WhyUs index="04" />
+      <EnquirySection index="05" />
     </>
   );
 }
