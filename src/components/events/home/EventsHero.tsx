@@ -9,6 +9,9 @@ import { EventsButton } from "../Button";
 import { SprigGroup } from "../botanical/Sprig";
 import { buildSprig } from "../botanical/geometry";
 
+/** Cross-fading arch photographs (illustrative imagery). */
+const slides = [stock.heroCanopy, stock.weddingArch, stock.decorArch];
+
 const sprigA = buildSprig({
   p0: { x: 30, y: 520 },
   p1: { x: 80, y: 330 },
@@ -58,7 +61,8 @@ export function EventsHero() {
           .from(q("[data-cta] > *"), { autoAlpha: 0, y: 24, duration: 1, stagger: 0.1 }, 0.85)
           .fromTo(q("[data-arch]"), { clipPath: "inset(100% 0% 0% 0% round 999px 999px 0 0)" }, { clipPath: "inset(0% 0% 0% 0% round 999px 999px 0 0)", duration: 1.8, ease: "expo.inOut" }, 0)
           .from(q("[data-arch-img]"), { scale: 1.4, duration: 2.4 }, 0.1)
-          .from(q("[data-ring]"), { drawSVG: "0%", duration: 2, ease: "power3.inOut" }, 0.4)
+          .from(q("[data-ring]"), { drawSVG: "50% 50%", duration: 2, stagger: 0.15, ease: "power3.inOut" }, 0.4)
+          .fromTo(q("[data-sheen]"), { xPercent: 0, opacity: 1 }, { xPercent: 420, duration: 1.6, ease: "power2.inOut" }, 1.4)
           .from(q(".bt-stem, .bt-twig"), { drawSVG: "0%", duration: 1.6, stagger: 0.05, ease: "power2.inOut" }, 0.6)
           .from(q(".bt-leaf"), { scale: 0, transformOrigin: "0% 50%", duration: 0.8, stagger: 0.02, ease: "back.out(2)" }, 1.0)
           .from(q(".bt-bloom"), { scale: 0, rotate: -45, duration: 0.9, stagger: 0.05, ease: "back.out(2.4)" }, 1.3)
@@ -66,15 +70,30 @@ export function EventsHero() {
           .from(q("[data-badge]"), { autoAlpha: 0, rotate: -90, duration: 1.4 }, 1.2)
           .from(q("[data-scroll]"), { autoAlpha: 0, y: -10, duration: 0.8 }, 1.5);
 
-        const off = onIntroDone(() => tl.play());
+        // Slow Ken Burns cross-fade between the arch photographs.
+        const slideEls = q<HTMLElement>("[data-slide]");
+        const loop = gsap.timeline({ paused: true, repeat: -1 });
+        slideEls.forEach((s, i) => {
+          const next = slideEls[(i + 1) % slideEls.length];
+          loop
+            .fromTo(s, { scale: 1.12 }, { scale: 1, duration: 6, ease: "none" }, i * 5)
+            .to(s, { opacity: 0, duration: 1.4, ease: "power2.inOut" }, i * 5 + 4.6)
+            .fromTo(next, { opacity: 0, scale: 1.12 }, { opacity: 1, duration: 1.4, ease: "power2.inOut", immediateRender: false }, i * 5 + 4.6);
+        });
+
+        const off = onIntroDone(() => {
+          tl.play();
+          gsap.delayedCall(2.4, () => loop.play());
+        });
 
         // Scroll: the composition drifts apart as the hero leaves.
-        gsap.to(q("[data-arch-img]"), { yPercent: 12, ease: "none", scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true } });
+        gsap.to(q("[data-arch-img]"), { yPercent: 6, ease: "none", scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true } });
         gsap.to(q("[data-copy]"), { yPercent: -18, autoAlpha: 0.2, ease: "none", scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true } });
         gsap.to(q("[data-orb]"), { yPercent: -60, ease: "none", scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true } });
 
         return () => {
           off();
+          loop.kill();
           split?.revert();
         };
       });
@@ -124,18 +143,25 @@ export function EventsHero() {
           </div>
         </div>
 
-        {/* Composition */}
-        <div className="relative mx-auto aspect-[4/5] w-full max-w-[520px] lg:col-span-5 lg:max-w-none">
-          <div data-arch="" data-hero-hidden="" className="absolute inset-[6%_10%_0_8%] overflow-hidden rounded-t-full shadow-[0_40px_90px_-40px_rgb(148_96_108/0.55)]" style={{ clipPath: "inset(0% 0% 0% 0% round 999px 999px 0 0)" }}>
+        {/* Composition — sized to the viewport so the arch never runs under the nav or off-screen */}
+        <div className="relative mx-auto aspect-[4/5] w-full max-w-[460px] lg:col-span-5 lg:w-[min(100%,calc((100svh-11rem)*0.8))] lg:max-w-none">
+          <div data-arch="" data-hero-hidden="" className="absolute inset-[3%_8%_0_8%] overflow-hidden rounded-t-full bg-cream shadow-[0_40px_90px_-40px_rgb(148_96_108/0.55)]" style={{ clipPath: "inset(0% 0% 0% 0% round 999px 999px 0 0)" }}>
             <div data-arch-img="" className="absolute inset-[-8%_0] will-change-transform">
-              <Pic image={stock.heroCanopy} preload sizes="(max-width: 1024px) 90vw, 40vw" className="" quality={85} />
+              {slides.map((img, i) => (
+                <div key={img.src} data-slide="" className="absolute inset-0" style={{ opacity: i === 0 ? 1 : 0 }}>
+                  <Pic image={img} preload={i === 0} sizes="(max-width: 1024px) 90vw, 36vw" quality={85} />
+                </div>
+              ))}
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent" />
+            <div data-sheen="" aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/35 to-transparent opacity-0" />
           </div>
 
-          <svg viewBox="0 0 500 620" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
-            <ellipse data-ring="" cx="262" cy="330" rx="250" ry="300" fill="none" stroke="var(--color-rose)" strokeWidth="1.6" transform="rotate(-8 262 330)" />
-            <ellipse data-ring="" cx="250" cy="325" rx="238" ry="292" fill="none" stroke="var(--color-blush)" strokeWidth="1.1" transform="rotate(-4 250 325)" />
+          {/* Gilded arch outlines that follow the photograph's exact shape */}
+          <svg viewBox="0 0 400 500" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
+            <path data-ring="" d="M18 500 V183 A182 182 0 0 1 382 183 V500" fill="none" stroke="var(--color-rose)" strokeWidth="1.2" />
+            <path data-ring="" d="M6 500 V183 A194 194 0 0 1 394 183 V500" fill="none" stroke="var(--color-blush)" strokeWidth="0.8" strokeDasharray="2 5" />
+            <path data-ring="" d="M-14 500 H414" fill="none" stroke="var(--color-rose)" strokeWidth="0.8" />
           </svg>
           <svg viewBox="0 0 360 560" className="pointer-events-none absolute -left-[12%] bottom-[2%] h-[78%] w-auto overflow-visible" aria-hidden="true">
             <SprigGroup g={sprigA} strokeWidth={1.6} />

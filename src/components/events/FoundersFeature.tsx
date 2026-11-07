@@ -1,10 +1,10 @@
 import { Pic } from "@/components/shared/Pic";
 import { foundersList } from "@/content/founders";
-import { ImageReveal, Parallax } from "@/motion/primitives";
+import { ScatterText } from "@/motion/ScatterText";
+import { FounderPortrait } from "./FounderPortrait";
 import { RevealText } from "@/motion/RevealText";
 import { SectionLabel } from "./SectionLabel";
 import { EventsButton } from "./Button";
-import { Bloom } from "./botanical/Sprig";
 
 /**
  * Founders — built only from client-supplied facts (names, roles, portrait).
@@ -28,30 +28,15 @@ export function FoundersFeature({ index = "07", detailed = false }: { index?: st
         <div className="mt-20 grid items-center gap-16 lg:grid-cols-12">
           {/* Portrait */}
           <div className="relative lg:col-span-5">
-            {tanush.image && (
-              <>
-                <ImageReveal shape="arch" parallax={5} className="arch aspect-[3/4] w-full bg-cream">
-                  <Pic image={tanush.image} sizes="(max-width: 1024px) 92vw, 40vw" className="object-top" />
-                </ImageReveal>
-                <svg viewBox="0 0 500 660" className="pointer-events-none absolute inset-[-4%] h-[108%] w-[108%] overflow-visible" aria-hidden="true">
-                  <ellipse cx="250" cy="330" rx="236" ry="316" fill="none" stroke="var(--color-rose)" strokeWidth="1.2" transform="rotate(-5 250 330)" />
-                </svg>
-                <Parallax speed={-18} className="absolute -right-4 top-[12%] md:-right-10">
-                  <svg viewBox="-24 -24 48 48" className="size-16 animate-float" aria-hidden="true">
-                    <Bloom r={18} />
-                  </svg>
-                </Parallax>
-                <p className="mt-4 text-xs text-stone-light">{tanush.image.credit}</p>
-              </>
-            )}
+            {tanush.image && <FounderPortrait image={tanush.image} />}
           </div>
 
           {/* Story */}
           <div className="lg:col-span-6 lg:col-start-7">
             <p className="eyebrow text-rose-deep">{tanush.role}</p>
-            <RevealText as="h3" className="mt-5 font-serif text-[clamp(3rem,6vw,6rem)] font-light leading-[0.95] text-ink">
+            <ScatterText as="h3" className="mt-5 block font-serif text-[clamp(3rem,6vw,6rem)] font-light leading-[0.95] text-ink">
               {tanush.displayName}
-            </RevealText>
+            </ScatterText>
             <p className="mt-2 font-serif text-xl italic text-stone">{tanush.name}</p>
             <div className="mt-8 space-y-5 text-lg leading-relaxed text-ink/80">
               {(detailed ? tanush.bio : tanush.bio.slice(0, 2)).map((p) => (

@@ -9,145 +9,266 @@ import { UniverseLink } from "@/components/shared/UniverseTransition";
 import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
 import { RevealText } from "@/motion/RevealText";
 import { SectionLabel } from "../SectionLabel";
-import { Bloom } from "../botanical/Sprig";
+
+const STEP = 24; // degrees between cards on the wheel
 
 /**
- * Six worlds told horizontally: vertical scroll drives a pinned track on
- * desktop; on tablet/mobile the same cards stack as an editorial column.
+ * "Wheel of worlds": on desktop the six categories ride a giant rotating
+ * wheel. Scrolling turns it; the card at the top grows into focus while its
+ * title, story and services roll in beneath. Transforms only, so it stays
+ * smooth. Tablet/mobile get an editorial column with reveal-on-scroll cards.
  */
 export function WhatWeDo() {
   const root = useRef<HTMLElement>(null);
+  const n = categories.length;
 
   useGSAP(
     () => {
       const el = root.current!;
       const q = gsap.utils.selector(el);
       const mm = gsap.matchMedia();
+
       mm.add(media.desktop, () => {
-        const track = q("[data-track]")[0] as HTMLElement;
-        const distance = () => track.scrollWidth - window.innerWidth;
-        const tween = gsap.to(track, {
-          x: () => -distance(),
+        const wheel = q<HTMLElement>("[data-wheel]")[0];
+        const spokes = q<HTMLElement>("[data-spoke]");
+        const cards = q<HTMLElement>("[data-wheel-card]");
+        const details = q<HTMLElement>("[data-detail]");
+        const digits = q<HTMLElement>("[data-digit-track]")[0];
+        let active = -1;
+
+        const layout = () => {
+          const radius = window.innerHeight * 1.25;
+          gsap.set(wheel, { y: radius });
+          spokes.forEach((s, i) => gsap.set(s, { rotate: i * STEP, y: 0, transformOrigin: "50% 50%" }));
+          cards.forEach((c) => gsap.set(c, { y: -radius }));
+        };
+        layout();
+
+        gsap.set(details, { autoAlpha: 0 });
+        const show = (i: number) => {
+          if (i === active) return;
+          const prev = details[active];
+          active = i;
+          if (prev) gsap.to(prev.querySelectorAll("[data-roll]"), { yPercent: -110, autoAlpha: 0, duration: 0.45, stagger: 0.03, ease: "power3.in", overwrite: true, onComplete: () => gsap.set(prev, { autoAlpha: 0 }) });
+          const next = details[i];
+          gsap.set(next, { autoAlpha: 1 });
+          gsap.fromTo(next.querySelectorAll("[data-roll]"), { yPercent: 110, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.9, stagger: 0.06, ease: "expo.out", delay: prev ? 0.2 : 0, overwrite: true });
+          gsap.to(digits, { yPercent: (-100 / n) * i, duration: 0.8, ease: "expo.inOut", overwrite: true });
+        };
+
+        const render = (p: number) => {
+          const pos = p * (n - 1);
+          gsap.set(wheel, { rotate: -pos * STEP });
+          cards.forEach((c, i) => {
+            const d = Math.abs(i - pos);
+            gsap.set(c, {
+              scale: 1 - Math.min(d, 2) * 0.16,
+              opacity: 1 - gsap.utils.clamp(0, 1, (d - 1) / 0.4),
+              "--dim": Math.min(d, 1.5) * 0.4,
+            });
+            // spokes are separate stacking contexts, so depth order is set on them
+            spokes[i].style.zIndex = String(100 - Math.round(d * 10));
+          });
+          show(Math.round(pos));
+        };
+        render(0);
+
+        gsap.to(q("[data-progress]"), {
+          scaleX: 1,
           ease: "none",
           scrollTrigger: {
             trigger: q("[data-pin]")[0],
             start: "top top",
-            end: () => `+=${distance()}`,
+            end: `+=${(n - 1) * 75}%`,
             pin: true,
-            scrub: 0.9,
-            invalidateOnRefresh: true,
+            scrub: 1,
             anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onRefresh: layout,
+            onUpdate: (self) => render(self.progress),
           },
         });
-        gsap.to(q("[data-progress]"), {
-          scaleX: 1,
-          ease: "none",
-          scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: () => `+=${distance()}`, scrub: true },
-        });
-        const cardStops: (() => void)[] = [];
-        q<HTMLElement>("[data-card]").forEach((card) => {
-          const img = card.querySelector("[data-card-img]");
-          gsap.fromTo(img, { xPercent: -8 }, { xPercent: 8, ease: "none", scrollTrigger: { trigger: card, containerAnimation: tween, start: "left right", end: "right left", scrub: true } });
-          const frame = card.querySelector("[data-card-media]");
-          const reveal = gsap.fromTo(frame, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut", paused: true });
-          // Visibility-based: fires even when the reader jumps past the card (anchor links, fast scroll).
-          cardStops.push(whenVisible(frame!, () => reveal.play(), "0px -10% 0px 0px"));
-        });
-        return () => cardStops.forEach((s) => s());
+        // Entrance: the wheel rises and spins into place the first time it is seen.
+        const intro = gsap.fromTo(q("[data-wheel-rise]"), { yPercent: 40, rotate: 30, autoAlpha: 0 }, { yPercent: 0, rotate: 0, autoAlpha: 1, duration: 1.8, ease: "expo.out", paused: true });
+        const stop = whenVisible(q("[data-pin]")[0], () => intro.play(), "0px 0px -20% 0px");
+        return () => {
+          stop();
+          gsap.set(details, { clearProps: "all" });
+        };
       });
+
       mm.add(media.mobile, () => {
         const stops = q<HTMLElement>("[data-card-media]").map((m) => {
-          const t = gsap.fromTo(m, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "expo.inOut", paused: true });
+          const t = gsap.fromTo(m, { clipPath: "inset(100% 0% 0% 0% round 999px 999px 24px 24px)" }, { clipPath: "inset(0% 0% 0% 0% round 999px 999px 24px 24px)", duration: 1.4, ease: "expo.inOut", paused: true });
           return whenVisible(m, () => t.play());
         });
         return () => stops.forEach((s) => s());
       });
     },
-    { scope: root }
+    { scope: root, dependencies: [n] }
   );
 
   return (
     <section ref={root} className="relative bg-cream" aria-labelledby="what-title" id="what-we-do">
-      <div data-pin="" className="relative overflow-hidden lg:h-[100svh]">
-        <div data-track="" className="flex flex-col gap-16 px-5 py-28 md:px-10 lg:h-full lg:w-max lg:flex-row lg:items-center lg:gap-[4vw] lg:py-0 lg:pl-10 lg:pr-[10vw]">
-          {/* Intro panel */}
-          <div className="flex shrink-0 flex-col justify-center lg:w-[34vw]">
-            <SectionLabel index="02">What we do</SectionLabel>
-            <RevealText as="h2" id="what-title" className="mt-8 font-serif text-[clamp(3rem,6vw,6.4rem)] font-light leading-[0.92] tracking-[-0.02em] text-ink">
-              Six worlds. <em className="text-rose-deep">One team.</em>
-            </RevealText>
-            <RevealText as="p" className="mt-8 max-w-md text-lg leading-relaxed text-stone">
-              Passion Events is not only a wedding planner. From boardrooms to ballrooms to concert stages — we plan, design and run events across every category.
-            </RevealText>
-            <p className="eyebrow mt-10 hidden items-center gap-3 text-stone lg:flex">
-              Keep scrolling <span className="inline-block h-px w-16 bg-stone/50" /> →
-            </p>
-          </div>
+      {/* Desktop: wheel of worlds */}
+      <div data-pin="" className="relative hidden h-[100svh] overflow-hidden lg:block">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_55%_at_50%_45%,rgb(235_195_200/0.55),transparent_70%)]" />
+        <div className="absolute left-10 top-1/2 z-[200] max-w-[22vw] -translate-y-1/2">
+          <SectionLabel index="02">What we do</SectionLabel>
+          <h2 id="what-title" className="mt-6 font-serif text-[clamp(2.6rem,4.4vw,4.8rem)] font-light leading-[0.95] tracking-[-0.02em] text-ink">
+            Six worlds. <em className="text-rose-deep">One team.</em>
+          </h2>
+          <p className="mt-5 max-w-sm text-[0.97rem] leading-relaxed text-stone">
+            Not only a wedding planner — from boardrooms to ballrooms to concert stages, we plan, design and run every category.
+          </p>
+        </div>
 
+        {/* Counter */}
+        <div className="absolute right-10 top-28 z-[200] flex items-start gap-3 font-serif text-ink xl:top-32" aria-hidden="true">
+          <span className="block h-[1em] overflow-hidden text-[clamp(3rem,5vw,5.5rem)] font-light leading-none">
+            <span data-digit-track="" className="block">
+              {categories.map((c) => (
+                <span key={c.key} className="block h-[1em]">
+                  {c.index}
+                </span>
+              ))}
+            </span>
+          </span>
+          <span className="mt-2 text-lg italic text-stone">/ {String(n).padStart(2, "0")}</span>
+        </div>
+
+        {/* The wheel */}
+        <div data-wheel-rise="" className="absolute inset-0">
+          <div data-wheel="" className="absolute left-[62%] top-[42%] size-0">
+            {/* rims of the wheel (radius = 125vh, matching the JS layout) */}
+            <span className="pointer-events-none absolute left-0 top-0 size-[250vh] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-rose/45" />
+            <span className="pointer-events-none absolute left-0 top-0 size-[calc(250vh-62svh)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-blush/70" />
+            {categories.map((c) => (
+              <div key={c.key} data-spoke="" className="absolute left-0 top-0 size-0">
+                <div data-wheel-card="" className="absolute left-0 top-0 size-0">
+                  <div className="absolute aspect-[3/4] h-[46svh] -translate-x-1/2 -translate-y-1/2">
+                    <CardLink live={c.key === "concerts"} href={c.href} label={`${c.title} — discover more`} tabIndex={-1}>
+                      <div className="group relative h-full w-full overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] border-[5px] border-ivory bg-blush shadow-[0_50px_90px_-40px_rgb(94_52_64/0.7)]">
+                        <Pic image={c.image} sizes="(max-width: 1600px) 30vw, 420px" className="transition-transform duration-[1.6s] ease-[var(--ease-silk)] group-hover:scale-[1.06]" />
+                        <div className={`absolute inset-0 ${c.key === "concerts" ? "bg-gradient-to-t from-void/80 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/55 via-transparent to-transparent"}`} />
+                        <div className="absolute inset-0 bg-ivory [opacity:var(--dim,0)]" />
+                        <span className="absolute bottom-4 right-5 font-script text-5xl text-ivory/95">{c.script}</span>
+                      </div>
+                    </CardLink>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Active category details */}
+        <div className="absolute bottom-[7%] left-[62%] z-[200] h-[25svh] w-[min(42rem,56vw)] -translate-x-1/2 px-6 text-center">
           {categories.map((c) => (
-            <CategoryCard key={c.key} c={c} />
+            <div key={c.key} data-detail="" className="absolute inset-0 flex flex-col items-center">
+              <span className="block overflow-hidden pb-1">
+                <h3 data-roll="" className="whitespace-nowrap font-serif text-[clamp(2rem,3vw,3.4rem)] leading-none text-ink">
+                  {c.title}
+                </h3>
+              </span>
+              <span className="mt-3 block overflow-hidden">
+                <p data-roll="" className="max-w-xl text-[0.97rem] leading-relaxed text-stone">
+                  {c.short}
+                </p>
+              </span>
+              <span className="mt-4 block overflow-hidden pb-1">
+                <ul data-roll="" className="flex flex-wrap justify-center gap-2">
+                  {c.services.slice(0, 4).map((s) => (
+                    <li key={s} className="rounded-full border border-ink/15 bg-ivory/60 px-3 py-1 text-xs text-ink/75">
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </span>
+              <span className="mt-4 block overflow-hidden pb-1">
+                <span data-roll="" className="block">
+                  <CardLink live={c.key === "concerts"} href={c.href} label={`${c.title} — discover more`} className="link-underline inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink">
+                    {c.key === "concerts" ? "Enter Passion Live" : "Discover more"} <ArrowUpRight className="size-4" />
+                  </CardLink>
+                </span>
+              </span>
+            </div>
           ))}
         </div>
 
-        <div className="absolute inset-x-10 bottom-10 hidden h-px bg-ink/10 lg:block">
-          <div data-progress="" className="h-full origin-left scale-x-0 bg-rose" />
+        <div className="absolute inset-x-10 bottom-6 z-[200] h-px bg-ink/10">
+          <div data-progress="" className="h-full origin-left scale-x-0 bg-gradient-to-r from-rose via-coral to-mint" />
         </div>
+      </div>
+
+      {/* Tablet / mobile: editorial column */}
+      <div className="flex flex-col gap-16 px-5 py-28 md:px-10 lg:hidden">
+        <div>
+          <SectionLabel index="02">What we do</SectionLabel>
+          <RevealText as="h2" className="mt-8 font-serif text-[clamp(3rem,6vw,6.4rem)] font-light leading-[0.92] tracking-[-0.02em] text-ink">
+            Six worlds. <em className="text-rose-deep">One team.</em>
+          </RevealText>
+          <p className="mt-8 max-w-md text-lg leading-relaxed text-stone">
+            Passion Events is not only a wedding planner. From boardrooms to ballrooms to concert stages — we plan, design and run events across every category.
+          </p>
+        </div>
+        {categories.map((c) => (
+          <MobileCard key={c.key} c={c} />
+        ))}
       </div>
     </section>
   );
 }
 
-function CategoryCard({ c }: { c: Category }) {
+function MobileCard({ c }: { c: Category }) {
   const live = c.key === "concerts";
-
   return (
-    <article data-card="" className="group relative shrink-0 lg:w-[38vw] xl:w-[34vw]">
-      <CardLink live={live} href={c.href} label={`${c.title} — discover more`}>
-        <div className="relative">
-          <div data-card-media="" className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] lg:aspect-auto lg:h-[min(52svh,560px)]">
-            <div data-card-img="" className="absolute inset-[0_-10%] transition-transform duration-[1.6s] ease-[var(--ease-silk)] group-hover:scale-[1.06]">
-              <Pic image={c.image} sizes="(max-width: 1024px) 92vw, 36vw" className="" />
-            </div>
-            <div className={`absolute inset-0 ${live ? "bg-gradient-to-t from-void/80 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/60 via-transparent to-transparent"}`} />
-            <span className="absolute left-6 top-[18%] font-serif text-7xl font-light italic text-ivory/90 md:text-8xl">{c.index}</span>
-            <span className="absolute bottom-5 right-6 font-script text-5xl text-ivory/95 transition-transform duration-1000 ease-[var(--ease-silk)] group-hover:-translate-y-2 md:text-6xl">
-              {c.script}
-            </span>
-          </div>
-          {/* animated border */}
-          <span className="pointer-events-none absolute inset-0 rounded-t-[999px] rounded-b-[1.5rem] border border-rose/0 transition-all duration-700 group-hover:inset-[-10px] group-hover:border-rose/60" />
-          {/* botanical detail */}
-          <svg viewBox="-20 -20 40 40" className="pointer-events-none absolute -right-3 top-[14%] size-12 scale-0 transition-transform duration-700 ease-[var(--ease-silk)] group-hover:scale-100 group-hover:rotate-45" aria-hidden="true">
-            <Bloom r={14} />
-          </svg>
+    <article className="relative">
+      <CardLink live={live} href={c.href} label={`${c.title} — discover more`} className="block">
+        <div data-card-media="" className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] md:aspect-[16/11]">
+          <Pic image={c.image} sizes="92vw" />
+          <div className={`absolute inset-0 ${live ? "bg-gradient-to-t from-void/80 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/60 via-transparent to-transparent"}`} />
+          <span className="absolute left-6 top-[22%] font-serif text-7xl font-light italic text-ivory/90">{c.index}</span>
+          <span className="absolute bottom-5 right-6 font-script text-5xl text-ivory/95">{c.script}</span>
         </div>
-
-        <div className="mt-7 transition-transform duration-700 ease-[var(--ease-silk)] group-hover:translate-x-2">
-          <h3 className="font-serif text-4xl leading-none text-ink md:text-5xl">{c.title}</h3>
-          <p className="mt-4 max-w-md text-[0.97rem] leading-relaxed text-stone">{c.description}</p>
-          <ul className="mt-5 flex flex-wrap gap-2">
-            {c.services.slice(0, 4).map((s) => (
-              <li key={s} className="rounded-full border border-ink/12 px-3 py-1 text-xs text-ink/75">
-                {s}
-              </li>
-            ))}
-          </ul>
-          <span className="mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink lg:translate-y-2 lg:opacity-0 lg:transition-all lg:duration-700 lg:group-hover:translate-y-0 lg:group-hover:opacity-100">
-            {live ? "Enter Passion Live" : "Discover more"} <ArrowUpRight className="size-4" />
-          </span>
-        </div>
+        <h3 className="mt-7 font-serif text-4xl leading-none text-ink">{c.title}</h3>
+        <p className="mt-4 text-[0.97rem] leading-relaxed text-stone">{c.description}</p>
+        <ul className="mt-5 flex flex-wrap gap-2">
+          {c.services.slice(0, 4).map((s) => (
+            <li key={s} className="rounded-full border border-ink/12 px-3 py-1 text-xs text-ink/75">
+              {s}
+            </li>
+          ))}
+        </ul>
+        <span className="mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink">
+          {live ? "Enter Passion Live" : "Discover more"} <ArrowUpRight className="size-4" />
+        </span>
       </CardLink>
     </article>
   );
 }
 
-function CardLink({ live, href, label, children }: { live: boolean; href: string; label: string; children: React.ReactNode }) {
+function CardLink({
+  live,
+  href,
+  label,
+  className = "block h-full w-full",
+  tabIndex,
+  children,
+}: {
+  live: boolean;
+  href: string;
+  label: string;
+  className?: string;
+  tabIndex?: number;
+  children: React.ReactNode;
+}) {
   return live ? (
-    <UniverseLink href={href} to="live" className="block" aria-label={label}>
+    <UniverseLink href={href} to="live" className={className} aria-label={label} tabIndex={tabIndex}>
       {children}
     </UniverseLink>
   ) : (
-    <Link href={href} className="block" aria-label={label}>
+    <Link href={href} className={className} aria-label={label} tabIndex={tabIndex}>
       {children}
     </Link>
   );

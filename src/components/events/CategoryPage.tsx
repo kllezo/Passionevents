@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { categories, type Category } from "@/content/events";
 import { getPortfolioEvents, safeRead } from "@/lib/events";
 import { RevealText } from "@/motion/RevealText";
+import { StaggerList } from "@/motion/StaggerList";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { PageHero } from "./PageHero";
@@ -87,9 +88,10 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
           </div>
           <div className="lg:col-span-5 lg:col-start-8">
             <p className="eyebrow text-rose-deep">What we take care of</p>
-            <ul className="mt-6 border-t border-ink/15">
+            <StaggerList className="mt-6 border-t border-ink/15">
               {c.services.map((s, i) => (
-                <li key={s} className="group flex items-center justify-between border-b border-ink/15 py-5">
+                <li key={s} className="group relative flex items-center justify-between py-5">
+                  <span data-rule="" aria-hidden="true" className="absolute inset-x-0 bottom-0 h-px origin-left bg-ink/15" />
                   <span className="flex items-baseline gap-5">
                     <span className="font-serif text-sm italic text-rose">{String(i + 1).padStart(2, "0")}</span>
                     <span className="font-serif text-2xl text-ink transition-transform duration-700 ease-[var(--ease-silk)] group-hover:translate-x-2 md:text-3xl">{s}</span>
@@ -99,7 +101,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
                   </svg>
                 </li>
               ))}
-            </ul>
+            </StaggerList>
             <p className="mt-6 text-sm text-stone">
               Each of these can be booked on its own — see <Link href="/services" className="link-underline text-ink">individual services</Link>.
             </p>
@@ -129,7 +131,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
       <section className="bg-ivory py-24">
         <div className="mx-auto max-w-[1600px] px-5 md:px-10">
           <p className="eyebrow text-rose-deep">Also from Passion Events</p>
-          <ul className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <StaggerList className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {others.map((o) => (
               <li key={o.key}>
                 <Link href={o.href} className="group flex items-center gap-5">
@@ -143,7 +145,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
                 </Link>
               </li>
             ))}
-          </ul>
+          </StaggerList>
         </div>
       </section>
 
