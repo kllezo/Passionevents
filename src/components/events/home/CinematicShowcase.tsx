@@ -13,10 +13,14 @@ const scenes: { image: SiteImage; word: string; line: string; href: string }[] =
   { image: stock.destinationPalace, word: "Celebrations", line: "Private parties and destination events, styled end to end.", href: "/private-events" },
 ];
 
+const SLICES = 6;
+
 /**
- * Full-screen photographic sequence. Desktop: pinned; each scene opens out of
- * the previous one through an expanding window while the headline word
- * slides through a mask. Mobile: stacked full-bleed panels (no pinning).
+ * Full-screen photographic sequence. Desktop: pinned; each new scene drops in
+ * as vertical shutters from alternating directions while the previous one
+ * sinks back, the headline flips in letter by letter, and an index of the
+ * four scenes lights up the current one. Mobile: framed panels opening to
+ * full bleed (no pinning).
  */
 export function CinematicShowcase() {
   const root = useRef<HTMLElement>(null);
@@ -26,29 +30,52 @@ export function CinematicShowcase() {
       const q = gsap.utils.selector(root.current);
       const mm = gsap.matchMedia();
       mm.add(media.desktop, () => {
-        const layers = q<HTMLElement>("[data-scene]");
+        const scenesEl = q<HTMLElement>("[data-scene]");
         const words = q<HTMLElement>("[data-word]");
         const lines = q<HTMLElement>("[data-line]");
-        gsap.set(layers.slice(1), { clipPath: "inset(50% 50% 50% 50% round 24px)" });
-        gsap.set(words.slice(1), { yPercent: 110 });
+        const items = q<HTMLElement>("[data-index-item]");
+        const n = scenesEl.length;
+        let active = -1;
+        const setActive = (i: number) => {
+          if (i === active) return;
+          active = i;
+          items.forEach((it, j) => (it.dataset.state = j === i ? "on" : "off"));
+        };
+        setActive(0);
+
+        // Later scenes wait off-frame as shutters; later words wait folded back.
+        scenesEl.slice(1).forEach((sc) => gsap.set(sc.querySelectorAll("[data-slice]"), { yPercent: (j) => (j % 2 ? 101 : -101) }));
+        words.slice(1).forEach((w) => gsap.set(w.querySelectorAll("[data-ch]"), { rotateX: -95, yPercent: 40, opacity: 0 }));
         gsap.set(lines.slice(1), { autoAlpha: 0, y: 20 });
+
         const tl = gsap.timeline({
           defaults: { ease: "power3.inOut" },
-          scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: `+=${layers.length * 90}%`, pin: true, scrub: 0.9, anticipatePin: 1 },
+          scrollTrigger: {
+            trigger: q("[data-pin]")[0],
+            start: "top top",
+            end: `+=${n * 90}%`,
+            pin: true,
+            scrub: 0.9,
+            anticipatePin: 1,
+            // timeline: scene i lands at time i - 0.6 + ~0.8, total length n - 0.6 + 0.4
+            onUpdate: (self) => setActive(Math.max(0, Math.min(n - 1, Math.floor(self.progress * n + 0.15)))),
+          },
         });
-        layers.forEach((layer, i) => {
+        scenesEl.forEach((sc, i) => {
           if (i === 0) return;
           const at = i - 0.6;
-          // fromTo with explicit strings: the browser normalises inset() shorthands when
-          // read back, which would make GSAP interpolate mismatched values.
-          tl.fromTo(layer, { clipPath: "inset(50% 50% 50% 50% round 24px)" }, { clipPath: "inset(0% 0% 0% 0% round 0px)", duration: 1 }, at)
-            .fromTo(layer.querySelector("[data-img]"), { scale: 1.35 }, { scale: 1, duration: 1 }, at)
-            .to(layers[i - 1].querySelector("[data-img]"), { scale: 0.92, duration: 1 }, at)
-            .to(words[i - 1], { yPercent: -110, duration: 0.5 }, at + 0.25)
-            .to(words[i], { yPercent: 0, duration: 0.5 }, at + 0.45)
-            .to(lines[i - 1], { autoAlpha: 0, y: -20, duration: 0.3 }, at + 0.25)
+          const prev = scenesEl[i - 1];
+          // the new photograph drops in as shutters from alternating directions
+          tl.to(sc.querySelectorAll("[data-slice]"), { yPercent: 0, duration: 0.8, stagger: { each: 0.06, from: "center" } }, at)
+            .fromTo(sc.querySelectorAll("[data-img]"), { scale: 1.25 }, { scale: 1, duration: 1.1 }, at)
+            .to(prev.querySelectorAll("[data-img]"), { scale: 1.12, duration: 1 }, at)
+            .to(prev.querySelector("[data-shade]"), { opacity: 0.7, duration: 0.8 }, at)
+            // the headline flips letter by letter
+            .to(words[i - 1].querySelectorAll("[data-ch]"), { rotateX: 95, yPercent: -40, opacity: 0, duration: 0.35, stagger: 0.015, ease: "power2.in" }, at + 0.1)
+            .to(words[i].querySelectorAll("[data-ch]"), { rotateX: 0, yPercent: 0, opacity: 1, duration: 0.45, stagger: 0.02, ease: "power3.out" }, at + 0.4)
+            .to(lines[i - 1], { autoAlpha: 0, y: -20, duration: 0.3 }, at + 0.15)
             .to(lines[i], { autoAlpha: 1, y: 0, duration: 0.4 }, at + 0.55)
-            .to(q("[data-bar]")[0], { scaleX: (i + 1) / layers.length, duration: 1 }, at);
+            .to(q("[data-bar]")[0], { scaleX: (i + 1) / n, duration: 1 }, at);
         });
         tl.to({}, { duration: 0.4 });
       });
@@ -74,22 +101,43 @@ export function CinematicShowcase() {
         The events we create
       </h2>
 
-      {/* Desktop: pinned stack */}
+      {/* Desktop: pinned shutter sequence */}
       <div data-pin="" className="relative hidden h-[100svh] overflow-hidden lg:block">
         {scenes.map((s, i) => (
-          <div key={s.word} data-scene="" className="absolute inset-0" style={{ zIndex: i }}>
-            <div data-img="" className="absolute inset-0">
-              <Pic image={s.image} sizes="100vw" tone="dark" />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-ink/30" />
+          <div key={s.word} data-scene="" className="absolute inset-0 overflow-hidden" style={{ zIndex: i }}>
+            {Array.from({ length: SLICES }, (_, j) => {
+              const l = (j / SLICES) * 100;
+              const r = 100 - ((j + 1) / SLICES) * 100;
+              return (
+                <div
+                  key={j}
+                  data-slice=""
+                  className="absolute inset-0 will-change-transform"
+                  // a hairline of overlap hides sub-pixel seams between shutters
+                  style={{ clipPath: `inset(0 ${Math.max(0, r - 0.1)}% 0 ${Math.max(0, l - 0.1)}%)` }}
+                >
+                  <div data-img="" className="absolute inset-0">
+                    <Pic image={s.image} alt={j === 0 ? s.image.alt : ""} sizes="100vw" tone="dark" />
+                  </div>
+                </div>
+              );
+            })}
+            <div data-shade="" className="absolute inset-0 bg-ink opacity-0" />
           </div>
         ))}
+        {/* one scrim above every scene (per-scene scrims would stack over the first photo) */}
+        <div className="pointer-events-none absolute inset-0 z-[5] bg-gradient-to-t from-ink/85 via-ink/20 to-ink/35" />
+
         <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-end px-10 pb-16">
           <p className="eyebrow text-blush">What we create</p>
-          <div className="relative mt-4 h-[clamp(5rem,11vw,11.5rem)] overflow-hidden">
+          <div className="relative mt-4 h-[clamp(5rem,11vw,11.5rem)] [perspective:900px]">
             {scenes.map((s) => (
-              <p key={s.word} data-word="" className="absolute inset-0 whitespace-nowrap font-serif text-[clamp(4.6rem,10vw,10.5rem)] font-light italic leading-[1.05]">
-                {s.word}
+              <p key={s.word} data-word="" aria-label={s.word} className="absolute inset-0 whitespace-nowrap font-serif text-[clamp(4.6rem,10vw,10.5rem)] font-light italic leading-[1.05]">
+                {Array.from(s.word).map((ch, k) => (
+                  <span key={k} data-ch="" aria-hidden="true" className="inline-block origin-[50%_80%] will-change-transform">
+                    {ch}
+                  </span>
+                ))}
               </p>
             ))}
           </div>
@@ -107,6 +155,24 @@ export function CinematicShowcase() {
             <span className="text-xs uppercase tracking-[0.25em] text-ivory/60">Illustrative imagery</span>
           </div>
         </div>
+
+        {/* Scene index */}
+        <ol className="absolute right-10 top-1/2 z-10 -translate-y-1/2 space-y-3 rounded-2xl bg-ink/30 py-5 pl-6 pr-5 text-right backdrop-blur-md">
+          {scenes.map((s, i) => (
+            <li key={s.word}>
+              <Link
+                href={s.href}
+                data-index-item=""
+                data-state={i === 0 ? "on" : "off"}
+                className="group inline-flex items-center gap-4 text-ivory/45 transition-colors duration-500 hover:text-ivory data-[state=on]:text-ivory"
+              >
+                <span className="font-serif text-2xl italic transition-transform duration-500 group-data-[state=on]:-translate-x-2">{s.word}</span>
+                <span className="font-sans text-[0.65rem] tracking-[0.25em]">{String(i + 1).padStart(2, "0")}</span>
+                <span className="block h-px w-6 bg-current transition-[width] duration-500 group-data-[state=on]:w-14" />
+              </Link>
+            </li>
+          ))}
+        </ol>
       </div>
 
       {/* Mobile / tablet: stacked panels */}
