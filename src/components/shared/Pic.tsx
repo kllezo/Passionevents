@@ -13,8 +13,12 @@ const UNSPLASH = "https://images.unsplash.com/";
  */
 const unsplashLoader: ImageLoader = ({ src, width, quality }) => {
   const url = new URL(src);
+  // AVIF holds up very well at these settings; large sizes (sharp phone and
+  // retina screens) get a lower number, which roughly halves their weight
+  // with no visible difference at the size they are shown.
+  const q = Math.min(quality ?? 60, width >= 1000 ? 50 : 60);
   url.searchParams.set("w", String(Math.min(width, 2400)));
-  url.searchParams.set("q", String(quality ?? 70));
+  url.searchParams.set("q", String(q));
   url.searchParams.set("auto", "format");
   url.searchParams.set("fit", "crop");
   return url.toString();
