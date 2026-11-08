@@ -1,8 +1,34 @@
 "use client";
 
-import Image, { type ImageProps } from "next/image";
+import Image, { type ImageLoader, type ImageProps } from "next/image";
 import { useState, type CSSProperties } from "react";
 import type { SiteImage } from "@/content/media";
+
+const UNSPLASH = "https://images.unsplash.com/";
+
+/**
+ * Stock photographs are resized by Unsplash's own image CDN (global, already
+ * cached, AVIF/WebP by browser) instead of a cold round-trip through the
+ * Next.js optimiser — they appear much faster, especially on first visit.
+ */
+const unsplashLoader: ImageLoader = ({ src, width, quality }) => {
+  const url = new URL(src);
+  url.searchParams.set("w", String(Math.min(width, 2400)));
+  url.searchParams.set("q", String(quality ?? 70));
+  url.searchParams.set("auto", "format");
+  url.searchParams.set("fit", "crop");
+  return url.toString();
+};
+
+/** A ~1 KB, 40px version of the photo, blurred, shown instantly while the real one loads. */
+function tinyPreview(src: string) {
+  const url = new URL(src);
+  url.searchParams.set("w", "40");
+  url.searchParams.set("q", "30");
+  url.searchParams.set("auto", "format");
+  url.searchParams.set("fit", "crop");
+  return url.toString();
+}
 
 /**
  * Art-directed fill image.
@@ -41,11 +67,23 @@ export function Pic({
     );
   }
 
+  const stock = image.src.startsWith(UNSPLASH);
+
   return (
     <>
-      {skeleton && !loaded && <span aria-hidden="true" className={`absolute inset-0 animate-pulse ${tone === "dark" ? "bg-graphite" : "bg-cream"}`} />}
+      {skeleton && !loaded &&
+        (stock ? (
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 scale-110 bg-cover blur-xl"
+            style={{ backgroundImage: `url("${tinyPreview(image.src)}")`, backgroundPosition: focus }}
+          />
+        ) : (
+          <span aria-hidden="true" className={`absolute inset-0 animate-pulse ${tone === "dark" ? "bg-graphite" : "bg-cream"}`} />
+        ))}
       <Image
         {...rest}
+        loader={stock ? unsplashLoader : undefined}
         src={image.src}
         alt={alt ?? image.alt}
         fill

@@ -112,7 +112,7 @@ export function CinematicShowcase() {
                 <div
                   key={j}
                   data-slice=""
-                  className="absolute inset-0 will-change-transform"
+                  className="absolute inset-0"
                   // a hairline of overlap hides sub-pixel seams between shutters
                   style={{ clipPath: `inset(0 ${Math.max(0, r - 0.1)}% 0 ${Math.max(0, l - 0.1)}%)` }}
                 >
@@ -180,7 +180,7 @@ export function CinematicShowcase() {
         {scenes.map((s) => (
           <Link key={s.word} href={s.href} data-m-scene="" className="relative flex min-h-[82svh] items-end overflow-hidden px-5 pb-12">
             <span data-m-frame="" className="absolute inset-0 overflow-hidden">
-              <span data-m-img="" className="absolute inset-0 block will-change-transform">
+              <span data-m-img="" className="absolute inset-0 block">
                 <Pic image={s.image} sizes="100vw" tone="dark" />
               </span>
               <span className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent" />

@@ -55,7 +55,7 @@ export function FounderPortrait({ image }: { image: SiteImage }) {
                   key={i}
                   data-slat=""
                   aria-hidden={i > 0 || undefined}
-                  className="absolute inset-0 will-change-transform"
+                  className="absolute inset-0"
                   // a hairline of overlap hides sub-pixel seams between slats
                   style={{ clipPath: `inset(0 ${Math.max(0, r - 0.15)}% 0 ${Math.max(0, l - 0.15)}%)` }}
                 >

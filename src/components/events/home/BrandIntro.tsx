@@ -81,14 +81,17 @@ export function BrandIntro() {
           About Passion Events
         </h2>
 
-        <RevealText
-          as="p"
-          className="mt-10 max-w-[68rem] font-serif text-[clamp(2rem,3.7vw,3.9rem)] font-light leading-[1.14] tracking-[-0.01em] text-ink"
-        >
-          From concept to execution, Passion Events brings <em className="text-rose-deep">people, creativity, production</em> and{" "}
-          <em className="text-rose-deep">logistics</em> together to create memorable experiences — weddings, corporate events, private celebrations and live
-          concerts, planned and run by one team.
+        <RevealText as="p" className="mt-10 max-w-[56rem] font-serif text-[clamp(2.2rem,4.2vw,4.4rem)] font-light leading-[1.08] tracking-[-0.01em] text-ink">
+          Concept to execution — <em className="text-rose-deep">one team</em> for every memorable experience.
         </RevealText>
+        <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-stone">
+          {["Weddings", "Corporate", "Private", "Live concerts"].map((w, i) => (
+            <span key={w} className="flex items-center gap-3">
+              {i > 0 && <span className="size-1 rotate-45 bg-coral" aria-hidden="true" />}
+              {w}
+            </span>
+          ))}
+        </p>
 
         {/* Desktop: four expanding photograph panels */}
         <div data-panels="" className="mt-16 hidden h-[min(62svh,600px)] gap-3 lg:flex" onMouseLeave={() => (hovering.current = false)}>
@@ -142,7 +145,7 @@ export function BrandIntro() {
 
         <div data-studio-foot="" className="mt-14 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <p className="max-w-xl text-lg leading-relaxed text-stone">
-            We are an event planning, production and execution partner. Book a single service, or hand us the whole event and we take it from the first call to the last guest leaving.
+            Book one service, or hand us the whole event — from the first call to the last guest leaving.
           </p>
           <EventsButton href="/about" variant="outline">
             Our story

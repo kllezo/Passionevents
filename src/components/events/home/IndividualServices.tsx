@@ -132,7 +132,7 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
                     </div>
                   </div>
                   <div className="relative m-3 mt-0 min-h-0 overflow-hidden rounded-[1.25rem] md:col-span-6 md:m-4 md:ml-0 md:rounded-[1.5rem]">
-                    <div data-cap-img="" className="absolute inset-0 will-change-transform">
+                    <div data-cap-img="" className="absolute inset-0">
                       <Pic image={g.image} sizes="(max-width: 768px) 92vw, 46vw" />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-tr from-ink/30 via-transparent to-transparent" />
