@@ -6,6 +6,7 @@ import { MediaImage } from "@/components/shared/MediaImage";
 import { PosterArt } from "./EventPoster";
 import { LiveButton } from "./LiveButton";
 import { Waveform } from "./Waveform";
+import { Countdown } from "./Countdown";
 
 /** A single upcoming show gets the full stage: poster + an "on sale" spread. */
 export function FeaturedShow({ e }: { e: PublicEvent }) {
@@ -22,6 +23,9 @@ export function FeaturedShow({ e }: { e: PublicEvent }) {
         ) : (
           <PosterArt title={e.title} artist={artists[0]} city={e.city} large />
         )}
+        {/* holographic sheen sweeping across the poster */}
+        <span className="pointer-events-none absolute inset-y-0 left-0 w-1/3 animate-[holo_5s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/25 to-transparent mix-blend-overlay" aria-hidden="true" />
+        <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgb(255_46_136/0.12),transparent_40%,rgb(46_197_255/0.12)_70%,transparent)] mix-blend-screen" aria-hidden="true" />
       </Link>
 
       <div className="relative flex flex-col justify-between overflow-hidden border border-white/10 bg-graphite/60 p-7 md:p-10 lg:col-span-7">
@@ -66,6 +70,12 @@ export function FeaturedShow({ e }: { e: PublicEvent }) {
             </div>
           )}
         </div>
+
+        {e.startsAt && !["CANCELLED", "COMPLETED", "POSTPONED"].includes(e.eventStatus) && (
+          <div className="relative mt-8">
+            <Countdown target={e.startsAt.toISOString()} hasTime={Boolean(d?.hasTime)} />
+          </div>
+        )}
 
         <div className="relative mt-10 flex flex-wrap gap-4">
           {canBook && (

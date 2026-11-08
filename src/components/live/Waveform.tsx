@@ -51,19 +51,28 @@ export function Waveform({
           else ctx.lineTo(x, y);
         }
         ctx.strokeStyle = c;
+        // glow without shadowBlur (which re-rasterises every frame): a wide faint
+        // stroke under the crisp one
+        if (!mobile) {
+          ctx.globalAlpha = 0.16;
+          ctx.lineWidth = li === 0 ? 9 : 6;
+          ctx.stroke();
+        }
         ctx.globalAlpha = 0.85 - li * 0.2;
         ctx.lineWidth = li === 0 ? 2 : 1.2;
-        ctx.shadowColor = c;
-        ctx.shadowBlur = mobile ? 0 : 12;
         ctx.stroke();
       });
       ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
       ctx.globalCompositeOperation = "source-over";
     } else if (variant === "bars") {
       const count = Math.floor((mobile ? 28 : 56) * density);
       const gap = 3;
       const bw = (w - gap * (count - 1)) / count;
+      // one gradient for every bar (was one per bar per frame)
+      const g = ctx.createLinearGradient(0, h, 0, 0);
+      g.addColorStop(0, colors[0]);
+      g.addColorStop(1, colors[1] ?? colors[0]);
+      ctx.fillStyle = g;
       for (let i = 0; i < count; i++) {
         const u = i / count;
         const v =
@@ -73,10 +82,6 @@ export function Waveform({
             Math.abs(Math.sin(t * (1.6 + (i % 7) * 0.31) + i * 0.7) * 0.6 + Math.sin(t * 3.7 + u * 9) * 0.4) *
             (0.55 + 0.45 * Math.sin(Math.PI * u));
         const bh = Math.max(2, v * h);
-        const g = ctx.createLinearGradient(0, h, 0, h - bh);
-        g.addColorStop(0, colors[0]);
-        g.addColorStop(1, colors[1] ?? colors[0]);
-        ctx.fillStyle = g;
         ctx.fillRect(i * (bw + gap), h - bh, bw, bh);
       }
     } else {

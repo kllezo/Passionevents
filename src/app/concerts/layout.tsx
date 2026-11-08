@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { site } from "@/lib/site";
 import { UniverseMarker } from "@/components/shared/UniverseTransition";
 import { LiveNav } from "@/components/live/LiveNav";
 import { LiveFooter } from "@/components/live/LiveFooter";
 import { LiveSoundProvider } from "@/components/live/LiveSound";
+import { LivePlayer } from "@/components/live/LivePlayer";
 
 export const metadata: Metadata = {
   title: { default: "Passion Live — Concerts & Live Entertainment", template: "%s | Passion Live" },
@@ -24,6 +26,9 @@ export default function LiveLayout({ children }: LayoutProps<"/concerts">) {
         <LiveNav />
         <main id="main">{children}</main>
         <LiveFooter />
+        <Suspense fallback={null}>
+          <LivePlayer />
+        </Suspense>
       </div>
     </LiveSoundProvider>
   );

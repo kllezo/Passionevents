@@ -94,7 +94,9 @@ export function StageCanvas({ className, intensity = 1, beams: beamCount = 5 }: 
         ctx.fill();
       }
       ctx.globalCompositeOperation = "source-over";
-    }
+    },
+    // soft light needs no retina sharpness: 1x halves-to-quarters the fill cost
+    { maxDpr: 1 }
   );
 
   return <canvas ref={ref} className={`pointer-events-none ${className ?? ""}`} aria-hidden="true" />;

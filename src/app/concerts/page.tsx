@@ -12,6 +12,8 @@ import { DrumSection } from "@/components/live/DrumSection";
 import { WhatWeHandle, Collaborate } from "@/components/live/HandleAndCollab";
 import { FinalCTA } from "@/components/live/FinalCTA";
 import { ProductionShowcase } from "@/components/live/ProductionShowcase";
+import { CautionTapes } from "@/components/live/CautionTapes";
+import { HypeMeter } from "@/components/live/HypeMeter";
 
 const liveTitle = "Passion Live — Concerts, Live Music & Artist Bookings in India";
 export const metadata = {
@@ -58,6 +60,8 @@ export default function LiveHome() {
         </div>
       </section>
 
+      <CautionTapes />
+
       <GuitarSection />
 
       <section className="bg-void py-24 md:py-32" aria-labelledby="past-title">
@@ -98,6 +102,7 @@ export default function LiveHome() {
       <DrumSection />
       <WhatWeHandle />
       <Collaborate />
+      <HypeMeter />
       <FinalCTA />
     </>
   );

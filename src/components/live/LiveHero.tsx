@@ -7,6 +7,7 @@ import { gsap, SplitText, useGSAP, media } from "@/motion/gsap";
 import { StageCanvas } from "./StageCanvas";
 import { Waveform } from "./Waveform";
 import { LiveButton } from "./LiveButton";
+import { HeroStickers } from "./HeroStickers";
 
 /**
  * Concert intro: darkness → a low waveform wakes → neon lines switch on →
@@ -84,7 +85,7 @@ export function LiveHero() {
       </div>
 
       {/* concert photograph slab */}
-      <div data-photo="" className="absolute right-[4%] top-[12%] h-[34%] w-[44%] overflow-hidden md:right-[6%] md:top-[16%] md:h-[58%] md:w-[38%]" style={{ clipPath: "polygon(12% 0, 100% 0, 88% 100%, 0 100%)" }}>
+      <div data-photo="" className="absolute right-[4%] top-[10%] h-[22%] w-[44%] overflow-hidden md:right-[6%] md:top-[16%] md:h-[58%] md:w-[38%]" style={{ clipPath: "polygon(12% 0, 100% 0, 88% 100%, 0 100%)" }}>
         <div data-photo-img="" className="absolute inset-0">
           <Pic image={stock.liveHero} preload sizes="(max-width: 768px) 50vw, 40vw" className="" quality={85} />
         </div>
@@ -122,6 +123,8 @@ export function LiveHero() {
       <div data-wave="" className="pointer-events-none absolute inset-x-0 top-[44%] h-40 opacity-70 md:h-56">
         <Waveform variant="line" className="h-full w-full" />
       </div>
+
+      <HeroStickers />
 
       <div data-ticker="" className="relative z-10 overflow-hidden border-t border-white/10 bg-void/60 py-3 backdrop-blur" aria-hidden="true">
         <div className="flex w-max animate-marquee font-grotesk text-xs uppercase tracking-[0.35em] text-white/60" style={{ ["--marquee-duration" as string]: "30s" }}>

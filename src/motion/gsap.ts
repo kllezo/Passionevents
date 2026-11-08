@@ -5,10 +5,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+import { Draggable } from "gsap/Draggable";
 import { useGSAP } from "@gsap/react";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin, useGSAP);
+  gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin, ScrambleTextPlugin, Draggable, useGSAP);
   gsap.defaults({ ease: "expo.out", duration: 1.1 });
   ScrollTrigger.config({ ignoreMobileResize: true });
   // Development-only handle for debugging timelines from the console.
@@ -36,7 +38,7 @@ export function prefersReducedMotion() {
   return typeof window !== "undefined" && window.matchMedia(media.reduced).matches;
 }
 
-export { gsap, ScrollTrigger, SplitText, DrawSVGPlugin, useGSAP };
+export { gsap, ScrollTrigger, SplitText, DrawSVGPlugin, Draggable, useGSAP };
 
 /**
  * Runs `cb` once when `el` scrolls into view. Based on real visibility
