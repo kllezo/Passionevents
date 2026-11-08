@@ -231,4 +231,5 @@ html.lenis, html.lenis body { height: auto; }
 .pe-intro { display: none; }
 html.intro-pending .pe-intro { display: flex; }
 @keyframes scrollcue { 0% { transform: translateY(-100%); } 100% { transform: translateY(200%); } }
+@keyframes studioBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes eq { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }

@@ -47,10 +47,11 @@ export function DestinationRoute() {
         gsap.set(details, { autoAlpha: 0 });
         const show = (i: number) => {
           if (i === active) return;
-          const prev = details[active];
+          const first = active === -1;
           active = i;
-          if (prev) gsap.to(prev, { autoAlpha: 0, y: -20, duration: 0.35, overwrite: true });
-          gsap.fromTo(details[i], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: "expo.out", overwrite: true, delay: prev ? 0.15 : 0 });
+          // hide every other leg (state-based: fast jumps can't leave two visible)
+          details.forEach((d, j) => j !== i && gsap.to(d, { autoAlpha: 0, y: -20, duration: 0.35, overwrite: true }));
+          gsap.fromTo(details[i], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: "expo.out", overwrite: true, delay: first ? 0 : 0.15 });
           pins.forEach((p, j) => p.classList.toggle("is-on", j <= i));
         };
         show(0);

@@ -47,6 +47,39 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     };
   }, [isAdmin]);
 
+  // Keep every ScrollTrigger measured against the real layout. Positions go
+  // stale when the page width changes without a window resize (the scrollbar
+  // returns after the opening sequence), when web fonts swap in and re-wrap
+  // text, or when late content changes the page height. Re-measure then.
+  useEffect(() => {
+    const root = document.documentElement;
+    let timer = 0;
+    let lastW = root.clientWidth;
+    let lastH = document.body.scrollHeight;
+    const refresh = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        ScrollTrigger.refresh();
+        lastW = root.clientWidth;
+        lastH = document.body.scrollHeight;
+      }, 180);
+    };
+    const ro = new ResizeObserver(() => {
+      if (root.clientWidth !== lastW) return refresh();
+      if (Math.abs(document.body.scrollHeight - lastH) > 40) refresh();
+    });
+    ro.observe(document.body);
+    document.fonts?.ready.then(refresh).catch(() => {});
+    window.addEventListener("pe:unlock-scroll", refresh);
+    window.addEventListener("load", refresh);
+    return () => {
+      window.clearTimeout(timer);
+      ro.disconnect();
+      window.removeEventListener("pe:unlock-scroll", refresh);
+      window.removeEventListener("load", refresh);
+    };
+  }, []);
+
   // New route: start at the top and re-measure every trigger.
   useEffect(() => {
     if (pathname === null) return;

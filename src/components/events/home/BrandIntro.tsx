@@ -1,104 +1,65 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pic } from "@/components/shared/Pic";
 import { stock, type SiteImage } from "@/content/media";
-import { gsap, useGSAP, media } from "@/motion/gsap";
+import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
 import { RevealText } from "@/motion/RevealText";
+import { useCoverflow } from "@/motion/useCoverflow";
 import { SectionLabel } from "../SectionLabel";
 import { EventsButton } from "../Button";
 
-type Seg = string | { word: string; image: SiteImage; label: string };
-
-/** The studio statement, with photographs that open inside the sentence. */
-const statement: Seg[] = [
-  "From concept to execution, Passion Events brings",
-  { word: "people,", image: stock.weddingHands, label: "people" },
-  { word: "creativity,", image: stock.florals, label: "creativity" },
-  { word: "production", image: stock.stageDesign, label: "production" },
-  "and",
-  { word: "logistics", image: stock.venueHall, label: "logistics" },
-  "together to create",
-  { word: "memorable experiences", image: stock.ceremonyStage, label: "every detail" },
-  "— weddings, corporate events, private celebrations and live concerts, planned and run by one team.",
+/** The four things the studio brings together (from the statement itself). */
+const pillars: { word: string; line: string; image: SiteImage }[] = [
+  { word: "People", line: "Planners, vendors, artists and on-ground teams, coordinated as one.", image: stock.weddingHands },
+  { word: "Creativity", line: "Concepts, décor, florals and themes designed around you.", image: stock.florals },
+  { word: "Production", line: "Stages, sound, lighting and screens — built and run.", image: stock.stageDesign },
+  { word: "Logistics", line: "Venues, travel, schedules and guests, handled end to end.", image: stock.venueHall },
 ];
-const keys = statement.filter((s): s is Exclude<Seg, string> => typeof s !== "string");
-
-type Token = { kind: "word"; text: string; accent: boolean } | { kind: "pill"; image: SiteImage; at: number };
-/** Flattened words + capsules; `at` is the index of the word the capsule precedes. */
-const tokens: Token[] = (() => {
-  const out: Token[] = [];
-  let n = 0;
-  for (const seg of statement) {
-    if (typeof seg === "string") {
-      for (const w of seg.split(" ")) {
-        out.push({ kind: "word", text: w, accent: false });
-        n++;
-      }
-    } else {
-      out.push({ kind: "pill", image: seg.image, at: n });
-      for (const w of seg.word.split(" ")) {
-        out.push({ kind: "word", text: w, accent: true });
-        n++;
-      }
-    }
-  }
-  return out;
-})();
 
 /**
- * "The studio". As the reader scrolls, the statement fills in word by word;
- * at each key idea a photograph capsule opens inside the sentence while the
- * arch beside it wipes to that idea's image and the script caption changes.
+ * "The studio". The statement is set large and revealed line by line; below
+ * it the four things it brings together — people, creativity, production and
+ * logistics — stand as tall photograph panels. One panel is always open; they
+ * take turns on their own while the section is in view, and hovering or
+ * focusing one opens it. Everything plays once on entering view (no scrub),
+ * so nothing can be left half-finished. Phones get a swipeable strip.
  */
 export function BrandIntro() {
   const root = useRef<HTMLElement>(null);
+  const [active, setActive] = useState(0);
+  const [inView, setInView] = useState(false);
+  const hovering = useRef(false);
+
+  // Gentle auto-advance while visible and not being interacted with.
+  useEffect(() => {
+    if (!inView) return;
+    const id = window.setInterval(() => {
+      if (!hovering.current) setActive((a) => (a + 1) % pillars.length);
+    }, 3800);
+    return () => window.clearInterval(id);
+  }, [inView]);
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.25 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useGSAP(
     () => {
       const q = gsap.utils.selector(root.current);
       const mm = gsap.matchMedia();
-      mm.add(media.ok, () => {
-        const words = q<HTMLElement>("[data-w]");
-        const pills = q<HTMLElement>("[data-pill]");
-        const layers = q<HTMLElement>("[data-layer]");
-        const captions = q<HTMLElement>("[data-caption]");
-        const total = words.length;
-        // Phones: no side arch, so the capsules themselves carry the imagery — larger.
-        const pillWidth = window.innerWidth < 1024 ? "2.5em" : "1.9em";
-
-        gsap.set(words, { opacity: 0.13 });
-        gsap.set(pills, { width: 0, marginRight: 0 });
-        gsap.set(layers.slice(1), { clipPath: "circle(0% at 50% 60%)" });
-        gsap.set(captions, { yPercent: 110, autoAlpha: 0 });
-        gsap.set(captions[0], { yPercent: 0, autoAlpha: 1 });
-
-        const tl = gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: { trigger: q("[data-statement]")[0], start: "top 72%", end: "bottom 40%", scrub: 0.8 },
-        });
-        tl.to(words, { opacity: 1, duration: 0.4, stagger: 1 / total }, 0);
-
-        // Each key word: open its capsule, wipe the arch, swap the caption.
-        pills.forEach((pill, k) => {
-          const at = Number(pill.dataset.at) / total;
-          tl.to(pill, { width: pillWidth, marginRight: "0.22em", duration: 0.5, ease: "power2.out" }, at);
-          if (k > 0) {
-            // Several key words sit side by side in the sentence, so the arch and caption
-            // changes get evenly spaced slots of their own (never overlapping).
-            const slot = (k / (pills.length - 1)) * 1.05;
-            tl.fromTo(layers[k], { clipPath: "circle(0% at 50% 60%)" }, { clipPath: "circle(80% at 50% 60%)", duration: 0.22, ease: "power2.inOut" }, slot - 0.1)
-              .to(captions[k - 1], { yPercent: -110, autoAlpha: 0, duration: 0.07 }, slot - 0.1)
-              .to(captions[k], { yPercent: 0, autoAlpha: 1, duration: 0.1 }, slot - 0.03);
-          }
-        });
-
-        gsap.from(q("[data-arch-wrap]"), {
-          clipPath: "inset(100% 0% 0% 0% round 999px 999px 0 0)",
-          duration: 1.6,
-          ease: "expo.inOut",
-          scrollTrigger: { trigger: q("[data-arch-wrap]")[0], start: "top 85%", once: true },
-        });
+      mm.add(media.desktop, () => {
+        const panels = q<HTMLElement>("[data-panel]");
+        const tl = gsap
+          .timeline({ paused: true })
+          .fromTo(panels, { clipPath: "inset(100% 0% 0% 0% round 28px)" }, { clipPath: "inset(0% 0% 0% 0% round 28px)", duration: 1.4, stagger: 0.12, ease: "expo.inOut" }, 0)
+          .fromTo(q("[data-panel-img]"), { scale: 1.35 }, { scale: 1, duration: 2, stagger: 0.12, ease: "expo.out" }, 0.2)
+          .fromTo(q("[data-studio-foot] > *"), { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1, stagger: 0.1, ease: "expo.out" }, 0.9);
+        return whenVisible(q("[data-panels]")[0], () => tl.play(), "0px 0px -15% 0px");
       });
     },
     { scope: root }
@@ -106,71 +67,116 @@ export function BrandIntro() {
 
   return (
     <section ref={root} className="relative overflow-hidden bg-ivory py-28 md:py-40" aria-labelledby="intro-title">
-      <div className="pointer-events-none absolute -right-40 top-1/3 size-[560px] rounded-full bg-blush/30 blur-[120px]" />
-      <div className="relative mx-auto max-w-[1600px] px-5 md:px-10">
-        <div className="grid gap-16 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <SectionLabel index="01">The studio</SectionLabel>
-            <h2 id="intro-title" className="sr-only">
-              About Passion Events
-            </h2>
-            <p
-              data-statement=""
-              className="mt-10 font-serif text-[clamp(2rem,4vw,3.9rem)] font-light leading-[1.16] tracking-[-0.01em] text-ink"
-            >
-              {tokens.map((t, i) =>
-                t.kind === "pill" ? (
-                  <span
-                    key={i}
-                    data-pill=""
-                    data-at={t.at}
-                    aria-hidden="true"
-                    className="relative mr-[0.22em] inline-block h-[0.95em] w-[2.5em] overflow-hidden rounded-full align-[-0.12em] shadow-[0_8px_20px_-10px_rgb(94_52_64/0.6)] lg:h-[0.78em] lg:w-[1.9em] lg:align-[-0.06em]"
-                  >
-                    <Pic image={t.image} alt="" sizes="160px" />
-                  </span>
-                ) : (
-                  <span key={i} data-w="" className={t.accent ? "italic text-rose-deep" : undefined}>
-                    {t.text}{" "}
-                  </span>
-                )
-              )}
-            </p>
-            <div className="mt-12 flex flex-col gap-8 md:flex-row md:items-end md:gap-14">
-              <RevealText as="p" className="max-w-md text-lg leading-relaxed text-stone">
-                We are an event planning, production and execution partner. Book a single service, or hand us the whole event and we take it from the first call to the last guest leaving.
-              </RevealText>
-              <EventsButton href="/about" variant="outline">
-                Our story
-              </EventsButton>
-            </div>
-            <p className="mt-10 text-right font-script text-6xl text-coral lg:hidden" aria-hidden="true">
-              every detail
-            </p>
-          </div>
+      <div className="pointer-events-none absolute -right-40 top-10 size-[620px] rounded-full bg-blush/30 blur-[130px]" />
+      <div className="pointer-events-none absolute -left-40 bottom-0 size-[520px] rounded-full bg-mint/20 blur-[130px]" />
 
-          {/* Arch that changes with the idea being read (desktop; phones use the larger capsules) */}
-          <div className="relative max-lg:hidden lg:col-span-5">
-            <div className="lg:sticky lg:top-28">
-              <div data-arch-wrap="" className="relative mx-auto aspect-[4/5] w-full max-w-[460px] overflow-hidden rounded-t-full bg-cream shadow-[0_40px_90px_-45px_rgb(148_96_108/0.6)]">
-                {keys.map((k, i) => (
-                  <div key={k.label} data-layer="" className="absolute inset-0" style={{ zIndex: i }}>
-                    <Pic image={k.image} sizes="(max-width: 1024px) 80vw, 32vw" />
-                  </div>
-                ))}
-                <div className="absolute inset-0 z-10 bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
-              </div>
-              <div className="relative mx-auto mt-6 h-[1.3em] max-w-[460px] overflow-hidden text-right font-script text-6xl leading-none text-coral md:text-7xl" aria-hidden="true">
-                {keys.map((k, i) => (
-                  <span key={k.label} data-caption="" className={`absolute inset-0 block pr-2 ${i === keys.length - 1 ? "" : "opacity-0"}`}>
-                    {k.label}
+      <div className="relative mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <SectionLabel index="01">The studio</SectionLabel>
+          <p className="hidden font-script text-5xl text-coral lg:block" aria-hidden="true">
+            every detail
+          </p>
+        </div>
+        <h2 id="intro-title" className="sr-only">
+          About Passion Events
+        </h2>
+
+        <RevealText
+          as="p"
+          className="mt-10 max-w-[68rem] font-serif text-[clamp(2rem,3.7vw,3.9rem)] font-light leading-[1.14] tracking-[-0.01em] text-ink"
+        >
+          From concept to execution, Passion Events brings <em className="text-rose-deep">people, creativity, production</em> and{" "}
+          <em className="text-rose-deep">logistics</em> together to create memorable experiences — weddings, corporate events, private celebrations and live
+          concerts, planned and run by one team.
+        </RevealText>
+
+        {/* Desktop: four expanding photograph panels */}
+        <div data-panels="" className="mt-16 hidden h-[min(62svh,600px)] gap-3 lg:flex" onMouseLeave={() => (hovering.current = false)}>
+          {pillars.map((p, i) => {
+            const on = i === active;
+            return (
+              <button
+                key={p.word}
+                type="button"
+                data-panel=""
+                onMouseEnter={() => {
+                  hovering.current = true;
+                  setActive(i);
+                }}
+                onFocus={() => setActive(i)}
+                onClick={() => setActive(i)}
+                aria-pressed={on}
+                aria-label={`${p.word}: ${p.line}`}
+                className={`group relative min-w-0 basis-0 overflow-hidden rounded-[1.75rem] text-left text-ivory shadow-[0_40px_80px_-50px_rgb(94_52_64/0.7)] transition-[flex-grow] duration-[900ms] ease-[var(--ease-silk)] ${
+                  on ? "grow-[3.2]" : "grow"
+                }`}
+              >
+                <span data-panel-img="" className="absolute inset-0 block">
+                  <Pic image={p.image} sizes="(max-width: 1600px) 50vw, 800px" className={`transition-transform duration-[1.6s] ease-[var(--ease-silk)] ${on ? "scale-100" : "scale-110"}`} />
+                </span>
+                <span className={`absolute inset-0 bg-gradient-to-t transition-opacity duration-700 ${on ? "from-ink/80 via-ink/15 to-transparent" : "from-ink/75 via-ink/45 to-ink/30"}`} />
+                <span className="absolute left-6 top-6 font-serif text-lg italic text-blush">{String(i + 1).padStart(2, "0")}</span>
+                {/* timer hairline on the open panel */}
+                <span className="absolute inset-x-6 top-[3.6rem] h-px overflow-hidden bg-ivory/20">
+                  {on && <span key={`bar-${active}`} className="absolute inset-y-0 left-0 w-full origin-left animate-[studioBar_3.8s_linear_forwards] bg-blush" />}
+                </span>
+                <span className="absolute inset-x-6 bottom-6 block">
+                  <span className={`block whitespace-nowrap font-serif font-light leading-none transition-[font-size] duration-700 ease-[var(--ease-silk)] ${on ? "text-[clamp(2.4rem,3.2vw,3.6rem)] italic" : "text-[clamp(1.4rem,1.6vw,1.8rem)]"}`}>
+                    {p.word}
                   </span>
-                ))}
-              </div>
-            </div>
-          </div>
+                  <span
+                    className={`mt-3 block max-w-sm text-[0.95rem] leading-relaxed text-ivory/85 transition-[opacity,transform] duration-700 ease-[var(--ease-silk)] ${
+                      on ? "translate-y-0 opacity-100 delay-200" : "translate-y-3 opacity-0"
+                    }`}
+                  >
+                    {p.line}
+                  </span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Phones / tablets: swipeable pillars */}
+        <MobilePillars />
+
+        <div data-studio-foot="" className="mt-14 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <p className="max-w-xl text-lg leading-relaxed text-stone">
+            We are an event planning, production and execution partner. Book a single service, or hand us the whole event and we take it from the first call to the last guest leaving.
+          </p>
+          <EventsButton href="/about" variant="outline">
+            Our story
+          </EventsButton>
         </div>
       </div>
     </section>
+  );
+}
+
+function MobilePillars() {
+  const strip = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  useCoverflow(strip, { rotate: 12, scale: 0.1, dim: 0.4, onActive: setActive });
+  return (
+    <div className="lg:hidden">
+      <div ref={strip} className="-mx-5 mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[14vw] pb-4 [scrollbar-width:none] md:-mx-10 [&::-webkit-scrollbar]:hidden">
+        {pillars.map((p, i) => (
+          <article key={p.word} data-cf="" className="relative aspect-[3/4] w-[72vw] max-w-[340px] shrink-0 snap-center overflow-hidden rounded-[1.5rem] text-ivory shadow-[0_30px_60px_-35px_rgb(94_52_64/0.7)] will-change-transform">
+            <Pic image={p.image} sizes="72vw" />
+            <span className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
+            <span className="absolute left-5 top-5 font-serif text-lg italic text-blush">{String(i + 1).padStart(2, "0")}</span>
+            <span className="absolute inset-x-5 bottom-5">
+              <span className="block font-serif text-4xl font-light italic">{p.word}</span>
+              <span className="mt-2 block text-sm text-ivory/85">{p.line}</span>
+            </span>
+          </article>
+        ))}
+      </div>
+      <div className="mt-3 flex justify-center gap-1.5" aria-hidden="true">
+        {pillars.map((p, i) => (
+          <span key={p.word} className={`h-1 rounded-full transition-all duration-500 ${i === active ? "w-7 bg-rose-deep" : "w-2 bg-ink/15"}`} />
+        ))}
+      </div>
+    </div>
   );
 }

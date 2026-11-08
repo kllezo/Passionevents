@@ -45,15 +45,18 @@ export function WhatWeDo() {
         };
         layout();
 
-        gsap.set(details, { autoAlpha: 0 });
+        // State-based: every call hides all other worlds' details, so fast jumps,
+        // reverse scrolling or a re-measure can never leave two showing.
+        details.forEach((d) => gsap.set(d.querySelectorAll("[data-roll]"), { yPercent: 110, autoAlpha: 0 }));
         const show = (i: number) => {
           if (i === active) return;
-          const prev = details[active];
+          const first = active === -1;
           active = i;
-          if (prev) gsap.to(prev.querySelectorAll("[data-roll]"), { yPercent: -110, autoAlpha: 0, duration: 0.45, stagger: 0.03, ease: "power3.in", overwrite: true, onComplete: () => gsap.set(prev, { autoAlpha: 0 }) });
-          const next = details[i];
-          gsap.set(next, { autoAlpha: 1 });
-          gsap.fromTo(next.querySelectorAll("[data-roll]"), { yPercent: 110, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.9, stagger: 0.06, ease: "expo.out", delay: prev ? 0.2 : 0, overwrite: true });
+          details.forEach((d, j) => {
+            if (j === i) return;
+            gsap.to(d.querySelectorAll("[data-roll]"), { yPercent: -110, autoAlpha: 0, duration: 0.4, stagger: 0.03, ease: "power3.in", overwrite: true });
+          });
+          gsap.fromTo(details[i].querySelectorAll("[data-roll]"), { yPercent: 110, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.9, stagger: 0.06, ease: "expo.out", delay: first ? 0 : 0.2, overwrite: true });
           gsap.to(digits, { yPercent: (-100 / n) * i, duration: 0.8, ease: "expo.inOut", overwrite: true });
         };
 
@@ -85,7 +88,10 @@ export function WhatWeDo() {
             scrub: 1,
             anticipatePin: 1,
             invalidateOnRefresh: true,
-            onRefresh: layout,
+            onRefresh: (self) => {
+              layout();
+              render(self.progress);
+            },
             onUpdate: (self) => render(self.progress),
           },
         });
