@@ -31,22 +31,44 @@ export function EventsIntro() {
       if (!introPending()) return;
       const el = root.current!;
       const q = gsap.utils.selector(el);
-      document.documentElement.style.overflow = "hidden";
-      window.dispatchEvent(new Event("pe:lock-scroll"));
+
+      // Hold the page still without hiding the scrollbar (hiding it would make
+      // the whole layout jump sideways when it comes back).
+      const KEYS = new Set([" ", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End"]);
+      const block = (e: Event) => {
+        if (e instanceof KeyboardEvent && !KEYS.has(e.key)) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      };
+      const opts: AddEventListenerOptions = { passive: false, capture: true };
+      window.addEventListener("wheel", block, opts);
+      window.addEventListener("touchmove", block, opts);
+      window.addEventListener("keydown", block, opts);
+      const release = () => {
+        window.removeEventListener("wheel", block, opts);
+        window.removeEventListener("touchmove", block, opts);
+        window.removeEventListener("keydown", block, opts);
+      };
+      window.scrollTo(0, 0);
 
       const tl = gsap.timeline({
         defaults: { ease: "power2.out" },
         onComplete: () => {
-          document.documentElement.style.overflow = "";
-          window.dispatchEvent(new Event("pe:unlock-scroll"));
+          release();
           gsap.set(el, { display: "none" });
         },
       });
       tlRef.current = tl;
 
+      // First frame: everything still undrawn. The stage was hidden by CSS until
+      // now so the finished artwork never flashes before the drawing starts.
       gsap.set(q(".bt-leaf"), { scale: 0, transformOrigin: "0% 50%" });
       gsap.set(q(".bt-bloom"), { scale: 0, rotate: -40 });
       gsap.set(q("[data-logo]"), { autoAlpha: 0, scale: 1.04, clipPath: "circle(0% at 50% 52%)" });
+      gsap.set(q("[data-stage], [data-intro-caption]"), { opacity: 1 });
+      // Pin the curtain on screen ourselves: markIntroDone() removes the class that
+      // displays it, which would otherwise make it vanish mid-lift.
+      gsap.set(el, { display: "flex" });
 
       tl.from(q(".bt-stem"), { drawSVG: "0%", duration: 1.3, ease: "power2.inOut", stagger: 0.15 }, 0.15)
         .from(q(".bt-twig"), { drawSVG: "0%", duration: 0.6, stagger: 0.04 }, 0.7)
@@ -56,15 +78,19 @@ export function EventsIntro() {
         .from(q("[data-ring-b]"), { drawSVG: "0%", duration: 1.4, ease: "power3.inOut" }, 1.0)
         .to(q("[data-logo]"), { autoAlpha: 1, scale: 1, clipPath: "circle(75% at 50% 52%)", duration: 1.1, ease: "power3.inOut" }, 2.0)
         .to(q("[data-sketch]"), { autoAlpha: 0, duration: 0.6 }, 2.45)
-        .from(q("[data-intro-caption]"), { autoAlpha: 0, y: 14, duration: 0.6 }, 2.2)
-        .addLabel("lift", 3.05)
-        .add(() => markIntroDone(), "lift")
-        .to(q("[data-stage]"), { scale: 0.86, autoAlpha: 0, duration: 0.8, ease: "power3.in" }, "lift")
-        .fromTo(el, { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: 1.0, ease: "power4.inOut", immediateRender: false }, "lift+=0.2");
+        .fromTo(q("[data-intro-caption]"), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.6 }, 2.2)
+        .addLabel("lift", 3.25)
+        // 1) the artwork gently recedes first — nothing is ever sliced by the curtain edge
+        .to(q("[data-stage]"), { scale: 0.9, autoAlpha: 0, filter: "blur(6px)", duration: 0.55, ease: "power2.in" }, "lift")
+        .to(q("[data-intro-caption], [data-skip]"), { autoAlpha: 0, y: -10, duration: 0.35, ease: "power2.in" }, "lift")
+        // 2) the hero starts as the curtain begins to rise
+        .add(() => markIntroDone(), "lift+=0.4")
+        // 3) the whole ivory curtain lifts away (a transform: smooth, GPU-composited)
+        .to(el, { yPercent: -100, borderBottomLeftRadius: "50% 12%", borderBottomRightRadius: "50% 12%", duration: 1.05, ease: "power4.inOut" }, "lift+=0.45");
 
       return () => {
-        document.documentElement.style.overflow = "";
-        window.dispatchEvent(new Event("pe:unlock-scroll"));
+        release();
+        tl.kill();
       };
     },
     { scope: root }
@@ -73,20 +99,18 @@ export function EventsIntro() {
   const skip = () => {
     const tl = tlRef.current;
     if (!tl) return;
-    // Start the hero explicitly: seeking can skip the callback on the "lift" label.
-    markIntroDone();
-    tl.seek("lift", true);
-    tl.timeScale(2);
+    // Show the finished artwork, then play the normal exit a little faster.
+    tl.seek("lift", false);
+    tl.timeScale(1.6);
     lenis?.start();
   };
 
   return (
     <div
       ref={root}
-      className="pe-intro paper-grain fixed inset-0 z-[120] items-center justify-center bg-ivory"
-      style={{ clipPath: "inset(0% 0% 0% 0%)" }}
+      className="pe-intro paper-grain fixed inset-0 z-[120] items-center justify-center bg-ivory shadow-[0_40px_80px_-30px_rgb(94_52_64/0.35)] will-change-transform"
     >
-      <div data-stage="" className="relative aspect-[1993/2000] w-[min(78vw,64vh)]">
+      <div data-stage="" className="relative aspect-[1993/2000] w-[min(78vw,64vh)] opacity-0">
         <svg data-sketch="" aria-hidden="true" viewBox="0 0 1993 2000" className="absolute inset-0 h-full w-full overflow-visible">
           <defs>
             <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
@@ -104,11 +128,12 @@ export function EventsIntro() {
           <Pic image={brand.logo} alt="" sizes="(max-width: 768px) 78vw, 64vh" className="object-contain" preload skeleton={false} />
         </div>
       </div>
-      <p data-intro-caption="" className="eyebrow absolute bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap text-rose-deep">
+      <p data-intro-caption="" className="eyebrow absolute bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap text-rose-deep opacity-0">
         Weddings · Celebrations · Live
       </p>
       <button
         type="button"
+        data-skip=""
         onClick={skip}
         className="eyebrow absolute right-6 top-6 rounded-full border border-ink/15 px-5 py-2.5 text-ink/70 transition-colors hover:border-ink hover:text-ink"
       >

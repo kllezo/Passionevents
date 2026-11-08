@@ -229,10 +229,16 @@ html.lenis, html.lenis body { height: auto; }
 .motion-ok [data-hero-hidden] { opacity: 0; animation: reveal-failsafe-opacity 0s 4.5s forwards; }
 @keyframes reveal-failsafe { to { visibility: visible; } }
 @keyframes reveal-failsafe-opacity { to { opacity: 1; } }
+/* Scripts are running (set on hydration): animations own these elements now.
+   The failsafes above are only for a page whose JavaScript never arrives —
+   left on, their forced values would override in-progress animations. */
+.motion-ready [data-reveal], .motion-ready [data-hero-hidden] { animation: none; }
 
 /* Opening sequence covers the first paint only when the pre-paint script asked for it. */
 .pe-intro { display: none; }
-html.intro-pending .pe-intro { display: flex; }
+html.intro-pending .pe-intro { display: flex; animation: intro-failsafe 0s 12s forwards; }
+html.motion-ready .pe-intro { animation: none; }
+@keyframes intro-failsafe { to { visibility: hidden; } }
 @keyframes scrollcue { 0% { transform: translateY(-100%); } 100% { transform: translateY(200%); } }
 @keyframes studioBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes countFlip { from { transform: rotateX(80deg) translateY(-30%); opacity: 0; } to { transform: none; opacity: 1; } }

@@ -37,7 +37,8 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     const unlock = () => instance.start();
     window.addEventListener("pe:lock-scroll", lock);
     window.addEventListener("pe:unlock-scroll", unlock);
-    if (document.documentElement.classList.contains("intro-pending")) instance.stop();
+    // (The opening sequence holds the page itself without stopping Lenis: a stopped
+    // Lenis hides the scrollbar, which would shift the layout sideways.)
     return () => {
       window.removeEventListener("pe:lock-scroll", lock);
       window.removeEventListener("pe:unlock-scroll", unlock);
@@ -46,6 +47,11 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       setLenis(null);
     };
   }, [isAdmin]);
+
+  // Hydrated: switch off the CSS failsafes so they never fight live animations.
+  useEffect(() => {
+    document.documentElement.classList.add("motion-ready");
+  }, []);
 
   // Keep every ScrollTrigger measured against the real layout. Positions go
   // stale when the page width changes without a window resize (the scrollbar
