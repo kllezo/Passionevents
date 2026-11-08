@@ -51,7 +51,7 @@ export function PageHero({
         <ImageReveal shape="center" immediate className="!absolute inset-0" parallax={8}>
           <Pic image={image} preload sizes="100vw" className="" quality={85} />
         </ImageReveal>
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-ink/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-ink/20 max-sm:from-ink/95 max-sm:via-ink/50" />
         {overlay}
         <div className="relative z-[2] mx-auto w-full max-w-[1600px] px-5 md:px-10">
           <SectionLabel index={index} tone="ivory">

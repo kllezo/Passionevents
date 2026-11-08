@@ -87,7 +87,15 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
         image={c.image}
         intro={<p>{c.short}</p>}
         overlay={identity && <HeroMotif kind={identity.motif} />}
-      />
+      >
+        {/* phones: a clear next step right in the first screen */}
+        <div className="mt-8 flex items-center gap-5 lg:hidden">
+          <EventsButton href="#enquire" variant="ivory">
+            Enquire
+          </EventsButton>
+          <span className="text-[0.62rem] uppercase tracking-[0.3em] text-ivory/70">Scroll to explore ↓</span>
+        </div>
+      </PageHero>
 
       {/* Narrative + services */}
       <section className="bg-ivory py-28 md:py-40">

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Pic } from "@/components/shared/Pic";
 import { useRef } from "react";
 import { stock } from "@/content/media";
@@ -103,17 +104,17 @@ export function EventsHero() {
   );
 
   return (
-    <section ref={root} className="paper-grain relative min-h-[100svh] overflow-hidden bg-ivory pt-28 md:pt-32" aria-labelledby="hero-title">
+    <section ref={root} className="paper-grain relative min-h-[100svh] overflow-hidden bg-ivory pt-24 md:pt-32" aria-labelledby="hero-title">
       {/* soft light */}
       <div className="pointer-events-none absolute -left-40 top-20 size-[620px] rounded-full bg-blush/35 blur-[120px]" />
       <div className="pointer-events-none absolute -right-20 bottom-0 size-[520px] rounded-full bg-mint/25 blur-[120px]" />
 
-      <div className="relative mx-auto grid max-w-[1600px] grid-cols-1 gap-12 px-5 pb-20 md:px-10 lg:min-h-[calc(100svh-8rem)] lg:grid-cols-12 lg:items-center lg:gap-6">
+      <div className="relative mx-auto grid max-w-[1600px] grid-cols-1 gap-8 px-5 pb-16 md:gap-12 md:px-10 md:pb-20 lg:min-h-[calc(100svh-8rem)] lg:grid-cols-12 lg:items-center lg:gap-6">
         <div data-copy="" className="relative z-10 lg:col-span-7">
-          <p data-eyebrow="" data-hero-hidden="" className="eyebrow mb-8 flex items-center gap-3 text-rose-deep">
-            <span className="h-px w-10 bg-rose" /> Passion Events · Hyderabad · Across India
+          <p data-eyebrow="" data-hero-hidden="" className="eyebrow mb-5 flex items-center gap-3 text-rose-deep max-sm:justify-center max-sm:text-[0.6rem] max-sm:tracking-[0.22em] md:mb-8">
+            <span className="h-px w-10 bg-rose max-sm:hidden" /> Passion Events · Hyderabad · Across India
           </p>
-          <h1 id="hero-title" className="relative font-serif text-[clamp(3.4rem,9.4vw,9.6rem)] font-light leading-[0.88] tracking-[-0.02em] text-ink">
+          <h1 id="hero-title" className="relative font-serif text-[clamp(3.4rem,9.4vw,9.6rem)] font-light leading-[0.88] tracking-[-0.02em] text-ink max-sm:text-center max-sm:text-[3.1rem]">
             <span data-headline="" data-reveal="" className="block">
               <span className="block">Big or small.</span>
               <span className="block italic text-rose-deep">We make it</span>
@@ -121,30 +122,35 @@ export function EventsHero() {
             <span
               data-script=""
               data-hero-hidden=""
-              className="relative -mt-[0.1em] block pl-[0.6em] font-script text-[1.18em] leading-[1.05] text-coral [text-shadow:0_1px_0_rgb(255_255_255/0.4)]"
+              className="relative -mt-[0.1em] block pl-[0.6em] font-script text-[1.18em] leading-[1.05] text-coral [text-shadow:0_1px_0_rgb(255_255_255/0.4)] max-sm:pl-0"
             >
               special.
             </span>
           </h1>
-          <p data-sub="" data-hero-hidden="" className="mt-8 max-w-xl text-pretty text-lg leading-relaxed text-stone md:text-xl">
+          <p data-sub="" data-hero-hidden="" className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-stone max-sm:mx-auto max-sm:max-w-[21rem] max-sm:text-center sm:text-lg md:mt-8 md:text-xl">
             From intimate celebrations to extraordinary productions, we bring every detail together to create experiences worth remembering.
           </p>
-          <div data-cta="" className="mt-10 flex flex-wrap items-center gap-4">
+          <div data-cta="" className="mt-7 flex flex-wrap items-center gap-4 max-sm:justify-center md:mt-10">
             <span data-hero-hidden="">
               <EventsButton href="/contact#enquire">
                 Plan your event
               </EventsButton>
             </span>
-            <span data-hero-hidden="">
+            <span data-hero-hidden="" className="max-sm:hidden">
               <EventsButton href="/portfolio" variant="outline">
                 Explore our work
               </EventsButton>
+            </span>
+            <span data-hero-hidden="" className="sm:hidden">
+              <Link href="/portfolio" className="link-underline text-xs font-semibold uppercase tracking-[0.2em] text-ink">
+                Our work →
+              </Link>
             </span>
           </div>
         </div>
 
         {/* Composition — sized to the viewport so the arch never runs under the nav or off-screen */}
-        <div className="relative mx-auto aspect-[4/5] w-full max-w-[460px] lg:col-span-5 lg:w-[min(100%,calc((100svh-11rem)*0.8))] lg:max-w-none">
+        <div className="relative mx-auto aspect-[4/5] w-[min(66vw,calc((100svh-24rem)*0.8))] max-w-[460px] max-lg:order-first sm:w-full lg:col-span-5 lg:w-[min(100%,calc((100svh-11rem)*0.8))] lg:max-w-none">
           <div data-arch="" data-hero-hidden="" className="absolute inset-[3%_8%_0_8%] overflow-hidden rounded-t-full bg-cream shadow-[0_40px_90px_-40px_rgb(148_96_108/0.55)]" style={{ clipPath: "inset(0% 0% 0% 0% round 999px 999px 0 0)" }}>
             <div data-arch-img="" className="absolute inset-[-8%_0] will-change-transform">
               {slides.map((img, i) => (

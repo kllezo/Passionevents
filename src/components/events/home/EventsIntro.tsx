@@ -101,10 +101,10 @@ export function EventsIntro() {
           <SprigGroup g={sprigBottom} strokeWidth={5} />
         </svg>
         <div data-logo="" className="absolute inset-0">
-          <Pic image={brand.logo} alt="" sizes="(max-width: 768px) 78vw, 64vh" className="object-contain" preload />
+          <Pic image={brand.logo} alt="" sizes="(max-width: 768px) 78vw, 64vh" className="object-contain" preload skeleton={false} />
         </div>
       </div>
-      <p data-intro-caption="" className="eyebrow absolute bottom-10 left-1/2 -translate-x-1/2 text-rose-deep">
+      <p data-intro-caption="" className="eyebrow absolute bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap text-rose-deep">
         Weddings · Celebrations · Live
       </p>
       <button

@@ -29,8 +29,8 @@ export function EnquirySection({
   const wa = whatsappLink();
   const { phone, email } = site.contact;
   return (
-    <section id="enquire" className="paper-grain relative scroll-mt-24 overflow-hidden bg-paper py-28 md:py-40" aria-labelledby="enquire-title">
-      <div className="mx-auto grid max-w-[1600px] gap-16 px-5 md:px-10 lg:grid-cols-12">
+    <section id="enquire" className="paper-grain relative scroll-mt-24 overflow-hidden bg-paper py-24 md:py-40" aria-labelledby="enquire-title">
+      <div className="mx-auto grid max-w-[1600px] gap-10 px-5 md:gap-16 md:px-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <div className="lg:sticky lg:top-32">
             <SectionLabel index={index}>Enquire</SectionLabel>
@@ -58,7 +58,7 @@ export function EnquirySection({
               {(phone || email || wa) && (
                 <div className="space-y-2 pt-2">
                   {phone && (
-                    <a href={`tel:${phone.replace(/\s/g, "")}`} className="link-underline flex items-center gap-2">
+                    <a href={`tel:${phone.replace(/\s/g, "")}`} className="link-underline flex items-center gap-2 max-lg:inline-flex max-lg:rounded-full max-lg:border max-lg:border-ink/15 max-lg:bg-ivory max-lg:px-5 max-lg:py-3">
                       <Phone className="size-4" /> {phone}
                     </a>
                   )}
@@ -80,7 +80,7 @@ export function EnquirySection({
             </svg>
           </div>
         </div>
-        <div className="lg:col-span-7 lg:col-start-6">
+        <div className="max-lg:-mx-1 max-lg:rounded-[1.75rem] max-lg:bg-ivory max-lg:p-5 max-lg:shadow-[0_30px_70px_-45px_rgb(94_52_64/0.6)] max-lg:ring-1 max-lg:ring-rose/15 sm:max-lg:p-8 lg:col-span-7 lg:col-start-6">
           <EnquiryForm theme="events" source="events" defaultCategory={defaultCategory} whatsappHref={wa} />
         </div>
       </div>

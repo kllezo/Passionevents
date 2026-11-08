@@ -28,7 +28,7 @@ export function FounderPortrait({ image }: { image: SiteImage }) {
           defaults: { ease: "power3.out" },
           scrollTrigger: { trigger: root.current, start: "top 85%", end: "center 55%", scrub: 1 },
         });
-        tl.fromTo(slats, { yPercent: (i) => (i % 2 ? 105 : -105), scale: 1.15 }, { yPercent: 0, scale: 1, duration: 1, stagger: 0.06 }, 0)
+        tl.fromTo(slats, { y: 0, yPercent: (i) => (i % 2 ? 105 : -105), scale: 1.15 }, { y: 0, yPercent: 0, scale: 1, duration: 1, stagger: 0.06 }, 0)
           .from(q("[data-frame]"), { drawSVG: "50% 50%", duration: 1.1, ease: "power2.inOut" }, 0.1)
           .from(q("[data-frame-2]"), { drawSVG: "0%", duration: 1.1, ease: "power2.inOut" }, 0.25)
           .from(q("[data-corner]"), { scale: 0, rotate: -120, duration: 0.6, stagger: 0.1, ease: "back.out(2)" }, 0.8)
@@ -43,7 +43,7 @@ export function FounderPortrait({ image }: { image: SiteImage }) {
   );
 
   return (
-    <div ref={root} className="relative">
+    <div ref={root} className="relative max-sm:px-4">
       <div className="relative aspect-[3/4] w-full">
         <div className="arch absolute inset-0 overflow-hidden rounded-t-full bg-cream">
           <div data-portrait-inner="" className="absolute inset-[-4%_0]">

@@ -2,6 +2,7 @@ import { EventsNav } from "@/components/events/EventsNav";
 import { EventsFooter } from "@/components/events/EventsFooter";
 import { ScrollThread } from "@/motion/ScrollThread";
 import { PageCurtain } from "@/components/shared/PageCurtain";
+import { MobileDock } from "@/components/events/MobileDock";
 import { UniverseMarker } from "@/components/shared/UniverseTransition";
 
 export default function EventsLayout({ children }: LayoutProps<"/">) {
@@ -12,6 +13,7 @@ export default function EventsLayout({ children }: LayoutProps<"/">) {
       <EventsNav />
       <main id="main">{children}</main>
       <EventsFooter />
+      <MobileDock />
       <PageCurtain />
     </div>
   );

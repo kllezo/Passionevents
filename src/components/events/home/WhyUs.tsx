@@ -1,5 +1,6 @@
 import { whyUs } from "@/content/events";
 import { RevealText } from "@/motion/RevealText";
+import { StaggerList } from "@/motion/StaggerList";
 import { SectionLabel } from "../SectionLabel";
 import { Bloom } from "../botanical/Sprig";
 
@@ -17,18 +18,18 @@ export function WhyUs({ index = "08" }: { index?: string }) {
               Care you can <em className="text-blush">feel</em> in every room.
             </RevealText>
           </div>
-          <ul className="grid gap-px overflow-hidden rounded-[1.75rem] bg-ivory/15 sm:grid-cols-2 lg:col-span-7">
+          <StaggerList mobileOnly className="grid grid-cols-2 gap-px overflow-hidden rounded-[1.75rem] bg-ivory/15 lg:col-span-7">
             {whyUs.map((w, i) => (
-              <li key={w.title} className={`group relative bg-forest p-8 transition-colors duration-700 hover:bg-[#2a5347] md:p-10 ${i === whyUs.length - 1 ? "sm:col-span-2" : ""}`}>
+              <li key={w.title} className={`group relative bg-forest p-5 transition-colors duration-700 hover:bg-[#2a5347] sm:p-8 md:p-10 ${i === whyUs.length - 1 ? "col-span-2" : ""}`}>
                 <span className="font-serif text-sm italic text-blush">{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="mt-4 font-serif text-3xl leading-tight">{w.title}</h3>
-                <p className="mt-3 text-ivory/70">{w.text}</p>
-                <svg viewBox="-20 -20 40 40" className="absolute right-6 top-6 size-9 scale-0 opacity-0 transition-all duration-700 ease-[var(--ease-silk)] group-hover:rotate-90 group-hover:scale-100 group-hover:opacity-100" aria-hidden="true">
+                <h3 className="mt-3 font-serif text-[1.35rem] leading-tight sm:mt-4 sm:text-3xl">{w.title}</h3>
+                <p className="mt-2 text-[0.85rem] leading-snug text-ivory/70 sm:mt-3 sm:text-base sm:leading-normal">{w.text}</p>
+                <svg viewBox="-20 -20 40 40" className="absolute right-4 top-4 size-6 scale-0 opacity-0 transition-all duration-700 ease-[var(--ease-silk)] group-hover:rotate-90 group-hover:scale-100 group-hover:opacity-100 max-sm:scale-100 max-sm:opacity-70 sm:right-6 sm:top-6 sm:size-9" aria-hidden="true">
                   <Bloom r={14} />
                 </svg>
               </li>
             ))}
-          </ul>
+          </StaggerList>
         </div>
       </div>
     </section>

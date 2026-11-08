@@ -17,8 +17,9 @@ export function Pic({
   alt,
   className,
   tone = "light",
+  skeleton = true,
   ...rest
-}: Omit<ImageProps, "src" | "alt" | "fill"> & { image: SiteImage; alt?: string; tone?: "light" | "dark" }) {
+}: Omit<ImageProps, "src" | "alt" | "fill"> & { image: SiteImage; alt?: string; tone?: "light" | "dark"; skeleton?: boolean }) {
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const focus = image.focus ?? "50% 50%";
@@ -42,7 +43,7 @@ export function Pic({
 
   return (
     <>
-      {!loaded && <span aria-hidden="true" className={`absolute inset-0 animate-pulse ${tone === "dark" ? "bg-graphite" : "bg-cream"}`} />}
+      {skeleton && !loaded && <span aria-hidden="true" className={`absolute inset-0 animate-pulse ${tone === "dark" ? "bg-graphite" : "bg-cream"}`} />}
       <Image
         {...rest}
         src={image.src}
