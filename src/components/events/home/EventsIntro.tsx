@@ -65,7 +65,7 @@ export function EventsIntro() {
       gsap.set(q(".bt-leaf"), { scale: 0, transformOrigin: "0% 50%" });
       gsap.set(q(".bt-bloom"), { scale: 0, rotate: -40 });
       gsap.set(q("[data-logo]"), { autoAlpha: 0, scale: 1.04, clipPath: "circle(0% at 50% 52%)" });
-      gsap.set(q("[data-stage], [data-intro-caption]"), { opacity: 1 });
+      gsap.set(q("[data-stage]"), { opacity: 1 });
       // Pin the curtain on screen ourselves: markIntroDone() removes the class that
       // displays it, which would otherwise make it vanish mid-lift.
       gsap.set(el, { display: "flex" });
@@ -78,11 +78,10 @@ export function EventsIntro() {
         .from(q("[data-ring-b]"), { drawSVG: "0%", duration: 1.4, ease: "power3.inOut" }, 1.0)
         .to(q("[data-logo]"), { autoAlpha: 1, scale: 1, clipPath: "circle(75% at 50% 52%)", duration: 1.1, ease: "power3.inOut" }, 2.0)
         .to(q("[data-sketch]"), { autoAlpha: 0, duration: 0.6 }, 2.45)
-        .fromTo(q("[data-intro-caption]"), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.6 }, 2.2)
         .addLabel("lift", 3.25)
         // 1) the artwork gently recedes first — nothing is ever sliced by the curtain edge
         .to(q("[data-stage]"), { scale: 0.9, autoAlpha: 0, filter: "blur(6px)", duration: 0.55, ease: "power2.in" }, "lift")
-        .to(q("[data-intro-caption], [data-skip]"), { autoAlpha: 0, y: -10, duration: 0.35, ease: "power2.in" }, "lift")
+        .to(q("[data-skip]"), { autoAlpha: 0, y: -10, duration: 0.35, ease: "power2.in" }, "lift")
         // 2) the hero starts as the curtain begins to rise
         .add(() => markIntroDone(), "lift+=0.4")
         // 3) the whole ivory curtain lifts away (a transform: smooth, GPU-composited)
@@ -128,9 +127,7 @@ export function EventsIntro() {
           <Pic image={brand.logo} alt="" sizes="(max-width: 768px) 78vw, 64vh" className="object-contain" preload skeleton={false} />
         </div>
       </div>
-      <p data-intro-caption="" className="eyebrow absolute bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap text-rose-deep opacity-0">
-        Weddings · Celebrations · Live
-      </p>
+
       <button
         type="button"
         data-skip=""

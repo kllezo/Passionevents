@@ -98,23 +98,29 @@ html.lenis, html.lenis body { height: auto; }
 
 
 /* ── Passion Events utilities ─────────────────────────────────────────────── */
-.paper-grain {
-  position: relative;
-  isolation: isolate;
-}
-.paper-grain::before {
-  content: "";
-  position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  opacity: .5; mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* In the components layer so utilities such as `fixed` / `absolute` on the same
+   element win (unlayered, its position: relative silently overrode them). */
+@layer components {
+  .paper-grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .paper-grain::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    opacity: .5; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 }
 
-.eyebrow {
-  font-family: var(--font-sans);
-  font-size: .72rem;
-  letter-spacing: .32em;
-  text-transform: uppercase;
-  font-weight: 600;
+@layer components {
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: .72rem;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
 }
 
 .link-underline {
