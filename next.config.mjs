@@ -11,7 +11,7 @@ const nextConfig = {
   partialPrefetching: true,
   poweredByHeader: false,
   // Prisma and sharp are native/server-only; keep them out of the bundle.
-  serverExternalPackages: ["@prisma/client", "sharp", "bcryptjs"],
+  serverExternalPackages: ["@prisma/client", "sharp", "bcryptjs", "@vercel/blob", "@vercel/oidc"],
   images: {
     qualities: [60, 75, 85],
     formats: ["image/avif", "image/webp"],
