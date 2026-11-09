@@ -59,7 +59,8 @@ const bad = await fetch(base + "/api/enquiries", { method: "POST", headers: { "C
 check(bad.status === 400, `enquiry API validates input (${bad.status})`);
 
 const traversal = await fetch(base + "/api/media/..%2F.env");
-check(traversal.status === 404, `media API blocks path traversal (${traversal.status})`);
+// 404 from the app, or 400/403 when a host firewall (e.g. Hostinger) rejects it first — blocked either way.
+check([400, 403, 404].includes(traversal.status), `media API blocks path traversal (${traversal.status})`);
 
 console.log(`\n${failures.length ? `${failures.length} FAILED` : "All checks passed"} against ${base}`);
 process.exit(failures.length ? 1 : 0);
