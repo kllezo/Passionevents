@@ -161,7 +161,7 @@ export function SectionIndex() {
 
   return (
     <>
-      <nav aria-label="What we do sections" className={`fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 transition-[opacity,transform] duration-500 xl:block ${visible ? "translate-x-0 opacity-100" : "pointer-events-none -translate-x-4 opacity-0"}`}>
+      <nav aria-label="What we do sections" className={`fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 transition-[opacity,transform] duration-500 min-[1760px]:block ${visible ? "translate-x-0 opacity-100" : "pointer-events-none -translate-x-4 opacity-0"}`}>
         <ol className="flex flex-col gap-1.5 rounded-full bg-ivory/80 p-2 shadow-[0_20px_50px_-25px_rgb(23_19_17/0.4)] ring-1 ring-ink/5 backdrop-blur-md">
           {services.map((s) => {
             const on = active === s.key;
@@ -186,7 +186,7 @@ export function SectionIndex() {
         </ol>
       </nav>
 
-      <div className={`sticky top-0 z-40 -mb-[52px] transition-opacity duration-300 xl:hidden ${visible ? "opacity-100" : "pointer-events-none opacity-0"}`} aria-hidden={!visible}>
+      <div className={`sticky top-0 z-40 -mb-[52px] transition-opacity duration-300 min-[1760px]:hidden ${visible ? "opacity-100" : "pointer-events-none opacity-0"}`} aria-hidden={!visible}>
         <div ref={bar} className="flex gap-2 overflow-x-auto bg-ivory/85 px-4 py-2.5 backdrop-blur-md [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {services.map((s) => (
             <a
