@@ -14,6 +14,7 @@ import { FinalCTA } from "@/components/live/FinalCTA";
 import { ProductionShowcase } from "@/components/live/ProductionShowcase";
 import { CautionTapes } from "@/components/live/CautionTapes";
 import { HypeMeter } from "@/components/live/HypeMeter";
+import { ConcertReels } from "@/components/live/ConcertReels";
 
 const liveTitle = "Passion Live — Concerts, Live Music & Artist Bookings in India";
 export const metadata = {
@@ -36,10 +37,51 @@ export default function LiveHome() {
       />
       <LiveHero />
       <VelocityMarquee words={["Live", "Loud", "Together"]} className="bg-void" />
+      <WhatWeHandle index="01" />
+      <ProductionShowcase />
+      <DrumSection />
+
+      <section className="bg-void py-24 md:py-32" aria-labelledby="artists-title">
+        <LiveSectionHead
+          index="03"
+          eyebrow="Artists & performers"
+          id="artists-title"
+          tone="text-laser"
+          title={
+            <>
+              Who takes the <span className="text-laser">stage.</span>
+            </>
+          }
+        />
+        <Suspense fallback={<div className="h-40" />}>
+          <Artists />
+        </Suspense>
+      </section>
+
+      <GuitarSection />
+      <ConcertReels index="04" />
+      <CautionTapes />
+
+      <section className="bg-void py-24 md:py-32" aria-labelledby="past-title">
+        <LiveSectionHead
+          index="05"
+          eyebrow="Past experiences"
+          id="past-title"
+          tone="text-hot"
+          title={
+            <>
+              Nights we <span className="text-hot">made.</span>
+            </>
+          }
+        />
+        <Suspense fallback={<div className="h-[50vh] animate-pulse bg-graphite" />}>
+          <PastExperiences />
+        </Suspense>
+      </section>
 
       <section className="bg-void py-24 md:py-32" aria-labelledby="upcoming-title">
         <LiveSectionHead
-          index="01"
+          index="06"
           eyebrow="Upcoming shows"
           id="upcoming-title"
           title={
@@ -60,48 +102,7 @@ export default function LiveHome() {
         </div>
       </section>
 
-      <CautionTapes />
-
-      <GuitarSection />
-
-      <section className="bg-void py-24 md:py-32" aria-labelledby="past-title">
-        <LiveSectionHead
-          index="03"
-          eyebrow="Past experiences"
-          id="past-title"
-          tone="text-hot"
-          title={
-            <>
-              Nights we <span className="text-hot">made.</span>
-            </>
-          }
-        />
-        <Suspense fallback={<div className="h-[50vh] animate-pulse bg-graphite" />}>
-          <PastExperiences />
-        </Suspense>
-      </section>
-
-      <section className="bg-void pb-24 md:pb-32" aria-labelledby="artists-title">
-        <LiveSectionHead
-          index="04"
-          eyebrow="Artists & performers"
-          id="artists-title"
-          tone="text-laser"
-          title={
-            <>
-              Who takes the <span className="text-laser">stage.</span>
-            </>
-          }
-        />
-        <Suspense fallback={<div className="h-40" />}>
-          <Artists />
-        </Suspense>
-      </section>
-
-      <ProductionShowcase />
-      <DrumSection />
-      <WhatWeHandle />
-      <Collaborate />
+      <Collaborate index="07" />
       <HypeMeter />
       <FinalCTA />
     </>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { brand } from "@/content/media";
-import { categories } from "@/content/events";
+import { services } from "@/content/services";
 import { UniverseLink } from "@/components/shared/UniverseTransition";
 import { usePathnameState } from "@/components/shared/PathnameSync";
 import { gsap, useGSAP, media } from "@/motion/gsap";
@@ -17,8 +17,9 @@ import { buildSprig } from "./botanical/geometry";
 const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/services", label: "Services", menu: true },
+  { href: "/what-we-do", label: "What we do", menu: true },
   { href: "/portfolio", label: "Portfolio" },
+  { href: "/reels", label: "Reels" },
   { href: "/concerts", label: "Concerts", live: true },
   { href: "/contact", label: "Contact" },
 ];
@@ -154,7 +155,7 @@ export function EventsNav() {
             {links.map((l) => (
               <li
                 key={l.href}
-                className="relative"
+                className={`relative ${l.href === "/" ? "hidden xl:block" : ""}`}
                 onMouseEnter={() => l.menu && setServicesOpen(true)}
                 onMouseLeave={() => l.menu && setServicesOpen(false)}
               >
@@ -162,7 +163,7 @@ export function EventsNav() {
                   <UniverseLink
                     href={l.href}
                     to="live"
-                    className="group flex items-center gap-2 px-4 py-2 text-[0.78rem] font-semibold uppercase tracking-[0.2em]"
+                    className="group flex items-center gap-2 whitespace-nowrap px-2.5 py-2 text-[0.74rem] font-semibold uppercase tracking-[0.16em] xl:px-4 xl:text-[0.78rem] xl:tracking-[0.2em]"
                   >
                     <span className="relative size-1.5 rounded-full bg-coral">
                       <span className="absolute inset-0 animate-ping rounded-full bg-coral/60" />
@@ -174,7 +175,7 @@ export function EventsNav() {
                     <Link
                       href={l.href}
                       aria-current={isActive(l.href) ? "page" : undefined}
-                      className="link-underline px-4 py-2 text-[0.78rem] font-semibold uppercase tracking-[0.2em]"
+                      className="link-underline whitespace-nowrap px-2.5 py-2 text-[0.74rem] font-semibold uppercase tracking-[0.16em] xl:px-4 xl:text-[0.78rem] xl:tracking-[0.2em]"
                     >
                       {l.label}
                     </Link>
@@ -183,9 +184,9 @@ export function EventsNav() {
                         type="button"
                         aria-expanded={servicesOpen}
                         aria-controls="services-menu"
-                        aria-label="Show event categories"
+                        aria-label="Show the nine services"
                         onClick={() => setServicesOpen((v) => !v)}
-                        className="-ml-3 p-1.5 opacity-70"
+                        className="-ml-2 p-1.5 opacity-70"
                       >
                         <ChevronDown className={`size-3.5 transition-transform duration-500 ${servicesOpen ? "rotate-180" : ""}`} />
                       </button>
@@ -195,39 +196,25 @@ export function EventsNav() {
                 {l.menu && (
                   <div
                     id="services-menu"
-                    className={`absolute left-1/2 top-full w-[560px] -translate-x-1/2 pt-4 transition-all duration-500 ease-[var(--ease-silk)] ${
+                    className={`absolute left-1/2 top-full w-[860px] -translate-x-1/2 pt-4 transition-all duration-500 ease-[var(--ease-silk)] ${
                       servicesOpen ? "visible translate-y-0 opacity-100" : "invisible -translate-y-2 opacity-0"
                     }`}
                   >
-                    <div className="grid grid-cols-2 gap-1 rounded-3xl border border-rose/20 bg-ivory/95 p-3 shadow-[0_30px_80px_-30px_rgb(23_19_17/0.35)] backdrop-blur-xl">
-                      {categories.map((c) => {
-                        const isLive = c.key === "concerts";
-                        const body = (
-                          <>
-                            <span className="font-serif text-sm italic text-rose">{c.index}</span>
-                            <span>
-                              <span className="block font-serif text-xl leading-tight text-ink">{c.title}</span>
-                              <span className="mt-1 block text-xs leading-snug text-stone">{c.short}</span>
-                            </span>
-                          </>
-                        );
-                        const cls = "flex gap-3 rounded-2xl p-3 transition-colors hover:bg-cream";
-                        return (
-                          <div key={c.key}>
-                            {isLive ? (
-                              <UniverseLink href={c.href} to="live" className={cls}>
-                                {body}
-                              </UniverseLink>
-                            ) : (
-                              <Link href={c.href} className={cls}>
-                                {body}
-                              </Link>
-                            )}
-                          </div>
-                        );
-                      })}
-                      <Link href="/services" className="col-span-2 mt-1 rounded-2xl bg-ink px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-ivory">
-                        All individual services
+                    <div className="grid grid-cols-3 gap-1 rounded-3xl border border-rose/20 bg-ivory/95 p-3 shadow-[0_30px_80px_-30px_rgb(23_19_17/0.35)] backdrop-blur-xl">
+                      {services.map((c) => (
+                        <Link key={c.key} href={c.href} className="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-cream">
+                          <span className="font-serif text-sm italic text-rose">{c.index}</span>
+                          <span>
+                            <span className="block font-serif text-lg leading-tight text-ink">{c.title}</span>
+                            <span className="mt-1 block text-xs leading-snug text-stone">{c.short}</span>
+                          </span>
+                        </Link>
+                      ))}
+                      <Link href="/what-we-do" className="col-span-2 mt-1 rounded-2xl bg-ink px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-ivory">
+                        Explore all nine
+                      </Link>
+                      <Link href="/services" className="mt-1 rounded-2xl bg-cream px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-ink">
+                        Individual services
                       </Link>
                     </div>
                   </div>
@@ -295,13 +282,11 @@ export function EventsNav() {
         </ul>
         <div className="relative mt-10 space-y-6">
           <div data-menu-meta="" className="flex flex-wrap gap-2">
-            {categories
-              .filter((c) => c.key !== "concerts")
-              .map((c) => (
-                <Link key={c.key} href={c.href} className="rounded-full border border-ink/15 px-4 py-2 text-xs font-medium text-ink/80">
-                  {c.title}
-                </Link>
-              ))}
+            {services.map((c) => (
+              <Link key={c.key} href={c.href} className="rounded-full border border-ink/15 px-4 py-2 text-xs font-medium text-ink/80">
+                {c.title}
+              </Link>
+            ))}
           </div>
           <div data-menu-meta="">
             <Link href="/contact#enquire" className="inline-flex rounded-full bg-ink px-7 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-ivory">

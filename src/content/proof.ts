@@ -30,6 +30,7 @@ export const featuredArtists = [
   { name: "Capricio Band", source: "[instagram] highlight" },
   { name: "Band Amogh", source: "[instagram] highlight" },
   { name: "Paatashala Band", source: "[instagram] 'Paatashala Band Live' post with @bandpaatashala" },
+  { name: "Sameera Bharadwaj", source: "[instagram] reels: live in Bengaluru (Oct 2026) and at Illuzion Club, Hyderabad" },
 ];
 
 export const instagramUrl = "https://www.instagram.com/passionevents.p/";

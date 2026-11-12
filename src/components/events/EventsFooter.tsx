@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Mail, MessageCircle, Phone } from "lucide-react";
 import { InstagramIcon } from "@/components/shared/InstagramIcon";
 import { brand } from "@/content/media";
-import { categories } from "@/content/events";
+import { services } from "@/content/services";
 import { site, whatsappLink } from "@/lib/site";
 import { UniverseLink } from "@/components/shared/UniverseTransition";
 import { Year } from "@/components/shared/Year";
@@ -26,8 +26,10 @@ const nav = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/founders", label: "Founders" },
+  { href: "/what-we-do", label: "What we do" },
   { href: "/services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
+  { href: "/reels", label: "Reels" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -69,17 +71,11 @@ export function EventsFooter() {
           <div>
             <p className="eyebrow text-rose-deep">Services</p>
             <ul className="mt-5 space-y-2.5 text-[0.95rem]">
-              {categories.map((c) => (
+              {services.map((c) => (
                 <li key={c.key}>
-                  {c.key === "concerts" ? (
-                    <UniverseLink href={c.href} to="live" className="link-underline">
-                      {c.title}
-                    </UniverseLink>
-                  ) : (
-                    <Link href={c.href} className="link-underline">
-                      {c.title}
-                    </Link>
-                  )}
+                  <Link href={c.href} className="link-underline">
+                    {c.title}
+                  </Link>
                 </li>
               ))}
             </ul>

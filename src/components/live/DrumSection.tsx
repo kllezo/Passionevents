@@ -149,7 +149,7 @@ export function DrumSection() {
       <div className="relative mx-auto max-w-[1700px] px-5 md:px-10">
         <div className="grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
-            <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-hot">(05) The pulse</p>
+            <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-hot">The pulse — hit it</p>
             <RevealText as="h2" id="drum-title" flavor="live" split="chars" className="mt-6 font-display text-[clamp(3.2rem,9vw,9rem)] uppercase leading-[0.86] text-white">
               Feel the <span className="text-hot">beat.</span>
             </RevealText>

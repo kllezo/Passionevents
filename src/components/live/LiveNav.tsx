@@ -1,6 +1,7 @@
 "use client";
 
-import { Pic } from "@/components/shared/Pic";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { brand } from "@/content/media";
@@ -18,14 +19,27 @@ const links = [
   { href: "/concerts/partners", label: "Partners" },
 ];
 
-function ReturnLink({ className, onClick }: { className?: string; onClick?: () => void }) {
+/**
+ * One cohesive white pill back to Passion Events: the original logo, the
+ * words, and an arrow that nudges forward on hover while a light sweeps across.
+ */
+export function ReturnLink({ className, onClick, compact = false }: { className?: string; onClick?: () => void; compact?: boolean }) {
   return (
-    <UniverseLink href="/" to="events" onClick={onClick} className={`group inline-flex items-center gap-3 ${className ?? ""}`}>
-      <span className="relative size-9 overflow-hidden rounded-full ring-1 ring-white/20 transition-all duration-500 group-hover:ring-blush">
-        <Pic image={brand.mark} alt="" sizes="36px" className="grayscale transition-all duration-500 group-hover:grayscale-0" />
+    <UniverseLink
+      href="/"
+      to="events"
+      onClick={onClick}
+      className={`group relative inline-flex items-center gap-3 overflow-hidden whitespace-nowrap rounded-full bg-white text-black shadow-[0_10px_40px_-12px_rgb(255_255_255/0.45)] transition-[transform,box-shadow] duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_14px_50px_-8px_rgb(235_195_200/0.75)] active:scale-[0.98] ${
+        compact ? "h-11" : "h-12"
+      } py-1 pl-1.5 pr-1.5 ${className ?? ""}`}
+    >
+      <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-[140%] -skew-x-12 bg-gradient-to-r from-transparent via-[#f6e4e2] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[360%]" />
+      <span className="relative block size-9 shrink-0 overflow-hidden rounded-full ring-1 ring-black/10 transition-transform duration-700 ease-out group-hover:rotate-[20deg]">
+        <Image src={brand.mark.src} alt="" width={72} height={72} className="size-full object-cover" />
       </span>
-      <span className="font-grotesk text-[0.7rem] uppercase tracking-[0.22em] text-white/70 transition-colors group-hover:text-white">
-        <span className="hidden xl:inline">Return to </span>Passion Events
+      <span className="relative font-grotesk text-[0.7rem] font-semibold uppercase tracking-[0.2em]">Return to Passion Events</span>
+      <span className="relative grid size-9 shrink-0 place-items-center rounded-full bg-black text-white transition-transform duration-500 ease-out group-hover:translate-x-0.5">
+        <ArrowUpRight className="size-4 transition-transform duration-500 ease-out group-hover:rotate-45" />
       </span>
     </UniverseLink>
   );
@@ -102,7 +116,7 @@ export function LiveNav() {
           <Link href="/concerts" className="relative z-[95] text-2xl text-white md:text-[1.7rem]" aria-label="Passion Live home">
             <LiveWordmark />
           </Link>
-          <ul className="hidden items-center gap-1 lg:flex">
+          <ul className="hidden items-center gap-1 xl:flex">
             {links.map((l) => (
               <li key={l.href}>
                 <Link
@@ -121,6 +135,9 @@ export function LiveNav() {
             <span className="hidden md:block">
               <SoundToggle />
             </span>
+            <span className="md:hidden">
+              <SoundToggle compact />
+            </span>
             <span className="hidden lg:block">
               <ReturnLink />
             </span>
@@ -129,7 +146,7 @@ export function LiveNav() {
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="live-menu"
-              className="relative z-[95] flex h-11 items-center gap-3 border border-white/20 px-4 font-grotesk text-[0.7rem] uppercase tracking-[0.22em] text-white lg:hidden"
+              className="relative z-[95] flex h-11 items-center gap-3 rounded-full border border-white/20 px-4 font-grotesk text-[0.7rem] uppercase tracking-[0.22em] text-white xl:hidden max-sm:px-3"
             >
               {open ? "Close" : "Menu"}
               <span className="flex flex-col gap-1" aria-hidden="true">
@@ -148,7 +165,7 @@ export function LiveNav() {
         aria-modal="true"
         aria-label="Passion Live menu"
         inert={!open}
-        className="live-grid-bg fixed inset-0 z-[85] hidden flex-col justify-between overflow-y-auto bg-void px-5 pb-10 pt-28 lg:hidden"
+        className="live-grid-bg fixed inset-0 z-[85] hidden flex-col justify-between overflow-y-auto bg-void px-5 pb-10 pt-28 xl:hidden"
       >
         <ul className="space-y-1">
           {links.map((l, i) => (
@@ -162,7 +179,7 @@ export function LiveNav() {
         </ul>
         <div data-mm="" className="mt-10 flex flex-col gap-6">
           <SoundToggle className="self-start" />
-          <ReturnLink onClick={() => setOpen(false)} />
+          <ReturnLink onClick={() => setOpen(false)} className="self-start" />
         </div>
       </div>
     </>

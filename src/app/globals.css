@@ -251,4 +251,6 @@ html.motion-ready .pe-intro { animation: none; }
 @keyframes studioBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes countFlip { from { transform: rotateX(80deg) translateY(-30%); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes holo { 0%, 55% { transform: translateX(-120%) skewX(-18deg); } 85%, 100% { transform: translateX(320%) skewX(-18deg); } }
+@keyframes reelPulse { 0% { transform: translate(-50%, -50%) scale(1); opacity: .85; } 70%, 100% { transform: translate(-50%, -50%) scale(1.75); opacity: 0; } }
+@keyframes reelIn { from { opacity: 0; transform: translateY(24px) scale(.97); } to { opacity: 1; transform: none; } }
 @keyframes eq { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }

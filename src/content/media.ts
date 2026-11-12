@@ -46,6 +46,13 @@ export const founders = {
     alt: "P. Sai Tanush, co-founder of Passion Events, smiling and leaning on a table at a live venue",
     credit: "Photograph: Phani Gogireddy / 24 Frames",
   },
+  ramya: {
+    src: "/media/founders/ramya-960.webp",
+    width: 960,
+    height: 1280,
+    alt: "Ramya, co-founder of Passion Events, smiling, seated at a keyboard",
+    focus: "50% 22%",
+  },
 };
 
 export const stock = {

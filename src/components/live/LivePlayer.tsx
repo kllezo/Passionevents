@@ -1,40 +1,32 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useLiveSound } from "./LiveSound";
-
-const TRACKS: Record<string, string> = {
-  "/concerts": "Passion Live — the night",
-  "/concerts/events": "Shows — on the horizon",
-  "/concerts/about": "About — built for the stage",
-  "/concerts/partners": "Partners — build the night",
-};
-const LENGTH = 4 * 60 + 20; // a 4:20 "track": purely the page's scroll progress
+import { Pause, Play, Volume1, Volume2, VolumeX } from "lucide-react";
+import { Eq, useLiveSound } from "./LiveSound";
 
 const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
 /**
- * A mini music-player pill on concert pages. The "track" is the page: its
- * progress bar and time follow how far you've scrolled. The speaker button is
- * the same opt-in sound switch as the one in the nav (nothing autoplays).
+ * The Passion Live music player: the original soundtrack's title, its real
+ * playback position and length, play/pause, mute and volume. It slides in
+ * once you're past the hero, or as soon as the music is playing.
  */
 export function LivePlayer() {
   const path = usePathname() ?? "/concerts";
-  const { enabled, toggle } = useLiveSound();
-  const bar = useRef<HTMLSpanElement>(null);
+  const { enabled, blocked, playing, playPause, toggle, volume, setVolume, position, trackLength, trackTitle } = useLiveSound();
   const [time, setTime] = useState(0);
-  const [show, setShow] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [nearEnd, setNearEnd] = useState(false);
 
   useEffect(() => {
     let raf = 0;
     const update = () => {
       raf = 0;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-      if (bar.current) bar.current.style.transform = `scaleX(${p})`;
-      setTime(Math.round(p * LENGTH));
-      setShow(window.scrollY > window.innerHeight * 0.6 && p < 0.985);
+      const p = max > 0 ? window.scrollY / max : 0;
+      setScrolled(window.scrollY > window.innerHeight * 0.6);
+      setNearEnd(p > 0.985);
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -49,48 +41,89 @@ export function LivePlayer() {
     };
   }, [path]);
 
-  const title = TRACKS[path] ?? (path.startsWith("/concerts/events/") ? "Show — live" : "Passion Live");
+  // real playback clock, updated four times a second while playing
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- show the paused position straight away
+    setTime(position());
+    if (!playing) return;
+    const id = window.setInterval(() => setTime(position()), 250);
+    return () => window.clearInterval(id);
+  }, [playing, position]);
+
+  const show = (scrolled || playing) && !nearEnd;
+  const pct = trackLength ? (time / trackLength) * 100 : 0;
+  const VolIcon = !enabled || volume === 0 ? VolumeX : volume < 0.5 ? Volume1 : Volume2;
 
   return (
     <div
-      className={`pointer-events-none fixed bottom-4 left-4 z-[70] transition-[transform,opacity] duration-500 max-sm:bottom-3 max-sm:left-3 ${show ? "translate-y-0 opacity-100" : "translate-y-[150%] opacity-0"}`}
+      data-sound-ignore=""
+      className={`pointer-events-none fixed bottom-4 left-4 z-[70] transition-[transform,opacity] duration-500 max-sm:bottom-3 max-sm:left-3 max-sm:right-3 ${show ? "translate-y-0 opacity-100" : "translate-y-[150%] opacity-0"}`}
       aria-hidden={!show}
       inert={!show}
     >
-      <div className="pointer-events-auto flex w-[min(52vw,200px)] items-center gap-3 rounded-2xl sm:w-[340px] border border-white/10 bg-black/70 p-2.5 pr-3 shadow-[0_20px_50px_-15px_rgb(0_0_0/0.9)] backdrop-blur-xl">
-        <span className="relative grid size-8 shrink-0 sm:size-10 place-items-center overflow-hidden rounded-xl bg-[conic-gradient(from_200deg,#ff5a1f,#ff2e88,#8b5cff,#2ec5ff,#ff5a1f)]" aria-hidden="true">
-          <span className="size-3 rounded-full bg-black" />
-          <span className="absolute inset-0 animate-[spin_4s_linear_infinite] rounded-xl bg-[conic-gradient(from_0deg,transparent,rgb(255_255_255/0.25)_30deg,transparent_60deg)] motion-reduce:animate-none" />
+      <div role="region" aria-label="Music player" className="pointer-events-auto relative overflow-hidden rounded-[1.4rem] bg-black/75 p-2.5 shadow-[0_24px_60px_-18px_rgb(0_0_0/0.95)] ring-1 ring-white/12 backdrop-blur-xl sm:w-[400px] sm:p-3">
+        {/* progress along the top edge on phones */}
+        <span className="absolute inset-x-0 top-0 h-[2px] bg-white/10 sm:hidden" aria-hidden="true">
+          <span className="block h-full bg-gradient-to-r from-acid via-volt to-hot transition-[width] duration-200" style={{ width: `${pct}%` }} />
         </span>
-        <span className="min-w-0 flex-1">
-          <span className="flex items-center gap-2">
-            <span className="truncate font-grotesk text-[0.72rem] font-semibold text-white max-sm:hidden">{title}</span>
-            <span className="flex h-3 shrink-0 items-end gap-[2px]" aria-hidden="true">
-              {[0.6, 1, 0.5, 0.85].map((v, k) => (
-                <span key={k} className="w-[2px] origin-bottom animate-[eq_0.7s_ease-in-out_infinite] bg-volt motion-reduce:animate-none" style={{ height: `${v * 100}%`, animationDelay: `${k * 0.12}s` }} />
-              ))}
-            </span>
+
+        <div className="flex items-center gap-3">
+          {/* spinning record */}
+          <span className="relative grid size-11 shrink-0 place-items-center overflow-hidden rounded-full bg-[conic-gradient(from_200deg,#ff5a1f,#ff2e88,#8b5cff,#2ec5ff,#ff5a1f)] sm:size-12" aria-hidden="true">
+            <span className={`absolute inset-[3px] rounded-full bg-[repeating-radial-gradient(circle,#0b0b0f_0px,#0b0b0f_2px,#17171d_3px)] ${playing ? "animate-[spin_3s_linear_infinite]" : ""} motion-reduce:animate-none`} />
+            <span className="relative size-3 rounded-full bg-volt" />
           </span>
-          <span className="mt-1.5 block h-[3px] overflow-hidden rounded-full bg-white/15 max-sm:mt-0">
-            <span ref={bar} className="block h-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-acid via-volt to-hot" />
-          </span>
-          <span className="mt-1 flex justify-between font-grotesk text-[0.58rem] tabular-nums text-white/50 max-sm:hidden">
-            <span>{fmt(time)}</span>
-            <span>{fmt(LENGTH)}</span>
-          </span>
-        </span>
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={enabled ? "Turn interaction sound off" : "Turn interaction sound on"}
-          aria-pressed={enabled}
-          className={`grid size-8 shrink-0 place-items-center rounded-full border transition-colors sm:size-9 ${enabled ? "border-volt bg-volt text-black" : "border-white/20 text-white hover:border-white"}`}
-        >
-          <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            <path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke="none" />
-            {enabled ? <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" strokeLinecap="round" /> : <path d="m16 9 5 6m0-6-5 6" strokeLinecap="round" />}
-          </svg>
-        </button>
+
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <p className="truncate font-display text-base uppercase leading-none text-white">{trackTitle}</p>
+              <Eq on={playing} className="text-volt" />
+            </div>
+            <p className="mt-1 truncate font-grotesk text-[0.6rem] uppercase tracking-[0.2em] text-white/50">
+              {blocked ? "Tap sound on to play" : "Passion Live · original soundtrack"}
+            </p>
+            <div className="mt-2 hidden items-center gap-2 sm:flex">
+              <span className="font-grotesk text-[0.6rem] tabular-nums text-white/60">{fmt(time)}</span>
+              <span className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-label="Playback position" aria-valuemin={0} aria-valuemax={Math.round(trackLength)} aria-valuenow={Math.round(time)}>
+                <span className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-acid via-volt to-hot transition-[width] duration-200" style={{ width: `${pct}%` }} />
+              </span>
+              <span className="font-grotesk text-[0.6rem] tabular-nums text-white/40">{fmt(trackLength)}</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={playPause}
+            aria-label={playing ? "Pause the soundtrack" : "Play the soundtrack"}
+            className="grid size-11 shrink-0 place-items-center rounded-full bg-white text-black transition-transform duration-300 hover:scale-110 active:scale-95"
+          >
+            {playing ? <Pause className="size-4 fill-current" /> : <Play className="ml-0.5 size-4 fill-current" />}
+          </button>
+          <button
+            type="button"
+            onClick={toggle}
+            aria-pressed={enabled}
+            aria-label={enabled ? "Mute — sound off" : "Unmute — sound on"}
+            className={`grid size-10 shrink-0 place-items-center rounded-full ring-1 transition-colors ${enabled ? "text-white ring-white/25 hover:bg-white hover:text-black" : "text-white/60 ring-white/15 hover:text-white"}`}
+          >
+            <VolIcon className="size-4" />
+          </button>
+        </div>
+
+        <label className="mt-2.5 hidden items-center gap-3 border-t border-white/10 pt-2.5 sm:flex">
+          <span className="font-grotesk text-[0.58rem] uppercase tracking-[0.2em] text-white/45">Volume</span>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.01}
+            value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            aria-label="Volume"
+            className="h-1 flex-1 cursor-pointer appearance-none rounded-full bg-white/15 accent-volt [&::-webkit-slider-thumb]:size-3.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white"
+          />
+          <span className="w-8 text-right font-grotesk text-[0.6rem] tabular-nums text-white/55">{Math.round(volume * 100)}</span>
+        </label>
       </div>
     </div>
   );

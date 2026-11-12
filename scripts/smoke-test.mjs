@@ -18,7 +18,13 @@ const pages = [
   ["/destination-events", ["Destination Events", "Door to door"]],
   ["/event-production", ["Event Production", "whole show"]],
   ["/portfolio", ["Stories we"]],
-  ["/founders", ["Sai Tanush"]],
+  ["/founders", ["Sai Tanush", "Ramya", "ramya-960"]],
+  ["/what-we-do", ["Every kind of", "Weddings &amp; Celebrations", "College Fests", "Complete Event Management"]],
+  ["/services/concerts-and-live-entertainment", ["Concerts &amp; Live Entertainment", "What Passion Events handles"]],
+  ["/services/college-fests-and-cultural-events", ["College Fests"]],
+  ["/services/artist-and-entertainment-management", ["Sameera Bharadwaj"]],
+  ["/services/complete-event-management", ["Conceptualisation"]],
+  ["/reels", ["as they happened", "DeTkSCHtGHK"]],
   ["/contact", ["Enquire"]],
   ["/concerts", ["Turn the night", "We produce the", "starts with us"]],
   ["/concerts/events", ["Every"]],
@@ -44,7 +50,7 @@ for (const [path, needles] of pages) {
   check(!/Application error|Internal Server Error/i.test(body), `${path} has no error page`);
 }
 
-for (const path of ["/does-not-exist", "/portfolio/does-not-exist", "/concerts/events/does-not-exist"]) {
+for (const path of ["/does-not-exist", "/portfolio/does-not-exist", "/concerts/events/does-not-exist", "/services/does-not-exist"]) {
   const res = await fetch(base + path);
   check(res.status === 404, `${path} → ${res.status} (expect 404)`);
 }

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { useCoverflow } from "@/motion/useCoverflow";
 import { ArrowUpRight } from "lucide-react";
-import { categories } from "@/content/events";
+import { services as categories } from "@/content/services";
 import { UniverseLink } from "@/components/shared/UniverseTransition";
 import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
 import { RevealText } from "@/motion/RevealText";
@@ -14,7 +14,7 @@ import { SectionLabel } from "../SectionLabel";
 const STEP = 24; // degrees between cards on the wheel
 
 /**
- * "Wheel of worlds": on desktop the six categories ride a giant rotating
+ * "Wheel of worlds": on desktop the nine services ride a giant rotating
  * wheel. Scrolling turns it; the card at the top grows into focus while its
  * title, story and services roll in beneath. Transforms only, so it stays
  * smooth. Tablet/mobile get an editorial column with reveal-on-scroll cards.
@@ -83,7 +83,7 @@ export function WhatWeDo() {
           scrollTrigger: {
             trigger: q("[data-pin]")[0],
             start: "top top",
-            end: `+=${(n - 1) * 75}%`,
+            end: `+=${(n - 1) * 55}%`,
             pin: true,
             scrub: 1,
             anticipatePin: 1,
@@ -122,7 +122,7 @@ export function WhatWeDo() {
         <div className="absolute left-10 top-1/2 z-[200] max-w-[22vw] -translate-y-1/2">
           <SectionLabel index="02">What we do</SectionLabel>
           <h2 id="what-title" className="mt-6 font-serif text-[clamp(2.6rem,4.4vw,4.8rem)] font-light leading-[0.95] tracking-[-0.02em] text-ink">
-            Six worlds. <em className="text-rose-deep">One team.</em>
+            Nine worlds. <em className="text-rose-deep">One team.</em>
           </h2>
           <p className="mt-5 max-w-sm text-[0.97rem] leading-relaxed text-stone">
             Not only a wedding planner — from boardrooms to ballrooms to concert stages, we plan, design and run every category.
@@ -153,10 +153,10 @@ export function WhatWeDo() {
               <div key={c.key} data-spoke="" className="absolute left-0 top-0 size-0">
                 <div data-wheel-card="" className="absolute left-0 top-0 size-0">
                   <div className="absolute aspect-[3/4] h-[46svh] -translate-x-1/2 -translate-y-1/2">
-                    <CardLink live={c.key === "concerts"} href={c.href} label={`${c.title} — discover more`} tabIndex={-1}>
+                    <CardLink live={Boolean(c.live)} href={c.href} label={`${c.title} — discover more`} tabIndex={-1}>
                       <div className="group relative h-full w-full overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] border-[5px] border-ivory bg-blush shadow-[0_50px_90px_-40px_rgb(94_52_64/0.7)]">
                         <Pic image={c.image} sizes="(max-width: 1600px) 30vw, 420px" className="transition-transform duration-[1.6s] ease-[var(--ease-silk)] group-hover:scale-[1.06]" />
-                        <div className={`absolute inset-0 ${c.key === "concerts" ? "bg-gradient-to-t from-void/80 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/55 via-transparent to-transparent"}`} />
+                        <div className={`absolute inset-0 ${Boolean(c.live) ? "bg-gradient-to-t from-void/80 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/55 via-transparent to-transparent"}`} />
                         <div className="absolute inset-0 bg-ivory [opacity:var(--dim,0)]" />
                         <span className="absolute bottom-4 right-5 font-script text-5xl text-ivory/95">{c.script}</span>
                       </div>
@@ -184,7 +184,7 @@ export function WhatWeDo() {
               </span>
               <span className="mt-4 block overflow-hidden pb-1">
                 <ul data-roll="" className="flex flex-wrap justify-center gap-2">
-                  {c.services.slice(0, 4).map((s) => (
+                  {c.handles.slice(0, 4).map((s) => (
                     <li key={s} className="rounded-full border border-ink/15 bg-ivory/60 px-3 py-1 text-xs text-ink/75">
                       {s}
                     </li>
@@ -193,8 +193,8 @@ export function WhatWeDo() {
               </span>
               <span className="mt-4 block overflow-hidden pb-1">
                 <span data-roll="" className="block">
-                  <CardLink live={c.key === "concerts"} href={c.href} label={`${c.title} — discover more`} className="link-underline inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink">
-                    {c.key === "concerts" ? "Enter Passion Live" : "Discover more"} <ArrowUpRight className="size-4" />
+                  <CardLink live={Boolean(c.live)} href={c.href} label={`${c.title} — discover more`} className="link-underline inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink">
+                    {Boolean(c.live) ? "Enter Passion Live" : "Discover more"} <ArrowUpRight className="size-4" />
                   </CardLink>
                 </span>
               </span>
@@ -224,7 +224,7 @@ function MobileWorlds() {
       <div className="relative px-5 md:px-10">
         <SectionLabel index="02">What we do</SectionLabel>
         <RevealText as="h2" className="mt-6 font-serif text-[clamp(2.9rem,9vw,4.4rem)] font-light leading-[0.92] tracking-[-0.02em] text-ink">
-          Six worlds. <em className="text-rose-deep">One team.</em>
+          Nine worlds. <em className="text-rose-deep">One team.</em>
         </RevealText>
         <p className="mt-5 max-w-md text-[0.98rem] leading-relaxed text-stone">
           Not only a wedding planner — from boardrooms to ballrooms to concert stages, we plan, design and run every category.
@@ -242,7 +242,7 @@ function MobileWorlds() {
 
       <div ref={strip} className="relative mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[12vw] pb-4 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {categories.map((c) => {
-          const live = c.key === "concerts";
+          const live = Boolean(c.live);
           return (
             <article key={c.key} data-cf="" className="w-[76vw] max-w-[380px] shrink-0 snap-center will-change-transform">
               <CardLink live={live} href={c.href} label={`${c.title} — discover more`} className="block">
@@ -266,14 +266,14 @@ function MobileWorlds() {
         {categories.map((c, i) => (
           <div key={c.key} className={`absolute inset-x-5 top-0 transition-[opacity,transform] duration-500 md:inset-x-10 ${i === active ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"}`} aria-hidden={i !== active}>
             <ul className="flex flex-wrap gap-2">
-              {c.services.slice(0, 4).map((s) => (
+              {c.handles.slice(0, 4).map((s) => (
                 <li key={s} className="rounded-full border border-ink/12 bg-ivory/70 px-3 py-1 text-xs text-ink/75">
                   {s}
                 </li>
               ))}
             </ul>
-            <CardLink live={c.key === "concerts"} href={c.href} label={`${c.title} — discover more`} className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink" tabIndex={i === active ? undefined : -1}>
-              {c.key === "concerts" ? "Enter Passion Live" : "Discover more"} <ArrowUpRight className="size-4" />
+            <CardLink live={Boolean(c.live)} href={c.href} label={`${c.title} — discover more`} className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink" tabIndex={i === active ? undefined : -1}>
+              {Boolean(c.live) ? "Enter Passion Live" : "Discover more"} <ArrowUpRight className="size-4" />
             </CardLink>
           </div>
         ))}
@@ -299,7 +299,7 @@ function CardLink({
   children: React.ReactNode;
 }) {
   return live ? (
-    <UniverseLink href={href} to="live" className={className} aria-label={label} tabIndex={tabIndex}>
+    <UniverseLink href="/concerts" to="live" className={className} aria-label={label} tabIndex={tabIndex}>
       {children}
     </UniverseLink>
   ) : (

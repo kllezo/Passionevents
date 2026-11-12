@@ -21,6 +21,12 @@ const nextConfig = {
       { protocol: "https", hostname: "images.unsplash.com", pathname: "/photo-**" },
     ],
   },
+  async redirects() {
+    return [
+      { source: "/concerts/shows", destination: "/concerts/events", permanent: false },
+      { source: "/concerts/shows/:slug", destination: "/concerts/events/:slug", permanent: false },
+    ];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

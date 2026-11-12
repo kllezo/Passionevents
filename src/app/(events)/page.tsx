@@ -1,7 +1,7 @@
 import { EventsIntro } from "@/components/events/home/EventsIntro";
 import { EventsHero } from "@/components/events/home/EventsHero";
 import { BrandIntro } from "@/components/events/home/BrandIntro";
-import { ProofBand } from "@/components/events/home/ProofBand";
+import { ClosingStatement } from "@/components/events/home/ClosingStatement";
 import { FlyThrough } from "@/components/events/home/FlyThrough";
 import { CinematicShowcase } from "@/components/events/home/CinematicShowcase";
 import { WhatWeDo } from "@/components/events/home/WhatWeDo";
@@ -19,7 +19,7 @@ export const metadata = {
   ...pageMetadata({
     title: "Passion Events — Weddings, Corporate & Live Events in Hyderabad",
     description:
-      "Big or small, we make it special. Passion Events plans and manages weddings, corporate events, private celebrations, destination events and concerts across India from Hyderabad.",
+      "Big or small, we make it special. Passion Events plans and manages weddings, corporate events, concerts, college fests, private celebrations, destination events and complete event production across India from Hyderabad.",
     path: "/",
   }),
   title: { absolute: "Passion Events — Weddings, Corporate & Live Events in Hyderabad" },
@@ -31,7 +31,6 @@ export default function HomePage() {
       <JsonLd data={[organizationJsonLd(), faqJsonLd(faqs)]} />
       <EventsIntro />
       <EventsHero />
-      <ProofBand />
       <BrandIntro />
       <FlyThrough />
       <WhatWeDo />
@@ -41,6 +40,7 @@ export default function HomePage() {
       <PortfolioPreview index="05" />
       <FoundersFeature index="06" />
       <WhyUs index="07" />
+      <ClosingStatement />
       <EnquirySection index="08" />
     </>
   );

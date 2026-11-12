@@ -1,6 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 import { PrismaClient } from "@prisma/client";
+import { services } from "@/content/services";
+
+const SERVICE_SLUGS = new Set(services.map((s) => s.slug));
 
 const COOKIE = "pe_admin_session";
 
@@ -11,12 +14,19 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.proxyPrisma = db;
 /**
  * 1. Optimistic gate for /admin (real authorisation happens server-side in
  *    every admin page, action and API route — src/lib/auth/dal.ts).
- * 2. Real HTTP 404s for unknown or unpublished portfolio stories and shows.
+ * 2. Real HTTP 404s for unknown services, and for unknown or unpublished
+ *    portfolio stories and shows.
  *    With Partial Prerendering the static shell is sent with 200 before the
  *    page can call notFound(), so the existence check has to happen here.
  */
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  const service = pathname.match(/^\/services\/([^/]+)\/?$/);
+  if (service) {
+    if (!SERVICE_SLUGS.has(decodeURIComponent(service[1]))) return NextResponse.rewrite(new URL("/_missing", req.url), { status: 404 });
+    return NextResponse.next();
+  }
 
   const detail = pathname.match(/^\/(portfolio|concerts\/events)\/([^/]+)\/?$/);
   if (detail) {
@@ -53,5 +63,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin", "/admin/:path*", "/portfolio/:slug", "/concerts/events/:slug"],
+  matcher: ["/admin", "/admin/:path*", "/portfolio/:slug", "/concerts/events/:slug", "/services/:slug"],
 };

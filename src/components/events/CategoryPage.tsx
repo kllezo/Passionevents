@@ -22,6 +22,16 @@ import { PortfolioSkeleton } from "./home/PortfolioPreview";
 import { EventsButton } from "./Button";
 import { Bloom } from "./botanical/Sprig";
 
+/** Section on /what-we-do that each category page returns to. */
+const whatWeDoAnchor: Record<Category["key"], string> = {
+  weddings: "weddings",
+  corporate: "corporate",
+  private: "private",
+  destination: "destination",
+  concerts: "concerts",
+  production: "production",
+};
+
 const categoryDbKey: Record<Category["key"], string> = {
   weddings: "WEDDING",
   corporate: "CORPORATE",
@@ -88,6 +98,10 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
         intro={<p>{c.short}</p>}
         overlay={identity && <HeroMotif kind={identity.motif} />}
       >
+        <Link href={`/what-we-do#${whatWeDoAnchor[c.key]}`} className="mt-8 inline-flex items-center gap-3 rounded-full bg-ivory/90 py-2 pl-2 pr-5 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-ink backdrop-blur-md transition-colors hover:bg-ivory">
+          <span className="grid size-8 place-items-center rounded-full bg-ink text-ivory">←</span>
+          All nine services
+        </Link>
         {/* phones: a clear next step right in the first screen */}
         <div className="mt-8 flex items-center gap-5 lg:hidden">
           <EventsButton href="#enquire" variant="ivory">

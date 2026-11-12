@@ -2,13 +2,13 @@ import { Pic } from "@/components/shared/Pic";
 import Link from "next/link";
 import { stock } from "@/content/media";
 import { categories, faqs } from "@/content/events";
+import { services } from "@/content/services";
 import { pageMetadata, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { PageHero } from "@/components/events/PageHero";
 import { SectionLabel } from "@/components/events/SectionLabel";
 import { IndividualServices } from "@/components/events/home/IndividualServices";
 import { EnquirySection } from "@/components/events/EnquirySection";
 import { JsonLd } from "@/components/shared/JsonLd";
-import { UniverseLink } from "@/components/shared/UniverseTransition";
 import { RevealText } from "@/motion/RevealText";
 
 export const metadata = pageMetadata({
@@ -42,35 +42,21 @@ export default function ServicesPage() {
             Event categories
           </h2>
           <ul className="mt-12 border-t border-ink/15">
-            {categories.map((c) => {
-              const row = (
-                <>
+            {services.map((c) => (
+              <li key={c.key}>
+                <Link href={c.href} className="group grid grid-cols-[1fr_5rem] items-center gap-x-4 gap-y-2 border-b border-ink/15 py-7 md:grid-cols-12 md:gap-6 md:py-8">
                   <span className="col-start-1 font-serif text-sm italic text-rose md:col-span-1 md:col-start-auto">{c.index}</span>
                   <span className="col-start-1 font-serif text-[clamp(2rem,4.4vw,4.4rem)] leading-none text-ink transition-all duration-700 ease-[var(--ease-silk)] group-hover:translate-x-3 group-hover:italic group-hover:text-rose-deep md:col-span-6 md:col-start-auto">
                     {c.title}
                   </span>
                   <span className="col-start-1 text-stone md:col-span-4 md:col-start-auto">{c.short}</span>
-                  {/* phones: an arched thumbnail beside each category; desktop: the round one at the end */}
+                  {/* phones: an arched thumbnail beside each service; desktop: the round one at the end */}
                   <span className="relative col-start-2 row-span-3 row-start-1 block h-24 w-20 self-center overflow-hidden rounded-t-full rounded-b-xl shadow-[0_16px_30px_-18px_rgb(94_52_64/0.7)] md:col-span-1 md:col-start-auto md:row-span-1 md:row-start-auto md:size-16 md:justify-self-end md:rounded-full md:shadow-none">
                     <Pic image={c.image} alt="" sizes="96px" className="transition-transform duration-1000 group-hover:scale-125" />
                   </span>
-                </>
-              );
-              const cls = "group grid grid-cols-[1fr_5rem] items-center gap-x-4 gap-y-2 border-b border-ink/15 py-7 md:grid-cols-12 md:gap-6 md:py-8";
-              return (
-                <li key={c.key}>
-                  {c.key === "concerts" ? (
-                    <UniverseLink href={c.href} to="live" className={cls}>
-                      {row}
-                    </UniverseLink>
-                  ) : (
-                    <Link href={c.href} className={cls}>
-                      {row}
-                    </Link>
-                  )}
-                </li>
-              );
-            })}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </section>

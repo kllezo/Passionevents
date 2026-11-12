@@ -49,7 +49,7 @@ export function ProductionShowcase() {
       <div data-pin="" className="relative overflow-hidden lg:h-[100svh]">
         <div data-track="" className="flex flex-col gap-8 px-5 py-24 md:px-10 lg:h-full lg:w-max lg:flex-row lg:items-center lg:gap-6 lg:py-0 lg:pr-[8vw]">
           <div className="shrink-0 lg:w-[30vw]">
-            <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-laser">How a show is built</p>
+            <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-laser">(02) Production capabilities — how a show is built</p>
             <h2 id="production-title" className="mt-6 font-display text-[clamp(3rem,6.5vw,7rem)] uppercase leading-[0.88] text-white">
               We produce the <span className="text-laser">whole night.</span>
             </h2>

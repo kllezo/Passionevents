@@ -35,7 +35,8 @@ export const foundersList: Founder[] = [
     name: "Ramya",
     displayName: "Ramya",
     role: "Co-founder · Passion Events",
-    image: null, // Add a portrait in /public/media/founders and reference it here.
+    image: founderImages.ramya,
+    // Biography still to come from Ramya — replace or extend these lines when it arrives.
     bio: [
       "Ramya co-founded Passion Events with Sai Tanush. Together they sign every celebration — “By Ramya & Tanush”.",
     ],
