@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { stock } from "@/content/media";
-import { pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/shared/JsonLd";
 import { LivePageHero } from "@/components/live/LivePageHero";
 import { LiveSectionHead } from "@/components/live/LiveSectionHead";
 import { UpcomingShows, PastExperiences, GridSkeleton } from "@/components/live/ShowListings";
@@ -17,6 +18,7 @@ export const metadata = pageMetadata({
 export default function ShowsPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Passion Live", path: "/concerts" }, { name: "Shows", path: "/concerts/events" }])} />
       <LivePageHero
         eyebrow="Passion Live · Shows"
         title={

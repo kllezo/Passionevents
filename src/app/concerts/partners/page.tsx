@@ -1,6 +1,7 @@
 import { stock } from "@/content/media";
 import { collaborators } from "@/content/live";
-import { pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/shared/JsonLd";
 import { site, whatsappLink } from "@/lib/site";
 import { LivePageHero } from "@/components/live/LivePageHero";
 import { Collaborate } from "@/components/live/HandleAndCollab";
@@ -8,7 +9,7 @@ import { EnquiryForm } from "@/components/shared/EnquiryForm";
 import { RevealText } from "@/motion/RevealText";
 
 export const metadata = pageMetadata({
-  title: "Partner With Us — Brands, Sponsors, Artists & Venues",
+  title: "Partner With Us — Sponsors, Artists & Venues",
   description: "Partner with Passion Live on concerts and live events — brand activations, sponsorships, artist collaborations, venues and production partnerships.",
   path: "/concerts/partners",
   image: "/brand/og-passion-live.jpg",
@@ -18,6 +19,7 @@ export const metadata = pageMetadata({
 export default function PartnersPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Passion Live", path: "/concerts" }, { name: "Partners", path: "/concerts/partners" }])} />
       <LivePageHero
         eyebrow="Partners"
         title={

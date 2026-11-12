@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     "corporate event management",
     "destination wedding planner India",
     "concert organisers Hyderabad",
+    "event organisers Andhra Pradesh",
+    "event management Telangana",
+    "college fest organisers",
     "artist booking",
     "Passion Events",
   ],
@@ -52,6 +55,11 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   formatDetection: { telephone: false },
+  authors: [{ name: "Passion Events" }],
+  creator: "Passion Events",
+  publisher: "Passion Events",
+  category: "Event management",
+  other: { "geo.region": "IN-TG", "geo.placename": "Hyderabad" },
 };
 
 export const viewport: Viewport = {

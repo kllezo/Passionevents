@@ -3,6 +3,8 @@ import { services } from "@/content/services";
 import { site } from "@/lib/site";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { EnquirySection } from "@/components/events/EnquirySection";
+import { FaqSection } from "@/components/events/FaqSection";
+import { geoFaqs } from "@/content/events";
 import { WhatWeDoIntro, SectionIndex } from "@/components/events/whatwedo/Intro";
 import {
   WeddingsSection,
@@ -17,9 +19,8 @@ import {
 } from "@/components/events/whatwedo/Sections";
 
 export const metadata = pageMetadata({
-  title: "What We Do — Weddings, Corporate, Concerts, Fests & Complete Event Management",
-  description:
-    "Nine ways Passion Events makes it special: weddings, corporate events, concerts, college fests, private events, destination events, artist management, event design & production and complete event management.",
+  title: "What We Do — Weddings to Concerts",
+  description: "Nine event services from Hyderabad: weddings, corporate events, concerts, college fests, private and destination events, artists, production and full management.",
   path: "/what-we-do",
 });
 
@@ -56,7 +57,8 @@ export default function WhatWeDoPage() {
       <ArtistsSection />
       <ProductionSection />
       <CompleteSection />
-      <EnquirySection index="10" />
+      <FaqSection items={geoFaqs} index="10" title="Questions, answered." />
+      <EnquirySection index="11" />
     </>
   );
 }

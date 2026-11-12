@@ -21,7 +21,7 @@ export function FoundersFeature({ index = "07", detailed = false }: { index?: st
       <div className="relative mx-auto max-w-[1600px] px-5 md:px-10">
         <div className="flex flex-col items-center text-center">
           <SectionLabel index={index}>The founders</SectionLabel>
-          <RevealText as="h2" id="founders-title" className="mt-8 font-serif text-[clamp(3rem,7vw,7.4rem)] font-light leading-[0.9] tracking-[-0.02em] text-ink">
+          <RevealText as={detailed ? "h1" : "h2"} id="founders-title" className="mt-8 font-serif text-[clamp(3rem,7vw,7.4rem)] font-light leading-[0.9] tracking-[-0.02em] text-ink">
             By Ramya <em className="font-script text-[1.1em] not-italic text-coral">&amp;</em> Tanush
           </RevealText>
           <p className="mt-6 max-w-lg text-lg text-stone">Two founders, one signature — the same one written beneath our logo, on every celebration we create.</p>

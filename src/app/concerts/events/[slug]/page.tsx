@@ -19,7 +19,11 @@ export async function generateMetadata({ params }: PageProps<"/concerts/events/[
   const where = [e.venue, e.city].filter(Boolean).join(", ");
   return pageMetadata({
     title: e.title,
-    description: e.summary || `${e.title}${where ? ` at ${where}` : ""} — presented by Passion Live.`,
+    // Short admin summaries get the show's context so the snippet stays useful.
+    description:
+      e.summary && e.summary.length >= 80
+        ? e.summary
+        : `${e.summary ? e.summary.replace(/\.$/, "") : `${e.title}${where ? ` at ${where}` : ""}`} — a live show presented by Passion Live, the concert brand of Passion Events.`,
     path: `/concerts/events/${e.slug}`,
     image: e.posterUrl ?? e.coverUrl ?? "/brand/og-passion-live.jpg",
     live: true,

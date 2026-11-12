@@ -10,7 +10,7 @@ export const site = {
   tagline: "Big. Or. Small. We. Make. It. Special.",
   byline: "By Ramya & Tanush",
   description:
-    "Passion Events is a Hyderabad-based event company creating weddings, corporate events, private celebrations, destination events and live concerts across India.",
+    "Passion Events is a Hyderabad-based event company offering A to Z event services — weddings, corporate events, private celebrations, destination events and live concerts — across Andhra Pradesh, Telangana and India.",
   liveDescription:
     "Passion Live brings artists, audiences and unforgettable moments together — concert planning, artist bookings and complete live production from Passion Events.",
   url: (clean(process.env.NEXT_PUBLIC_SITE_URL) ?? "http://localhost:3000").replace(/\/$/, ""),

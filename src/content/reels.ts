@@ -21,19 +21,21 @@ export type Reel = {
   category: ReelCategory;
   /** Landscape covers are shown letterboxed inside the vertical frame. */
   landscape?: boolean;
+  /** Publish date from the Instagram post, when the caption shows one. */
+  published?: string;
 };
 
 export const reels: Reel[] = [
-  { id: "DeTkSCHtGHK", title: "Sameera Bharadwaj, live", place: "Bengaluru", date: "Oct 2026", category: "Concerts" },
-  { id: "DIT7CNHzKqG", title: "An engagement evening", place: "Nandigama", date: "Apr 2025", category: "Weddings" },
-  { id: "DXmBXWMkzwd", title: "From vision to vibe — the founder behind the scenes", date: "Apr 2026", category: "Behind the scenes" },
-  { id: "DNyDrfV5tsF", title: "Sangeet vibes", place: "Hyderabad", date: "Aug 2025", category: "Weddings" },
+  { id: "DeTkSCHtGHK", published: "2026-10-10", title: "Sameera Bharadwaj, live", place: "Bengaluru", date: "Oct 2026", category: "Concerts" },
+  { id: "DIT7CNHzKqG", published: "2025-04-11", title: "An engagement evening", place: "Nandigama", date: "Apr 2025", category: "Weddings" },
+  { id: "DXmBXWMkzwd", published: "2026-04-26", title: "From vision to vibe — the founder behind the scenes", date: "Apr 2026", category: "Behind the scenes" },
+  { id: "DNyDrfV5tsF", published: "2025-08-25", title: "Sangeet vibes", place: "Hyderabad", date: "Aug 2025", category: "Weddings" },
   { id: "DXletLRk1SB", title: "Geetha Madhuri, live in concert", category: "Concerts", landscape: true },
-  { id: "DLImPaTz1bw", title: "A sunflower haldi", place: "Jaggayyapeta", date: "Jun 2025", category: "Décor" },
+  { id: "DLImPaTz1bw", published: "2025-06-20", title: "A sunflower haldi", place: "Jaggayyapeta", date: "Jun 2025", category: "Décor" },
   { id: "DYs9l4Axp0j", title: "Sameera Bharadwaj at Illuzion Club", place: "Hyderabad", category: "Concerts" },
-  { id: "DIgArydzZwW", title: "Pelli kuthuru décor", place: "Nandigama", date: "Apr 2025", category: "Décor" },
-  { id: "DIlOuTfIzG6", title: "A wedding day", place: "Nandigama", date: "Apr 2025", category: "Weddings" },
-  { id: "DITK04ATEeA", title: "A little film for the bride & groom", date: "Apr 2025", category: "Weddings" },
+  { id: "DIgArydzZwW", published: "2025-04-16", title: "Pelli kuthuru décor", place: "Nandigama", date: "Apr 2025", category: "Décor" },
+  { id: "DIlOuTfIzG6", published: "2025-04-18", title: "A wedding day", place: "Nandigama", date: "Apr 2025", category: "Weddings" },
+  { id: "DITK04ATEeA", published: "2025-04-11", title: "A little film for the bride & groom", date: "Apr 2025", category: "Weddings" },
 ];
 
 export const reelUrl = (id: string) => `https://www.instagram.com/reel/${id}/`;

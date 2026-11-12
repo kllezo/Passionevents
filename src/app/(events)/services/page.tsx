@@ -12,9 +12,8 @@ import { JsonLd } from "@/components/shared/JsonLd";
 import { RevealText } from "@/motion/RevealText";
 
 export const metadata = pageMetadata({
-  title: "Event Services — Planning, Decor, Catering, Artists & Production",
-  description:
-    "Book individual event services or complete event management: venues, catering, decor, floral styling, photography, videography, stage, sound, lighting, artists, hotels and transport.",
+  title: "Individual Event Services in Hyderabad",
+  description: "Book one service or the whole event: venues, catering, decor, florals, photography, stage, sound, lighting, artists, hotels and transport — from Hyderabad.",
   path: "/services",
 });
 

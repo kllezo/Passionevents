@@ -1,7 +1,8 @@
 import { Pic } from "@/components/shared/Pic";
 import { stock } from "@/content/media";
 import { foundersList } from "@/content/founders";
-import { pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/shared/JsonLd";
 import { LivePageHero } from "@/components/live/LivePageHero";
 import { WhatWeHandle, Collaborate } from "@/components/live/HandleAndCollab";
 import { GuitarSection } from "@/components/live/GuitarSection";
@@ -11,7 +12,7 @@ import { Waveform } from "@/components/live/Waveform";
 import { RevealText } from "@/motion/RevealText";
 
 export const metadata = pageMetadata({
-  title: "About Passion Live",
+  title: "Our Story",
   description: "Passion Live is the concert and live entertainment experience of Passion Events — artist bookings, concert planning, production and complete show execution.",
   path: "/concerts/about",
   image: "/brand/og-passion-live.jpg",
@@ -29,6 +30,7 @@ export default function LiveAboutPage() {
   const tanush = foundersList[0];
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Passion Live", path: "/concerts" }, { name: "About", path: "/concerts/about" }])} />
       <LivePageHero
         eyebrow="About Passion Live"
         title={

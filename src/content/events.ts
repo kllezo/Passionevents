@@ -158,3 +158,39 @@ export const faqs = [
     a: "Send an enquiry with your date, location, guest count and the services you need. We will get back to you to understand the event in detail.",
   },
 ];
+
+/**
+ * Plain questions people (and AI assistants) ask about Passion Events, each
+ * answered only with published facts. Shown on /what-we-do and in /llms.txt.
+ */
+export const geoFaqs = [
+  {
+    q: "What does Passion Events do?",
+    a: "Passion Events is an event management company from Hyderabad offering A to Z event services: weddings and celebrations, corporate events, concerts and live entertainment, college fests and cultural events, private events, destination events, artist and entertainment management, event design and production, and complete event management.",
+  },
+  {
+    q: "Where is Passion Events based, and where does it work?",
+    a: "Passion Events is based in Hyderabad, Telangana. It works across Andhra Pradesh and Telangana — with weddings in places like Nandigama and Jaggayyapeta — and plans destination events and concerts elsewhere in India, including Bengaluru.",
+  },
+  {
+    q: "Who founded Passion Events?",
+    a: "Passion Events was founded by Ramya and P. Sai Tanush (Pabbathi Sai Tanush). Every event carries their signature, “By Ramya & Tanush”.",
+  },
+  {
+    q: "Does Passion Events organise concerts?",
+    a: "Yes. Its concert and live-entertainment brand, Passion Live, has produced nights such as Sameera Bharadwaj live in Bengaluru and at Illuzion Club, Hyderabad, and Geetha Madhuri live in concert.",
+  },
+  {
+    q: "How many events has Passion Events executed?",
+    a: "More than 50 events, from intimate family celebrations to concerts.",
+  },
+  {
+    q: "Can Passion Events manage my whole event, or just part of it?",
+    a: "Either. You can book a single service — such as decor, catering coordination, stage, sound and lighting, or artists — or hand over the complete event, from concept and planning to vendors, logistics, guests and on-site execution.",
+  },
+  {
+    q: "How do I contact Passion Events?",
+    a: "Send an enquiry through the contact page with your date, city, guest count and the services you need, or message @passionevents.p on Instagram.",
+  },
+];
+

@@ -12,14 +12,12 @@ import { FoundersFeature } from "@/components/events/FoundersFeature";
 import { WhyUs } from "@/components/events/home/WhyUs";
 import { EnquirySection } from "@/components/events/EnquirySection";
 import { JsonLd } from "@/components/shared/JsonLd";
-import { faqJsonLd, organizationJsonLd, pageMetadata } from "@/lib/seo";
-import { faqs } from "@/content/events";
+import { organizationJsonLd, pageMetadata, websiteJsonLd } from "@/lib/seo";
 
 export const metadata = {
   ...pageMetadata({
     title: "Passion Events — Weddings, Corporate & Live Events in Hyderabad",
-    description:
-      "Big or small, we make it special. Passion Events plans and manages weddings, corporate events, concerts, college fests, private celebrations, destination events and complete event production across India from Hyderabad.",
+    description: "Big or small, we make it special. Hyderabad event planners for weddings, corporate events, concerts and private celebrations across AP, Telangana and India.",
     path: "/",
   }),
   title: { absolute: "Passion Events — Weddings, Corporate & Live Events in Hyderabad" },
@@ -28,7 +26,7 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <JsonLd data={[organizationJsonLd(), faqJsonLd(faqs)]} />
+      <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
       <EventsIntro />
       <EventsHero />
       <BrandIntro />

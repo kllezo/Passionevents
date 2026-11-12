@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { services, serviceBySlug } from "@/content/services";
 import { featuredArtists } from "@/content/proof";
-import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMetadata, serviceJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { Pic } from "@/components/shared/Pic";
 import { ReelRail } from "@/components/shared/Reels";
@@ -16,6 +16,9 @@ import { EventsButton } from "@/components/events/Button";
 import { RevealText } from "@/motion/RevealText";
 import { StaggerList } from "@/motion/StaggerList";
 
+/** Trim to a whole word within `max` characters. */
+const clip = (t: string, max: number) => (t.length <= max ? t : `${t.slice(0, t.lastIndexOf(" ", max - 1))}…`);
+
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
 }
@@ -24,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const s = serviceBySlug(slug);
   if (!s) return { title: "Services" };
-  return pageMetadata({ title: `${s.title} — Passion Events`, description: `${s.short} ${s.description}`.slice(0, 158), path: s.href });
+  return pageMetadata({ title: s.title, description: clip(`${s.short} ${s.description}`, 158), path: s.href });
 }
 
 /**
@@ -52,7 +55,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
             { name: "What we do", path: "/what-we-do" },
             { name: s.title, path: s.href },
           ]),
-          { "@context": "https://schema.org", "@type": "Service", name: s.title, description: s.description, provider: { "@type": "Organization", name: "Passion Events" }, areaServed: "IN" },
+          serviceJsonLd(s),
         ]}
       />
       <PageHero
