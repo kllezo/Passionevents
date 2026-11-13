@@ -1,6 +1,5 @@
-import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import { pageMetadata, breadcrumbJsonLd, founderJsonLd } from "@/lib/seo";
 import { foundersList } from "@/content/founders";
-import { site } from "@/lib/site";
 import { FoundersFeature } from "@/components/events/FoundersFeature";
 import { EnquirySection } from "@/components/events/EnquirySection";
 import { JsonLd } from "@/components/shared/JsonLd";
@@ -21,14 +20,7 @@ export default function FoundersPage() {
             { name: "Home", path: "/" },
             { name: "Founders", path: "/founders" },
           ]),
-          ...foundersList.map((f) => ({
-            "@context": "https://schema.org",
-            "@type": "Person",
-            name: f.name,
-            jobTitle: "Co-founder",
-            worksFor: { "@type": "Organization", name: site.name, url: site.url },
-            ...(f.image ? { image: `${site.url}${f.image.src}` } : {}),
-          })),
+          ...foundersList.map((f) => founderJsonLd(f)),
         ]}
       />
       <div className="pt-16 md:pt-20">

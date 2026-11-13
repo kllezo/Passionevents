@@ -60,6 +60,8 @@ export const metadata: Metadata = {
   publisher: "Passion Events",
   category: "Event management",
   other: { "geo.region": "IN-TG", "geo.placename": "Hyderabad" },
+  // Google Search Console ownership (public token — the same one used in the DNS TXT record).
+  verification: { google: "P9kDbX5zyQf0Uzyt9Eoz8XfgVYOj-YnobXKaH02jCeA" },
 };
 
 export const viewport: Viewport = {

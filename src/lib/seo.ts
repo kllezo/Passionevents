@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "./site";
 import { services, type Service } from "@/content/services";
+import { foundersList, type Founder } from "@/content/founders";
 
 /** Per-page metadata with canonical URL + Open Graph in one call. */
 export function pageMetadata({
@@ -56,10 +57,7 @@ export function organizationJsonLd() {
     // Another business called "Passion Events" exists in Mumbai; say plainly which one this is.
     disambiguatingDescription: "Event company based in Hyderabad, Telangana, founded by Ramya and P. Sai Tanush (“By Ramya & Tanush”), with the concert brand Passion Live and Instagram @passionevents.p.",
     slogan: "Big or small. We make it special.",
-    founder: [
-      { "@type": "Person", name: "Pabbathi Sai Tanush", alternateName: "P. Sai Tanush", jobTitle: "Co-founder", url: `${site.url}/founders`, image: `${site.url}/media/founders/sai-tanush-900.webp` },
-      { "@type": "Person", name: "Ramya", jobTitle: "Co-founder", url: `${site.url}/founders`, image: `${site.url}/media/founders/ramya-960.webp` },
-    ],
+    founder: foundersList.map((f) => founderJsonLd(f, false)),
     foundingLocation: { "@type": "Place", name: "Hyderabad, Telangana, India" },
     areaServed: [
       { "@type": "City", name: "Hyderabad" },
@@ -81,6 +79,24 @@ export function organizationJsonLd() {
       itemListElement: services.map((s) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: s.title, url: `${site.url}${s.href}` } })),
     },
     subOrganization: { "@type": "Organization", name: site.liveName, url: `${site.url}/concerts`, description: site.liveDescription },
+  };
+}
+
+/** A founder as a Person entity (stable @id so other pages can refer to it). */
+export function founderJsonLd(f: Founder, withContext = true) {
+  return {
+    ...(withContext ? { "@context": "https://schema.org" } : {}),
+    "@type": "Person",
+    "@id": `${site.url}/founders#${f.id}`,
+    name: f.name,
+    ...(f.alternateNames.length ? { alternateName: f.alternateNames } : {}),
+    jobTitle: "Co-founder",
+    description: f.bio[0],
+    url: `${site.url}/founders`,
+    ...(f.image ? { image: `${site.url}${f.image.src}` } : {}),
+    worksFor: { "@id": ORG_ID(), "@type": "Organization", name: site.name, url: site.url },
+    ...(f.focus.length ? { knowsAbout: f.focus } : {}),
+    homeLocation: { "@type": "Place", name: "Hyderabad, Telangana, India" },
   };
 }
 

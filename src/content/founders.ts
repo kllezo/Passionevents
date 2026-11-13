@@ -10,6 +10,8 @@ export type Founder = {
   id: string;
   name: string;
   displayName: string;
+  /** Other ways the name is written or searched (shown to search engines, not on the page). */
+  alternateNames: string[];
   role: string;
   image: (SiteImage & { width: number; height: number }) | null;
   bio: string[];
@@ -21,6 +23,7 @@ export const foundersList: Founder[] = [
     id: "sai-tanush",
     name: "Pabbathi Sai Tanush",
     displayName: "P. Sai Tanush",
+    alternateNames: ["P. Sai Tanush", "Sai Tanush", "Pabbati Sai Thanush", "Sai Thanush"],
     role: "Co-founder · Passion Events & Passion Live",
     image: founderImages.saiTanush,
     bio: [
@@ -34,6 +37,7 @@ export const foundersList: Founder[] = [
     id: "ramya",
     name: "Ramya",
     displayName: "Ramya",
+    alternateNames: [],
     role: "Co-founder · Passion Events",
     image: founderImages.ramya,
     // Biography still to come from Ramya — replace or extend these lines when it arrives.

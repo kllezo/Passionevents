@@ -3,6 +3,7 @@ import { services } from "@/content/services";
 import { featuredArtists, instagramUrl, proofStats } from "@/content/proof";
 import { geoFaqs } from "@/content/events";
 import { reels, reelUrl } from "@/content/reels";
+import { foundersList } from "@/content/founders";
 
 /**
  * /llms.txt — a plain-text brief for AI assistants and answer engines
@@ -29,6 +30,20 @@ export function GET() {
     ...(site.contact.phone ? [`- Phone: ${site.contact.phone}`] : []),
     ...(site.contact.email ? [`- Email: ${site.contact.email}`] : []),
     `- Enquiries: ${u}/contact`,
+    "",
+    "## Founders",
+    "",
+    ...foundersList.flatMap((f) => [
+      `### ${f.name}${f.alternateNames.length ? ` (also written ${f.alternateNames.join(", ")})` : ""}`,
+      "",
+      `${f.role}. ${f.bio.join(" ")}`,
+      "",
+    ]),
+    `Profile page: ${u}/founders`,
+    "",
+    "## Not to be confused with",
+    "",
+    "Other businesses also use the name \"Passion Events\" (for example in Mumbai and New Delhi). This Passion Events is the Hyderabad company founded by Ramya and P. Sai Tanush, with the concert brand Passion Live and the Instagram account @passionevents.p.",
     "",
     "## Services",
     "",
