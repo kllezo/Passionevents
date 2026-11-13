@@ -191,6 +191,24 @@ export function LiveSoundProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once per visit to Passion Live
   }, []);
 
+  // Step aside while a reel plays with sound (Reels.tsx sends "pe:media").
+  useEffect(() => {
+    let resume = false;
+    const onMedia = (e: Event) => {
+      const ctx = ac.current;
+      if (!ctx) return;
+      if ((e as CustomEvent<{ playing: boolean }>).detail?.playing) {
+        resume = resume || ctx.state === "running";
+        void ctx.suspend();
+      } else if (resume) {
+        resume = false;
+        if (readPref() === "on") void ctx.resume();
+      }
+    };
+    window.addEventListener("pe:media", onMedia);
+    return () => window.removeEventListener("pe:media", onMedia);
+  }, []);
+
   // Pause while the tab is hidden.
   useEffect(() => {
     let resume = false;
@@ -345,12 +363,14 @@ export function SoundToggle({ className, compact = false }: { className?: string
       aria-pressed={enabled}
       aria-label={enabled ? "Sound on — turn sound off" : "Sound off — turn sound on"}
       className={`group relative inline-flex items-center gap-3 whitespace-nowrap rounded-full bg-white font-grotesk font-semibold uppercase text-black shadow-[0_10px_40px_-12px_rgb(255_255_255/0.45)] transition-[transform,box-shadow,background-color] duration-300 ease-out hover:scale-[1.04] hover:bg-volt hover:shadow-[0_14px_50px_-10px_rgb(255_90_31/0.7)] active:scale-[0.98] ${
-        compact ? "h-10 gap-2 px-4 text-[0.64rem] tracking-[0.14em]" : "h-12 px-6 text-[0.74rem] tracking-[0.22em]"
+        compact ? "h-10 gap-2 px-3.5 text-[0.62rem] tracking-[0.12em]" : "h-12 px-6 text-[0.74rem] tracking-[0.22em]"
       } ${className ?? ""}`}
     >
       {enabled ? <Volume2 className="size-4" /> : <VolumeX className="size-4" />}
       <span>Sound {enabled ? "on" : "off"}</span>
-      <Eq on={enabled} />
+      <span className={compact ? "max-[420px]:hidden" : ""}>
+        <Eq on={enabled} />
+      </span>
       {blocked && (
         <span className="absolute -right-0.5 -top-0.5 flex size-3" aria-hidden="true">
           <span className="absolute inset-0 animate-ping rounded-full bg-hot/80" />
@@ -372,7 +392,17 @@ function SoundPrompt() {
       return;
     }
     const t = window.setTimeout(() => setShow(true), 1400);
-    return () => window.clearTimeout(t);
+    // Step aside once the visitor scrolls on, or after a while: the nav's
+    // SOUND pill (with its dot) stays as the way to turn sound on.
+    const hide = () => setShow(false);
+    const onScroll = () => window.scrollY > window.innerHeight * 0.9 && hide();
+    const later = window.setTimeout(hide, 15400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.clearTimeout(t);
+      window.clearTimeout(later);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [blocked]);
 
   return (

@@ -94,7 +94,7 @@ export function ArtistsList({ artists }: { artists: VerifiedArtist[] }) {
       <ul className="flex flex-wrap items-baseline gap-x-5 gap-y-1 lg:order-1 lg:col-span-7" aria-label="Artists">
         {artists.map((a, i) => {
           const on = i === active;
-          const cls = `glitch group inline-flex items-baseline gap-3 py-1 text-left font-display text-[clamp(2.1rem,5.6vw,5.4rem)] uppercase leading-[0.95] max-sm:w-full max-sm:justify-between transition-[color,transform,opacity] duration-300 ${
+          const cls = `glitch group inline-flex items-baseline gap-3 py-1 text-left font-display text-[clamp(2.1rem,4.5vw,4.6rem)] uppercase leading-[0.95] max-sm:w-full max-sm:justify-between transition-[color,transform,opacity] duration-300 ${
             on ? `${tones[i % tones.length] === "text-white" ? "text-volt" : tones[i % tones.length]} -rotate-1 scale-[1.03]` : "text-white/85 hover:text-white"
           }`;
           const meta = (

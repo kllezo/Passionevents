@@ -6,7 +6,7 @@ import { SectionLabel } from "./SectionLabel";
 export function FaqSection({ items, index, title = "Good to know." }: { items: { q: string; a: string }[]; index?: string; title?: string }) {
   const [lead, ...rest] = title.split(" ");
   return (
-    <section className="bg-ivory py-28 md:py-36" aria-labelledby="faq-title">
+    <section className="bg-ivory py-28 md:py-28" aria-labelledby="faq-title">
       <JsonLd data={faqJsonLd(items)} />
       <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-12 px-5 md:px-10 lg:grid-cols-12">
         <div className="lg:col-span-4">

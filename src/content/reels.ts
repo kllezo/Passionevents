@@ -23,6 +23,18 @@ export type Reel = {
   landscape?: boolean;
   /** Publish date from the Instagram post, when the caption shows one. */
   published?: string;
+  /**
+   * The reel's own video file, played inside the site. Put the MP4 (H.264,
+   * ideally under ~15 MB) at /public/media/reels/<id>.mp4 and set
+   * video: "/media/reels/<id>.mp4" — or an authorised hosted MP4 URL.
+   */
+  video?: string;
+  /**
+   * Set to true only if Instagram allows embedding for this reel (the
+   * account's "Allow embeds" setting). It then plays in Instagram's official
+   * embed inside the viewer. Currently embedding is off for these reels.
+   */
+  embed?: boolean;
 };
 
 export const reels: Reel[] = [

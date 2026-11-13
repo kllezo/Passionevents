@@ -29,12 +29,12 @@ export function EnquirySection({
   const wa = whatsappLink();
   const { phone, email } = site.contact;
   return (
-    <section id="enquire" className="paper-grain relative scroll-mt-24 overflow-hidden bg-paper py-24 md:py-40" aria-labelledby="enquire-title">
+    <section id="enquire" className="paper-grain relative scroll-mt-24 overflow-hidden bg-paper py-24 md:py-32" aria-labelledby="enquire-title">
       <div className="mx-auto grid max-w-[1600px] gap-10 px-5 md:gap-16 md:px-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <div className="lg:sticky lg:top-32">
             <SectionLabel index={index}>Enquire</SectionLabel>
-            <RevealText as="h2" id="enquire-title" className="mt-8 font-serif text-[clamp(2.6rem,4.6vw,4.8rem)] font-light leading-[0.98] text-ink">
+            <RevealText as="h2" id="enquire-title" className="mt-8 font-serif text-[clamp(2.6rem,3.7vw,4.1rem)] font-light leading-[0.98] text-ink">
               {title ?? (
                 <>
                   Let&apos;s make your next event <em className="text-rose-deep">unforgettable.</em>
@@ -42,7 +42,7 @@ export function EnquirySection({
               )}
             </RevealText>
             <p className="mt-8 max-w-sm text-lg leading-relaxed text-stone">
-              Tell us a little about your event. Big or small, it starts with a conversation.
+              Tell us a little about your event. Every plan starts with a conversation.
             </p>
             <dl className="mt-10 space-y-4 text-[0.95rem]">
               <div>

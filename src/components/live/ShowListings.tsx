@@ -29,7 +29,7 @@ export function ShowsEmpty() {
       </div>
       <div className="relative">
         <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-volt">Transmission incoming</p>
-        <h3 className="mx-auto mt-6 max-w-4xl font-display text-[clamp(2.6rem,7vw,6rem)] uppercase leading-[0.9] text-white">
+        <h3 className="mx-auto mt-6 max-w-4xl font-display text-[clamp(2.6rem,5.6vw,5.2rem)] uppercase leading-[0.9] text-white">
           New shows are <span className="text-outline-volt">being</span> <span className="text-volt">announced soon.</span>
         </h3>
         <p className="mx-auto mt-6 max-w-lg text-fog">We only list confirmed dates. Want to bring a show to your city, or partner on the next one?</p>

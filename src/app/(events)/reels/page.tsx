@@ -52,7 +52,7 @@ export default function ReelsPage() {
           <div className="flex flex-wrap items-end justify-between gap-8">
             <div>
               <SectionLabel index="01">Reels · behind the scenes</SectionLabel>
-              <RevealText as="h1" id="reels-title" className="mt-8 font-serif text-[clamp(3.4rem,9vw,9.5rem)] font-light leading-[0.88] tracking-[-0.03em] text-ink">
+              <RevealText as="h1" id="reels-title" className="mt-8 font-serif text-[clamp(3.1rem,7.2vw,8.2rem)] font-light leading-[0.88] tracking-[-0.03em] text-ink">
                 The moments, <em className="text-rose-deep">as they happened.</em>
               </RevealText>
             </div>

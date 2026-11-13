@@ -63,13 +63,13 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
   );
 
   return (
-    <section ref={root} className="relative bg-ivory py-28 [--cap-step:0.55rem] [--cap-top:4.5rem] md:py-40 md:[--cap-step:0.9rem] md:[--cap-top:6.5rem]" aria-labelledby="services-title">
+    <section ref={root} className="relative bg-ivory py-28 [--cap-step:0.55rem] [--cap-top:4.5rem] md:py-32 md:[--cap-step:0.9rem] md:[--cap-top:6.5rem]" aria-labelledby="services-title">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         {showIntro && (
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-8">
               <SectionLabel index={index}>Our capabilities</SectionLabel>
-              <RevealText as="h2" id="services-title" className="mt-8 font-serif text-[clamp(2.8rem,6.6vw,7rem)] font-light leading-[0.92] tracking-[-0.02em] text-ink">
+              <RevealText as="h2" id="services-title" className="mt-8 font-serif text-[clamp(2.8rem,5.3vw,6rem)] font-light leading-[0.92] tracking-[-0.02em] text-ink">
                 One team. <em className="text-rose-deep">Every detail.</em> Every experience.
               </RevealText>
             </div>
@@ -98,7 +98,7 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
               <li
                 key={g.title}
                 data-cap-card=""
-                className="sticky h-[76svh] min-h-[480px] pb-[3svh] md:h-[72svh] md:min-h-[460px] md:pb-[6svh]"
+                className="sticky h-[68svh] min-h-[440px] pb-[3svh] md:h-[62svh] md:min-h-[420px] md:pb-[5svh]"
                 style={{ top: `calc(var(--cap-top) + ${i} * var(--cap-step))`, zIndex: i + 1 }}
               >
                 <div
@@ -108,7 +108,7 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
                   <div className="relative flex flex-col justify-between gap-5 p-6 md:col-span-6 md:gap-10 md:p-12 xl:p-16">
                     <div className="flex items-start justify-between gap-6">
                       <span className="block overflow-hidden">
-                        <span data-cap-head="" className={`block font-serif text-[clamp(3.2rem,9vw,9rem)] font-light italic leading-[0.85] ${t.num}`}>
+                        <span data-cap-head="" className={`block font-serif text-[clamp(3.2rem,7.2vw,7.7rem)] font-light italic leading-[0.85] ${t.num}`}>
                           {String(i + 1).padStart(2, "0")}
                         </span>
                       </span>

@@ -114,7 +114,7 @@ export function SectionTitle({ service, tone = "light", align = "left", children
         <span className={`h-px w-12 ${live ? "bg-volt/60" : dark ? "bg-blush/50" : "bg-rose/50"}`} />
         <span>of 09</span>
       </p>
-      <h2 id={`${service.key}-title`} className={`relative mt-6 ${live ? "font-display uppercase leading-[0.86]" : "font-serif font-light leading-[0.9] tracking-[-0.02em]"} ${dark ? "text-ivory" : "text-ink"} ${live ? "text-[clamp(3rem,6.2vw,6.6rem)]" : "text-[clamp(3rem,7.4vw,7.6rem)]"}`}>
+      <h2 id={`${service.key}-title`} className={`relative mt-6 ${live ? "font-display uppercase leading-[0.86]" : "font-serif font-light leading-[0.9] tracking-[-0.02em]"} ${dark ? "text-ivory" : "text-ink"} ${live ? "text-[clamp(3rem,5vw,5.7rem)]" : "text-[clamp(3rem,5.9vw,6.5rem)]"}`}>
         <span data-rise="" className="block">
           {service.lines[0]}
         </span>

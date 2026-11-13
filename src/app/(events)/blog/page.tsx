@@ -53,7 +53,7 @@ export default function BlogIndexPage() {
             </Link>{" "}
             <span aria-hidden="true">/</span> <span className="text-ink">Blog</span>
           </nav>
-          <h1 id="blog-title" className="mt-8 max-w-5xl font-serif text-[clamp(3rem,7.5vw,7.6rem)] font-light leading-[0.9] tracking-[-0.02em] text-ink">
+          <h1 id="blog-title" className="mt-8 max-w-5xl font-serif text-[clamp(3rem,6vw,6.5rem)] font-light leading-[0.9] tracking-[-0.02em] text-ink">
             Event planning guides, <em className="text-rose-deep">from our team.</em>
           </h1>
           <p className="mt-8 max-w-3xl text-xl leading-relaxed text-ink/80">

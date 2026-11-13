@@ -5,7 +5,6 @@ import { categories } from "@/content/events";
 import { pageMetadata, breadcrumbJsonLd, organizationJsonLd } from "@/lib/seo";
 import { PageHero } from "@/components/events/PageHero";
 import { SectionLabel } from "@/components/events/SectionLabel";
-import { WhyUs } from "@/components/events/home/WhyUs";
 import { FoundersFeature } from "@/components/events/FoundersFeature";
 import { EnquirySection } from "@/components/events/EnquirySection";
 import { JsonLd } from "@/components/shared/JsonLd";
@@ -35,13 +34,13 @@ export default function AboutPage() {
         secondary={stock.florals}
       />
 
-      <section className="bg-ivory py-28 md:py-40">
+      <section className="bg-ivory py-28 md:py-32">
         <div className="mx-auto grid max-w-[1600px] gap-16 px-5 md:px-10 lg:grid-cols-12">
           <div className="lg:col-span-8">
             <SectionLabel index="01">Our belief</SectionLabel>
             <ScrubWords
               className="mt-10 font-serif text-[clamp(2rem,4vw,4rem)] font-light leading-[1.14] text-ink"
-              text="Big or small isn't a measure of how much an event matters. A dinner for twelve and a concert for thousands both deserve a team that cares about every detail — that is the promise written beneath our name."
+              text="Size isn't a measure of how much an event matters. A dinner for twelve and a concert for thousands both deserve a team that cares about every detail."
             />
           </div>
           <div className="space-y-6 text-lg leading-relaxed text-stone lg:col-span-4 lg:pt-24">
@@ -55,10 +54,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-cream py-28 md:py-36" aria-labelledby="about-cats">
+      <section className="bg-cream py-28 md:py-28" aria-labelledby="about-cats">
         <div className="mx-auto max-w-[1600px] px-5 md:px-10">
           <SectionLabel index="02">What we create</SectionLabel>
-          <h2 id="about-cats" className="mt-8 max-w-3xl font-serif text-[clamp(2.4rem,5vw,5rem)] font-light leading-[0.98] text-ink">
+          <h2 id="about-cats" className="mt-8 max-w-3xl font-serif text-[clamp(2.4rem,4vw,4.3rem)] font-light leading-[0.98] text-ink">
             More than weddings — <em className="text-rose-deep">every kind of occasion.</em>
           </h2>
           <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:mt-16 sm:gap-x-8 sm:gap-y-14 lg:grid-cols-3">
@@ -92,8 +91,7 @@ export default function AboutPage() {
       </section>
 
       <FoundersFeature index="03" />
-      <WhyUs index="04" />
-      <EnquirySection index="05" />
+      <EnquirySection index="04" />
     </>
   );
 }

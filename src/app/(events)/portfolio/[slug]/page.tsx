@@ -52,7 +52,7 @@ async function StoryContent({ params }: { params: PageProps<"/portfolio/[slug]">
         <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent" />
         <div className="relative mx-auto w-full max-w-[1600px] px-5 md:px-10">
           <SectionLabel tone="ivory">{category}</SectionLabel>
-          <RevealText as="h1" trigger="mount" delay={0.4} className="mt-6 max-w-5xl font-serif text-[clamp(3rem,8vw,8rem)] font-light leading-[0.92]">
+          <RevealText as="h1" trigger="mount" delay={0.4} className="mt-6 max-w-5xl font-serif text-[clamp(3rem,6.4vw,6.9rem)] font-light leading-[0.92]">
             {e.title}
           </RevealText>
           <dl className="mt-10 flex flex-wrap gap-x-12 gap-y-4 text-sm">

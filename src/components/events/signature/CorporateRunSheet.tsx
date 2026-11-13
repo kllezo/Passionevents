@@ -85,11 +85,11 @@ export function CorporateRunSheet() {
         <div className="relative mx-auto grid h-full max-w-[1600px] gap-12 px-5 py-24 md:px-10 lg:grid-cols-12 lg:items-center lg:py-0">
           <div className="lg:col-span-5">
             <SectionLabel tone="ivory">Show day, cue by cue</SectionLabel>
-            <h2 id="runsheet-title" className="mt-6 font-serif text-[clamp(2.6rem,4.6vw,4.8rem)] font-light leading-[0.95]">
+            <h2 id="runsheet-title" className="mt-6 font-serif text-[clamp(2.6rem,3.7vw,4.1rem)] font-light leading-[0.95]">
               Precise, <em className="text-blush">to the minute.</em>
             </h2>
             <div className="mt-10 hidden items-end gap-4 lg:flex" aria-hidden="true">
-              <span className="block h-[1em] overflow-hidden font-serif text-[clamp(5rem,10vw,10rem)] font-light leading-none">
+              <span className="block h-[1em] overflow-hidden font-serif text-[clamp(4.6rem,8vw,8.6rem)] font-light leading-none">
                 <span data-clock="" className="block">
                   {corporateRunSheet.map((c) => (
                     <span key={c.time} className="block h-[1em]">

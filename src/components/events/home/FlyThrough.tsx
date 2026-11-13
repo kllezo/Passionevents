@@ -30,7 +30,7 @@ const GAP = 620; // depth between photographs (px)
 const START = 600; // first photograph's distance from the camera
 
 const lines = [
-  { top: "Big or small.", bottom: "Every kind of event." },
+  { top: "Every kind", bottom: "of event." },
   { top: "Weddings to", bottom: "sold-out concerts." },
   { top: `${site.eventsExecuted}+ events`, bottom: "executed. One team." },
 ];
@@ -72,7 +72,7 @@ export function FlyThrough() {
           scrollTrigger: {
             trigger: q("[data-pin]")[0],
             start: "top top",
-            end: `+=${mobile ? 260 : 340}%`,
+            end: `+=${mobile ? 170 : 200}%`,
             pin: true,
             scrub: 1,
             anticipatePin: 1,
@@ -93,7 +93,7 @@ export function FlyThrough() {
   return (
     <section ref={root} className="relative bg-ink text-ivory" aria-labelledby="fly-title">
       <h2 id="fly-title" className="sr-only">
-        Big or small, every kind of event — {site.eventsExecuted}+ events executed
+        Every kind of event, from weddings to sold-out concerts: {site.eventsExecuted}+ events executed
       </h2>
 
       {/* Animated stage */}
@@ -136,8 +136,8 @@ export function FlyThrough() {
           <div className="relative h-[clamp(9rem,20vw,19rem)] w-full max-w-5xl">
             {lines.map((l) => (
               <p key={l.top} data-line="" className="absolute inset-0 flex flex-col items-center justify-center font-serif font-light leading-[0.95] [text-shadow:0_10px_40px_rgb(0_0_0/0.6)]">
-                <span className="text-[clamp(3rem,8vw,8rem)]">{l.top}</span>
-                <span className="text-[clamp(2.4rem,6vw,6rem)] italic text-blush">{l.bottom}</span>
+                <span className="text-[clamp(3rem,6.4vw,6.9rem)]">{l.top}</span>
+                <span className="text-[clamp(2.4rem,4.8vw,5.2rem)] italic text-blush">{l.bottom}</span>
               </p>
             ))}
           </div>
@@ -154,7 +154,7 @@ export function FlyThrough() {
       {/* Reduced-motion fallback: a still collage */}
       <div className="hidden px-5 py-24 motion-reduce:block md:px-10">
         <p className="text-center font-serif text-5xl font-light">
-          Big or small. <em className="text-blush">Every kind of event.</em>
+          Every kind <em className="text-blush">of event.</em>
         </p>
         <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-4 md:grid-cols-5">
           {cards.map((c) => (

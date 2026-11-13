@@ -83,7 +83,7 @@ export function WhatWeDo() {
           scrollTrigger: {
             trigger: q("[data-pin]")[0],
             start: "top top",
-            end: `+=${(n - 1) * 55}%`,
+            end: `+=${(n - 1) * 32}%`,
             pin: true,
             scrub: 1,
             anticipatePin: 1,
@@ -121,7 +121,7 @@ export function WhatWeDo() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_55%_at_50%_45%,rgb(235_195_200/0.55),transparent_70%)]" />
         <div className="absolute left-10 top-1/2 z-[200] max-w-[22vw] -translate-y-1/2">
           <SectionLabel index="02">What we do</SectionLabel>
-          <h2 id="what-title" className="mt-6 font-serif text-[clamp(2.6rem,4.4vw,4.8rem)] font-light leading-[0.95] tracking-[-0.02em] text-ink">
+          <h2 id="what-title" className="mt-6 font-serif text-[clamp(2.6rem,3.5vw,4.1rem)] font-light leading-[0.95] tracking-[-0.02em] text-ink">
             Nine worlds. <em className="text-rose-deep">One team.</em>
           </h2>
           <p className="mt-5 max-w-sm text-[0.97rem] leading-relaxed text-stone">
@@ -131,7 +131,7 @@ export function WhatWeDo() {
 
         {/* Counter */}
         <div className="absolute right-10 top-28 z-[200] flex items-start gap-3 font-serif text-ink xl:top-32" aria-hidden="true">
-          <span className="block h-[1em] overflow-hidden text-[clamp(3rem,5vw,5.5rem)] font-light leading-none">
+          <span className="block h-[1em] overflow-hidden text-[clamp(3rem,4vw,4.7rem)] font-light leading-none">
             <span data-digit-track="" className="block">
               {categories.map((c) => (
                 <span key={c.key} className="block h-[1em]">

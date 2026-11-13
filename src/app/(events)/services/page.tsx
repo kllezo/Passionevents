@@ -63,7 +63,7 @@ export default function ServicesPage() {
       <IndividualServices index="02" />
 
       {/* Production & management */}
-      <section id="production" className="scroll-mt-24 bg-ink py-28 text-ivory md:py-36">
+      <section id="production" className="scroll-mt-24 bg-ink py-28 text-ivory md:py-28">
         <div className="mx-auto grid max-w-[1600px] gap-14 px-5 md:px-10 lg:grid-cols-12 lg:items-center">
           <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] lg:col-span-6">
             <Pic image={stock.productionStage} sizes="(max-width: 1024px) 92vw, 45vw" className="" />
@@ -72,7 +72,7 @@ export default function ServicesPage() {
             <SectionLabel index="03" tone="ivory">
               Event production & management
             </SectionLabel>
-            <RevealText as="h2" className="mt-8 font-serif text-[clamp(2.4rem,4.6vw,4.6rem)] font-light leading-[1] text-ivory">
+            <RevealText as="h2" className="mt-8 font-serif text-[clamp(2.4rem,3.7vw,4rem)] font-light leading-[1] text-ivory">
               The production partner <em className="text-blush">behind the moment.</em>
             </RevealText>
             <p className="mt-6 text-lg leading-relaxed text-ivory/75">{categories.find((c) => c.key === "production")!.description}</p>
@@ -88,7 +88,7 @@ export default function ServicesPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-ivory py-28 md:py-36" aria-labelledby="faq-title">
+      <section className="bg-ivory py-28 md:py-28" aria-labelledby="faq-title">
         <div className="mx-auto grid max-w-[1600px] gap-12 px-5 md:px-10 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <SectionLabel index="04">Questions</SectionLabel>

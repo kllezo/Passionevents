@@ -4,13 +4,12 @@ import { BrandIntro } from "@/components/events/home/BrandIntro";
 import { ClosingStatement } from "@/components/events/home/ClosingStatement";
 import { HomeAnswers } from "@/components/events/home/HomeAnswers";
 import { FlyThrough } from "@/components/events/home/FlyThrough";
-import { CinematicShowcase } from "@/components/events/home/CinematicShowcase";
 import { WhatWeDo } from "@/components/events/home/WhatWeDo";
 import { IndividualServices } from "@/components/events/home/IndividualServices";
 import { Approach } from "@/components/events/home/Approach";
 import { PortfolioPreview } from "@/components/events/home/PortfolioPreview";
 import { FoundersFeature } from "@/components/events/FoundersFeature";
-import { WhyUs } from "@/components/events/home/WhyUs";
+import { HomeReels } from "@/components/events/home/HomeReels";
 import { EnquirySection } from "@/components/events/EnquirySection";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { organizationJsonLd, pageMetadata, websiteJsonLd } from "@/lib/seo";
@@ -34,14 +33,13 @@ export default function HomePage() {
       <FlyThrough />
       <WhatWeDo />
       <IndividualServices index="03" />
-      <CinematicShowcase />
       <Approach index="04" />
-      <PortfolioPreview index="05" />
+      <PortfolioPreview />
+      <HomeReels index="05" />
       <FoundersFeature index="06" />
-      <WhyUs index="07" />
-      <HomeAnswers index="08" />
+      <HomeAnswers index="07" />
       <ClosingStatement />
-      <EnquirySection index="09" />
+      <EnquirySection index="08" />
     </>
   );
 }

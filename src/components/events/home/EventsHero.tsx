@@ -111,21 +111,21 @@ export function EventsHero() {
 
       <div className="relative mx-auto grid max-w-[1600px] grid-cols-1 gap-8 px-5 pb-16 md:gap-12 md:px-10 md:pb-20 lg:min-h-[calc(100svh-8rem)] lg:grid-cols-12 lg:items-center lg:gap-6">
         <div data-copy="" className="relative z-10 lg:col-span-7">
-          <h1 id="hero-title" className="relative font-serif text-[clamp(3.4rem,9.4vw,9.6rem)] font-light leading-[0.88] tracking-[-0.02em] text-ink max-sm:text-center max-sm:text-[3.1rem]">
+          <h1 id="hero-title" className="relative font-serif text-[clamp(3rem,6.3vw,7.6rem)] font-light leading-[0.9] tracking-[-0.02em] text-ink max-sm:text-center max-sm:text-[2.9rem]">
             {/* The page topic, visible, as the first line of the heading. */}
             <span data-eyebrow="" data-hero-hidden="" className="eyebrow mb-5 flex items-center gap-3 font-sans leading-normal not-italic text-rose-deep max-sm:justify-center max-sm:text-[0.6rem] max-sm:tracking-[0.2em] md:mb-8">
               <span aria-hidden="true" className="h-px w-10 bg-rose max-sm:hidden" /> Passion Events · Event management company in Hyderabad
             </span>
             <span data-headline="" data-reveal="" className="block">
-              <span className="block">Big or small.</span>
-              <span className="block italic text-rose-deep">We make it</span>
+              <span className="block">From first idea</span>
+              <span className="block italic text-rose-deep">to the final</span>
             </span>
             <span
               data-script=""
               data-hero-hidden=""
               className="relative -mt-[0.1em] block pl-[0.6em] font-script text-[1.18em] leading-[1.05] text-coral [text-shadow:0_1px_0_rgb(255_255_255/0.4)] max-sm:pl-0"
             >
-              special.
+              applause.
             </span>
           </h1>
           <p data-sub="" data-hero-hidden="" className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-stone max-sm:mx-auto max-sm:max-w-[21rem] max-sm:text-center sm:text-lg md:mt-8 md:text-xl">

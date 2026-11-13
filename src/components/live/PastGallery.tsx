@@ -103,7 +103,7 @@ export function PastGallery({ events }: { events: PublicEvent[] }) {
               <span className="absolute left-5 top-5 border border-white/20 px-2.5 py-1 font-grotesk text-[0.62rem] uppercase tracking-[0.25em] text-white/70">
                 {[e.venue, e.city].filter(Boolean).join(" · ") || "Passion Live"}
               </span>
-              <span className="absolute inset-x-5 top-1/2 -translate-y-1/2 font-display text-[clamp(2.6rem,5vw,4.6rem)] uppercase leading-[0.9] text-white/90 transition-transform duration-700 group-hover:scale-[1.03]">
+              <span className="absolute inset-x-5 top-1/2 -translate-y-1/2 font-display text-[clamp(2.6rem,4vw,4rem)] uppercase leading-[0.9] text-white/90 transition-transform duration-700 group-hover:scale-[1.03]">
                 {e.artists || e.title}
               </span>
             </div>

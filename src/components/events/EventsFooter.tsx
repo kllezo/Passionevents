@@ -53,7 +53,7 @@ export function EventsFooter() {
         <div className="lg:col-span-5">
           <Image src={brand.logo.src} alt={brand.logo.alt} width={brand.logo.width} height={brand.logo.height} className="h-auto w-[230px] md:w-[300px]" />
           <RevealText as="p" className="mt-8 max-w-md font-serif text-3xl leading-tight text-ink md:text-4xl">
-            Big or small, we make it special — across India, from Hyderabad.
+            Events conceived, planned and produced. From Hyderabad, across India.
           </RevealText>
         </div>
 
@@ -181,7 +181,7 @@ export function EventsFooter() {
         <p>
           © <Year /> {site.name}. {site.byline}. All rights reserved.
         </p>
-        <p className="font-serif text-base italic text-rose-deep">{site.tagline}</p>
+        <p className="font-serif text-base italic text-rose-deep">Concept · Planning · Design · Production · Execution</p>
       </div>
     </footer>
   );

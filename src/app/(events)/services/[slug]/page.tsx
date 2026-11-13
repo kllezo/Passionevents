@@ -75,11 +75,11 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         </Link>
       </PageHero>
 
-      <section className="bg-ivory py-24 md:py-36" aria-labelledby="svc-about">
+      <section className="bg-ivory py-24 md:py-28" aria-labelledby="svc-about">
         <div className="mx-auto grid max-w-[1600px] gap-16 px-5 md:px-10 grid-cols-1 lg:grid-cols-12">
           <div className="lg:col-span-6">
             <SectionLabel index="01">The service</SectionLabel>
-            <RevealText as="h2" id="svc-about" className="mt-8 font-serif text-[clamp(2.4rem,4.6vw,4.8rem)] font-light leading-[1] text-ink">
+            <RevealText as="h2" id="svc-about" className="mt-8 font-serif text-[clamp(2.4rem,3.7vw,4.1rem)] font-light leading-[1] text-ink">
               {s.lines[0]} <em className="text-rose-deep">{s.lines[1]}</em>
             </RevealText>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink/80">{s.description}</p>
@@ -171,3 +171,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
     </>
   );
 }
+
+// Slugs are prerendered from generateStaticParams; navigation into the
+// page may block on the server, which is fine (same as portfolio/[slug]).
+export const instant = false;

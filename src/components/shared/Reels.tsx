@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { Pic } from "./Pic";
 import { InstagramIcon } from "./InstagramIcon";
+import { ReelPlayer } from "./ReelPlayer";
 import { reelById, reelCover, reelUrl, type Reel } from "@/content/reels";
 import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
 
@@ -21,7 +22,7 @@ export function ReelCard({ reel, onOpen, tone = "light", className = "", sizes =
     <button
       type="button"
       onClick={onOpen}
-      aria-label={`Play reel: ${reel.title}${meta ? `, ${meta}` : ""}`}
+      aria-label={`${reel.video || reel.embed ? "Play reel" : "Open reel"}: ${reel.title}${meta ? `, ${meta}` : ""}`}
       className={`group relative block aspect-[9/16] w-full overflow-hidden text-left transition-[transform,box-shadow] duration-500 ease-[var(--ease-silk)] hover:-translate-y-1.5 focus-visible:-translate-y-1.5 ${
         dark ? "rounded-[1.25rem] bg-graphite shadow-[0_30px_60px_-30px_rgb(0_0_0/0.9)] ring-1 ring-white/10" : "rounded-[1.5rem] bg-cream shadow-[0_30px_60px_-34px_rgb(94_52_64/0.65)]"
       } ${className}`}
@@ -42,7 +43,7 @@ export function ReelCard({ reel, onOpen, tone = "light", className = "", sizes =
         <span className={`block leading-tight text-white ${dark ? `font-display uppercase ${compact ? "text-sm" : "text-xl"}` : `font-serif ${compact ? "text-[0.95rem]" : "text-[1.35rem]"}`}`}>{reel.title}</span>
         {meta && <span className="mt-1.5 block text-[0.62rem] uppercase tracking-[0.16em] text-white/70">{meta}</span>}
         <span className={`mt-3 items-center gap-1.5 text-[0.65rem] ${compact ? "hidden" : "inline-flex"} font-semibold uppercase tracking-[0.2em] text-white/85 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 max-md:opacity-100`}>
-          <InstagramIcon className="size-3.5" /> Play reel
+          {reel.video || reel.embed ? "▶ Play reel" : "Open reel"}
         </span>
       </span>
     </button>
@@ -50,16 +51,21 @@ export function ReelCard({ reel, onOpen, tone = "light", className = "", sizes =
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
- * Full-screen viewer. Instagram has embedding switched off for these reels,
- * so the viewer shows the reel large with its caption and opens it on
- * Instagram in one tap. Arrow keys / buttons move between reels, Esc closes,
- * focus returns to the card that opened it.
+ * Full-screen viewer that keeps visitors on the site.
+ *  - A reel with its own MP4 (reel.video) plays here in ReelPlayer.
+ *  - A reel Instagram allows to embed (reel.embed) plays in Instagram's
+ *    official embed, inside this viewer.
+ *  - Otherwise the cover is shown with a clear note that the video file has
+ *    not been added yet, and an optional link to Instagram.
+ * Arrow keys / buttons move between reels, Esc closes, focus returns to the
+ * card that opened it, the page behind does not scroll.
  * ────────────────────────────────────────────────────────────────────────── */
 function ReelViewer({ list, index, onClose, onMove, tone }: { list: Reel[]; index: number; onClose: () => void; onMove: (d: number) => void; tone: Tone }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const reel = list[index];
   const dark = tone === "dark";
   const meta = [reel.place, reel.date].filter(Boolean).join(" · ");
+  const mode: "video" | "embed" | "none" = reel.video ? "video" : reel.embed ? "embed" : "none";
 
   useEffect(() => {
     closeRef.current?.focus();
@@ -69,37 +75,57 @@ function ReelViewer({ list, index, onClose, onMove, tone }: { list: Reel[]; inde
       else if (e.key === "ArrowLeft") onMove(-1);
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    const prev = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.documentElement.style.overflow = prev;
+    };
   }, [onClose, onMove]);
 
   return createPortal(
-    <div role="dialog" aria-modal="true" aria-label={`Reel: ${reel.title}`} data-lenis-prevent="" className="fixed inset-0 z-[160] flex items-center justify-center overflow-hidden">
-      <button type="button" aria-label="Close" tabIndex={-1} onClick={onClose} className="absolute inset-0 cursor-default bg-black/85 backdrop-blur-xl" />
-      <span aria-hidden="true" className="pointer-events-none absolute inset-0 scale-110 bg-cover bg-center opacity-30 blur-3xl" style={{ backgroundImage: `url(${reelCover(reel.id)})` }} />
+    <div role="dialog" aria-modal="true" aria-label={`Reel: ${reel.title}`} data-lenis-prevent="" data-sound-ignore="" className="fixed inset-0 z-[160] flex items-center justify-center overflow-hidden">
+      <button type="button" aria-label="Close" tabIndex={-1} onClick={onClose} className="absolute inset-0 cursor-default bg-black/88 backdrop-blur-xl" />
+      <span aria-hidden="true" className="pointer-events-none absolute inset-0 scale-110 bg-cover bg-center opacity-25 blur-3xl" style={{ backgroundImage: `url(${reelCover(reel.id)})` }} />
 
       <div key={reel.id} className="relative flex max-h-full w-full max-w-5xl items-center justify-center gap-6 px-4 motion-safe:animate-[reelIn_.5s_var(--ease-silk)_both] md:gap-12 md:px-10">
-        <a
-          href={reelUrl(reel.id)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group relative block aspect-[9/16] h-[min(76svh,720px)] shrink-0 overflow-hidden rounded-[1.6rem] bg-black shadow-[0_40px_120px_-30px_rgb(0_0_0/0.9)] ring-1 ring-white/15 max-md:h-[62svh]"
-          aria-label={`Watch “${reel.title}” on Instagram (opens in a new tab)`}
-        >
-          {reel.landscape && <span aria-hidden="true" className="absolute inset-0 scale-125 bg-cover bg-center blur-2xl" style={{ backgroundImage: `url(${reelCover(reel.id)})` }} />}
-          <Pic image={{ src: reelCover(reel.id), alt: reel.title }} sizes="420px" className={reel.landscape ? "object-contain!" : ""} tone="dark" />
-          <span aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[24%] rounded-full border-2 border-white/80 motion-safe:animate-[reelPulse_2.2s_ease-out_infinite]" style={{ transform: "translate(-50%,-50%)" }} />
-          <span className="absolute inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-black/80 to-transparent p-5 pt-16">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-black transition-transform duration-300 group-hover:scale-105">
-              <InstagramIcon className="size-4" /> Watch on Instagram <ArrowUpRight className="size-3.5" />
-            </span>
-          </span>
-        </a>
+        <div className="relative aspect-[9/16] h-[min(80svh,760px)] shrink-0 overflow-hidden rounded-[1.6rem] bg-black shadow-[0_40px_120px_-30px_rgb(0_0_0/0.9)] ring-1 ring-white/15 max-md:h-[64svh]">
+          {mode === "video" && <ReelPlayer src={reel.video!} poster={reelCover(reel.id)} title={reel.title} />}
+          {mode === "embed" && (
+            <iframe
+              src={`https://www.instagram.com/reel/${reel.id}/embed/`}
+              title={`${reel.title} (Instagram)`}
+              allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+              allowFullScreen
+              loading="lazy"
+              className="absolute inset-0 h-full w-full border-0 bg-white"
+            />
+          )}
+          {mode === "none" && (
+            <>
+              {reel.landscape && <span aria-hidden="true" className="absolute inset-0 scale-125 bg-cover bg-center blur-2xl" style={{ backgroundImage: `url(${reelCover(reel.id)})` }} />}
+              <Pic image={{ src: reelCover(reel.id), alt: reel.title }} sizes="420px" className={reel.landscape ? "object-contain!" : ""} tone="dark" />
+              <span className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-5 pt-20 text-center">
+                <span className="text-xs leading-relaxed text-white/80">The video for this reel has not been added to the website yet.</span>
+                <a
+                  href={reelUrl(reel.id)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-black transition-transform duration-300 hover:scale-105"
+                >
+                  <InstagramIcon className="size-4" /> Watch on Instagram <ArrowUpRight className="size-3.5" />
+                </a>
+              </span>
+            </>
+          )}
+        </div>
 
         <div className="hidden max-w-sm text-white md:block">
           <p className={`text-[0.68rem] font-semibold uppercase tracking-[0.28em] ${dark ? "text-volt" : "text-blush"}`}>{reel.category}</p>
           <h2 className={`mt-4 leading-[1.02] ${dark ? "font-display text-5xl uppercase" : "font-serif text-5xl font-light"}`}>{reel.title}</h2>
           {meta && <p className="mt-4 text-sm uppercase tracking-[0.22em] text-white/60">{meta}</p>}
-          <p className="mt-8 text-sm leading-relaxed text-white/60">From our Instagram, @passionevents.p. The reel opens on Instagram with its sound.</p>
+          <p className="mt-8 text-sm leading-relaxed text-white/60">From our Instagram, @passionevents.p.</p>
+          {mode === "video" && <p className="mt-3 text-xs text-white/45">Space play/pause · M mute · F full screen · ← → next</p>}
           <p className="mt-10 font-mono text-xs tracking-[0.3em] text-white/50">
             {String(index + 1).padStart(2, "0")} / {String(list.length).padStart(2, "0")}
           </p>
@@ -107,7 +133,7 @@ function ReelViewer({ list, index, onClose, onMove, tone }: { list: Reel[]; inde
       </div>
 
       {/* caption on phones */}
-      <div className="absolute inset-x-5 bottom-[max(1.25rem,env(safe-area-inset-bottom))] text-center text-white md:hidden">
+      <div className="pointer-events-none absolute inset-x-5 bottom-[max(1rem,env(safe-area-inset-bottom))] text-center text-white md:hidden">
         <p className="text-[0.62rem] font-semibold uppercase tracking-[0.24em] text-white/60">
           {reel.category}
           {meta ? ` · ${meta}` : ""}

@@ -3,22 +3,25 @@
 import { useRef } from "react";
 import { stock, type SiteImage } from "@/content/media";
 import { Pic } from "@/components/shared/Pic";
-import { gsap, useGSAP, media } from "@/motion/gsap";
+import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
 
-const steps: { k: string; title: string; text: string; image: SiteImage; color: string }[] = [
-  { k: "01", title: "Stage", text: "Stage and truss designed around the artist, the venue and the sightlines.", image: stock.liveHaze, color: "#ff5a1f" },
-  { k: "02", title: "Lighting", text: "Moving heads, beams and haze, programmed so every song gets its own look.", image: stock.liveLaser, color: "#8b5cff" },
-  { k: "03", title: "Sound", text: "System design and engineers so the back row hears what the front row hears.", image: stock.liveDrumLight, color: "#2ec5ff" },
-  { k: "04", title: "LED & visuals", text: "Screens and content that carry the show to the whole crowd.", image: stock.liveConcert, color: "#ff2e88" },
-  { k: "05", title: "Artists", text: "Riders, rehearsals, soundcheck and hospitality — handled before doors open.", image: stock.liveSinger, color: "#ff5a1f" },
-  { k: "06", title: "Crew & venue", text: "Load-in, crowd flow and show-day calls run by one coordinated team.", image: stock.liveField, color: "#c6ff3d" },
-];
+type Cap = { k: string; title: string; text: string; image: SiteImage; color: string; area: string; sizes: string };
 
 /**
- * How a Passion Live show is built. Desktop: pinned horizontal track with a
- * progress rail; each panel's photo pushes in as it reaches centre.
- * Mobile: vertical cards.
+ * How a Passion Live show is built, as a production portfolio: one dominant
+ * stage photograph and five supporting frames of different sizes. Photos
+ * wipe open as the grid enters; a light sweep crosses each frame on hover.
+ * Descriptions show on hover (desktop) and are always visible on touch.
  */
+const caps: Cap[] = [
+  { k: "01", title: "Stage", text: "Stage and truss designed around the artist, the venue and the sightlines.", image: stock.liveHaze, color: "#ff5a1f", area: "lg:col-span-7 lg:row-span-2", sizes: "(max-width: 1024px) 92vw, 56vw" },
+  { k: "02", title: "Lighting", text: "Moving heads, beams and haze, programmed so every song gets its own look.", image: stock.liveLaser, color: "#8b5cff", area: "lg:col-span-5", sizes: "(max-width: 1024px) 92vw, 40vw" },
+  { k: "03", title: "Sound", text: "System design and engineers so the back row hears what the front row hears.", image: stock.liveDrumLight, color: "#2ec5ff", area: "lg:col-span-5", sizes: "(max-width: 1024px) 92vw, 40vw" },
+  { k: "04", title: "LED & visuals", text: "Screens and content that carry the show to the whole crowd.", image: stock.liveConcert, color: "#ff2e88", area: "lg:col-span-4", sizes: "(max-width: 1024px) 92vw, 32vw" },
+  { k: "05", title: "Artist coordination", text: "Riders, rehearsals, soundcheck and hospitality, handled before doors open.", image: stock.liveSinger, color: "#ff5a1f", area: "lg:col-span-4", sizes: "(max-width: 1024px) 92vw, 32vw" },
+  { k: "06", title: "Show-day execution", text: "Load-in, crowd flow and show calls run by one coordinated crew.", image: stock.liveField, color: "#c6ff3d", area: "lg:col-span-4", sizes: "(max-width: 1024px) 92vw, 32vw" },
+];
+
 export function ProductionShowcase() {
   const root = useRef<HTMLElement>(null);
 
@@ -26,65 +29,75 @@ export function ProductionShowcase() {
     () => {
       const q = gsap.utils.selector(root.current);
       const mm = gsap.matchMedia();
-      mm.add(media.desktop, () => {
-        const track = q("[data-track]")[0] as HTMLElement;
-        const dist = () => track.scrollWidth - window.innerWidth;
-        const tween = gsap.to(track, {
-          x: () => -dist(),
-          ease: "none",
-          scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: () => `+=${dist()}`, pin: true, scrub: 0.8, invalidateOnRefresh: true, anticipatePin: 1 },
+      mm.add(media.ok, () => {
+        const tiles = q<HTMLElement>("[data-tile]");
+        const stops = tiles.map((t, i) => {
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo(t.querySelector("[data-wipe]"), { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "expo.inOut", delay: (i % 3) * 0.08 }, 0)
+            .fromTo(t.querySelector("[data-img]"), { scale: 1.25 }, { scale: 1, duration: 1.6, ease: "expo.out" }, 0.1)
+            .fromTo(t.querySelector("[data-title]"), { yPercent: 110 }, { yPercent: 0, duration: 0.9, ease: "expo.out" }, 0.45);
+          return whenVisible(t, () => tl.play(), "0px 0px -12% 0px");
         });
-        gsap.to(q("[data-rail]"), { scaleX: 1, ease: "none", scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: () => `+=${dist()}`, scrub: true } });
-        q<HTMLElement>("[data-panel]").forEach((p) => {
-          gsap.fromTo(p.querySelector("[data-img]"), { scale: 1.3 }, { scale: 1, ease: "none", scrollTrigger: { trigger: p, containerAnimation: tween, start: "left right", end: "center center", scrub: true } });
-          gsap.from(p.querySelector("[data-title]"), { yPercent: 100, ease: "power3.out", scrollTrigger: { trigger: p, containerAnimation: tween, start: "left 80%", end: "left 40%", scrub: true } });
-        });
+        return () => stops.forEach((s) => s());
       });
     },
     { scope: root }
   );
 
   return (
-    <section ref={root} className="relative bg-char" aria-labelledby="production-title">
-      <div data-pin="" className="relative overflow-hidden lg:h-[100svh]">
-        <div data-track="" className="flex flex-col gap-8 px-5 py-24 md:px-10 lg:h-full lg:w-max lg:flex-row lg:items-center lg:gap-6 lg:py-0 lg:pr-[8vw]">
-          <div className="shrink-0 lg:w-[30vw]">
-            <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-laser">(02) Production capabilities — how a show is built</p>
-            <h2 id="production-title" className="mt-6 font-display text-[clamp(3rem,6.5vw,7rem)] uppercase leading-[0.88] text-white">
+    <section ref={root} className="relative overflow-hidden bg-char py-24 md:py-28" aria-labelledby="production-title">
+      <div className="pointer-events-none absolute -left-40 top-0 size-[620px] rounded-full bg-violet/20 blur-[160px]" />
+      <div className="relative mx-auto max-w-[1600px] px-5 md:px-10">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
+            <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-laser">(02) Production capabilities</p>
+            <h2 id="production-title" className="mt-5 font-display text-[clamp(2.8rem,4.6vw,5.2rem)] uppercase leading-[0.88] text-white">
               We produce the <span className="text-laser">whole night.</span>
             </h2>
-            <p className="mt-6 max-w-md text-fog">
-              Not just tickets and posters. Passion Live plans and runs the production behind every show — the stage, the light, the sound and the people who make it happen.
-            </p>
           </div>
-          {steps.map((s) => (
-            <article key={s.k} data-panel="" className="relative shrink-0 overflow-hidden border border-white/10 bg-void lg:h-[72vh] lg:w-[34vw] xl:w-[30vw]">
-              <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:h-[58%]">
-                <div data-img="" className="absolute inset-0">
-                  <Pic image={s.image} sizes="(max-width: 1024px) 92vw, 34vw" tone="dark" />
+          <p className="max-w-md text-fog lg:col-span-4 lg:col-start-9">
+            Not just tickets and posters. Passion Live plans and runs the production behind every show: the stage, the light, the sound and the people who make it happen.
+          </p>
+        </div>
+
+        <ul className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 md:mt-14 lg:auto-rows-[minmax(15rem,34vh)] lg:grid-cols-12 lg:gap-4">
+          {caps.map((c, i) => (
+            <li key={c.k} data-tile="" className={`group relative isolate overflow-hidden rounded-[1.25rem] bg-void ${i === 0 ? "aspect-[4/5] sm:col-span-2 sm:aspect-[16/10] lg:aspect-auto" : "aspect-[4/3] lg:aspect-auto"} ${c.area}`}>
+              <div data-wipe="" className="absolute inset-0">
+                <div data-img="" className="absolute inset-0 transition-transform duration-[1.4s] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.05]">
+                  <Pic image={c.image} alt="" sizes={c.sizes} tone="dark" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent" />
-                <span className="absolute left-5 top-5 font-grotesk text-xs tracking-[0.3em]" style={{ color: s.color }}>
-                  {s.k} / 06
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/5" />
+              {/* light sweep */}
+              <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/15 to-transparent opacity-0 transition-[left,opacity] duration-1000 ease-out group-hover:left-[120%] group-hover:opacity-100" />
+              <div className="absolute inset-0 flex flex-col justify-between p-5 md:p-7">
+                <span className="font-grotesk text-xs tracking-[0.3em]" style={{ color: c.color }}>
+                  {c.k} / 06
                 </span>
-              </div>
-              <div className="p-6 md:p-8">
-                <div className="overflow-hidden">
-                  <h3 data-title="" className="font-display text-[clamp(2.6rem,4vw,4.4rem)] uppercase leading-none text-white">
-                    {s.title}
-                  </h3>
+                <div>
+                  <div className="overflow-hidden">
+                    <h3 data-title="" className={`font-display uppercase leading-[0.9] text-white ${i === 0 ? "text-[clamp(2.6rem,5vw,5.6rem)]" : "text-[clamp(1.9rem,2.6vw,3rem)]"}`}>
+                      {c.title}
+                    </h3>
+                  </div>
+                  <span className="mt-3 block h-[2px] w-14 transition-[width] duration-700 group-hover:w-24" style={{ background: c.color, boxShadow: `0 0 18px ${c.color}` }} />
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-fog transition-[opacity,transform] duration-500 lg:translate-y-2 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100">
+                    {c.text}
+                  </p>
                 </div>
-                <span className="mt-4 block h-[2px] w-16" style={{ background: s.color, boxShadow: `0 0 18px ${s.color}` }} />
-                <p className="mt-4 max-w-sm text-fog">{s.text}</p>
               </div>
-            </article>
+            </li>
           ))}
-        </div>
-        <div className="absolute inset-x-10 bottom-8 hidden h-px bg-white/10 lg:block">
-          <div data-rail="" className="h-full origin-left scale-x-0 bg-gradient-to-r from-volt via-hot to-laser" />
-        </div>
+        </ul>
+        <p className="mt-6 text-xs uppercase tracking-[0.25em] text-white/35">
+          Illustrative photography.{" "}
+          <a href="#reels" className="text-white/60 underline-offset-4 hover:text-white hover:underline">
+            Our own concert footage is in the reels below
+          </a>
+          .
+        </p>
       </div>
-      <p className="px-5 pb-10 text-xs uppercase tracking-[0.25em] text-white/30 md:px-10 lg:sr-only">Illustrative imagery</p>
     </section>
   );
 }

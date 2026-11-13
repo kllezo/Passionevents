@@ -9,7 +9,7 @@
 const base = (process.argv[2] || "http://localhost:3000").replace(/\/$/, "");
 
 const pages = [
-  ["/", ["Big or small", "Your event is our passion", "What we do", "How we", "Let&#x27;s make your next event"]],
+  ["/", ["From first idea", "Big or small", "Your event is our passion", "What we do", "How we", "What you can count on", "Watch us", "Let&#x27;s make your next event"]],
   ["/about", ["Every event"]],
   ["/services", ["One team"]],
   ["/weddings", ["Weddings", "ritual by ritual"]],

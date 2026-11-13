@@ -8,7 +8,7 @@ import { LiveSectionHead } from "./LiveSectionHead";
 export function ConcertReels({ index = "04" }: { index?: string }) {
   const ids = [...reelsBy("Concerts"), ...reelsBy("Behind the scenes")].map((r) => r.id);
   return (
-    <section className="relative overflow-hidden bg-void py-24 md:py-32" aria-labelledby="reels-title">
+    <section id="reels" className="relative scroll-mt-20 overflow-hidden bg-void py-24 md:py-32" aria-labelledby="reels-title">
       <div className="pointer-events-none absolute -right-40 top-10 size-[620px] rounded-full bg-violet/25 blur-[140px]" />
       <LiveSectionHead
         index={index}

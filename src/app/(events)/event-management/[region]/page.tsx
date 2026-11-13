@@ -70,7 +70,7 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
           <nav aria-label="Breadcrumb" className="text-xs uppercase tracking-[0.2em] text-stone">
             <Link href="/" className="link-underline">Home</Link> <span aria-hidden="true">/</span> Areas we serve <span aria-hidden="true">/</span> <span className="text-ink">{a.name}</span>
           </nav>
-          <h1 id="region-title" className="mt-8 max-w-5xl font-serif text-[clamp(3rem,7.5vw,7.6rem)] font-light leading-[0.9] tracking-[-0.02em] text-ink">
+          <h1 id="region-title" className="mt-8 max-w-5xl font-serif text-[clamp(3rem,6vw,6.5rem)] font-light leading-[0.9] tracking-[-0.02em] text-ink">
             {a.h1.split(" in ")[0]} in <em className="text-rose-deep">{a.h1.split(" in ").slice(1).join(" in ")}</em>
           </h1>
           <p className="mt-8 max-w-3xl text-xl leading-relaxed text-ink/80">{a.summary}</p>
@@ -205,3 +205,7 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
     </>
   );
 }
+
+// Slugs are prerendered from generateStaticParams; navigation into the
+// page may block on the server, which is fine (same as portfolio/[slug]).
+export const instant = false;

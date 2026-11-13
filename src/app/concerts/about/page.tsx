@@ -42,10 +42,10 @@ export default function LiveAboutPage() {
         image={stock.liveBand}
       />
 
-      <section className="bg-void py-24 md:py-36">
+      <section className="bg-void py-24 md:py-28">
         <div className="mx-auto grid max-w-[1700px] gap-14 px-5 md:px-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <RevealText as="p" flavor="live" split="words" className="font-display text-[clamp(2.2rem,4.6vw,4.6rem)] uppercase leading-[1] text-white">
+            <RevealText as="p" flavor="live" split="words" className="font-display text-[clamp(2.2rem,3.7vw,4rem)] uppercase leading-[1] text-white">
               Artists deserve a stage that does them justice. Audiences deserve a night they talk about for years. We build both.
             </RevealText>
           </div>
@@ -81,7 +81,7 @@ export default function LiveAboutPage() {
       <WhatWeHandle index="03" />
 
       {tanush.image && (
-        <section className="relative overflow-hidden bg-void py-24 md:py-36" aria-labelledby="founder-live">
+        <section className="relative overflow-hidden bg-void py-24 md:py-28" aria-labelledby="founder-live">
           <div className="mx-auto grid max-w-[1700px] gap-12 px-5 md:px-10 lg:grid-cols-12 lg:items-center">
             <div className="relative lg:col-span-5">
               <div className="neon-border relative aspect-[3/4] overflow-hidden">
@@ -92,7 +92,7 @@ export default function LiveAboutPage() {
             </div>
             <div className="lg:col-span-6 lg:col-start-7">
               <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-volt">Behind Passion Live</p>
-              <h2 id="founder-live" className="mt-6 font-display text-[clamp(3rem,8vw,8rem)] uppercase leading-[0.86] text-white">
+              <h2 id="founder-live" className="mt-6 font-display text-[clamp(3rem,6.4vw,6.9rem)] uppercase leading-[0.86] text-white">
                 {tanush.displayName}
               </h2>
               <p className="mt-4 font-grotesk uppercase tracking-[0.2em] text-fog">{tanush.role}</p>

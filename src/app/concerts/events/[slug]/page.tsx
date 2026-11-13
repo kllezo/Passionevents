@@ -95,7 +95,7 @@ async function ShowContent({ params }: { params: PageProps<"/concerts/events/[sl
           <div className="lg:col-span-7">
             <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-volt">{EVENT_STATUS_LABEL[e.eventStatus as EventStatus] ?? e.eventStatus}</p>
             {artists.length > 0 && <p className="mt-6 font-grotesk text-lg uppercase tracking-[0.2em] text-white/80">{artists.join(" · ")}</p>}
-            <h1 className="mt-3 font-display text-[clamp(3.2rem,9vw,9rem)] uppercase leading-[0.86] text-white">{e.title}</h1>
+            <h1 className="mt-3 font-display text-[clamp(3.2rem,7.2vw,7.7rem)] uppercase leading-[0.86] text-white">{e.title}</h1>
             <dl className="mt-10 grid gap-6 border-t border-white/10 pt-8 sm:grid-cols-3">
               {d && (
                 <div>

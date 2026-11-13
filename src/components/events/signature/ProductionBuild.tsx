@@ -100,7 +100,7 @@ export function ProductionBuild() {
         <div className="relative mx-auto grid h-full max-w-[1600px] gap-12 px-5 py-24 max-lg:flex max-lg:flex-col max-lg:gap-8 md:px-10 lg:grid-cols-12 lg:items-center lg:py-0">
           <div className="lg:col-span-4">
             <SectionLabel tone="ivory">From empty floor to showtime</SectionLabel>
-            <h2 id="build-title" className="mt-6 font-serif text-[clamp(2.6rem,4.4vw,4.6rem)] font-light leading-[0.95]">
+            <h2 id="build-title" className="mt-6 font-serif text-[clamp(2.6rem,3.5vw,4rem)] font-light leading-[0.95]">
               We build the <em className="text-blush">whole show.</em>
             </h2>
             <ol data-steps="" className="mt-10 space-y-1 max-lg:space-y-8 max-lg:pb-[24svh]">

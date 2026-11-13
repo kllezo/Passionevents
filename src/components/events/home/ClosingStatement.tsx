@@ -51,7 +51,7 @@ export function ClosingStatement() {
   );
 
   return (
-    <section ref={root} className="paper-grain relative overflow-hidden bg-cream py-28 md:py-40" aria-labelledby="closing-title">
+    <section ref={root} className="paper-grain relative overflow-hidden bg-cream py-28 md:py-32" aria-labelledby="closing-title">
       <div data-stage="" className="relative mx-auto flex min-h-[min(92svh,900px)] max-w-[1600px] flex-col items-center justify-center px-5 text-center md:px-10">
         {/* turning rings */}
         <svg viewBox="0 0 800 800" aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 w-[min(118vw,900px)] -translate-x-1/2 -translate-y-1/2 motion-safe:animate-[spin_90s_linear_infinite]">
@@ -80,7 +80,7 @@ export function ClosingStatement() {
             </span>
           </span>
           <span className="mt-8 block overflow-hidden pb-2">
-            <span data-close-line="" className="block font-serif text-[clamp(2.2rem,5.4vw,5.4rem)] font-light italic leading-[1] text-ink">
+            <span data-close-line="" className="block font-serif text-[clamp(2.2rem,4.3vw,4.6rem)] font-light italic leading-[1] text-ink">
               One team. <span className="text-rose-deep">Endless possibilities.</span>
             </span>
           </span>

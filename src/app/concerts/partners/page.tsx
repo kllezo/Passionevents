@@ -31,11 +31,11 @@ export default function PartnersPage() {
         image={stock.liveHands}
       />
       <Collaborate index="01" showCta={false} />
-      <section id="partner-form" className="scroll-mt-20 bg-void py-24 md:py-36" aria-labelledby="partner-form-title">
+      <section id="partner-form" className="scroll-mt-20 bg-void py-24 md:py-28" aria-labelledby="partner-form-title">
         <div className="mx-auto grid max-w-[1700px] gap-14 px-5 md:px-10 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-volt">(02) Start a conversation</p>
-            <RevealText as="h2" id="partner-form-title" flavor="live" split="chars" className="mt-6 font-display text-[clamp(3rem,7vw,7rem)] uppercase leading-[0.86] text-white">
+            <RevealText as="h2" id="partner-form-title" flavor="live" split="chars" className="mt-6 font-display text-[clamp(3rem,5.6vw,6rem)] uppercase leading-[0.86] text-white">
               Pitch us <span className="text-volt">your idea.</span>
             </RevealText>
             <p className="mt-6 max-w-sm text-fog">Every partnership enquiry goes straight to {site.contactPerson} and the Passion Live team.</p>

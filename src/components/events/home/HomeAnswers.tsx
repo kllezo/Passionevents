@@ -28,13 +28,13 @@ const audiences = [
  */
 export function HomeAnswers({ index = "08" }: { index?: string }) {
   return (
-    <section className="bg-ivory py-28 md:py-36" aria-labelledby="answers-title">
+    <section className="bg-ivory py-28 md:py-28" aria-labelledby="answers-title">
       <JsonLd data={faqJsonLd(homeFaqs)} />
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionLabel index={index}>Quick answers</SectionLabel>
-            <h2 id="answers-title" className="mt-8 font-serif text-[clamp(2.6rem,5vw,5rem)] font-light leading-[0.95] text-ink">
+            <h2 id="answers-title" className="mt-8 font-serif text-[clamp(2.6rem,4vw,4.3rem)] font-light leading-[0.95] text-ink">
               Event management in Hyderabad, <em className="text-rose-deep">answered.</em>
             </h2>
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-ink/80">

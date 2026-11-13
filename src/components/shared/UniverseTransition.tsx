@@ -149,10 +149,10 @@ export function UniverseTransitionProvider({ children }: { children: ReactNode }
           <polyline ref={line} fill="none" strokeWidth={2} vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         <div ref={sweep} className="absolute inset-y-0 left-0 w-[60vw] -skew-x-12 blur-2xl" />
-        <div ref={liveLabel} className="absolute inset-x-0 top-[62%] text-center font-display text-[clamp(2.5rem,8vw,7rem)] uppercase leading-none text-white neon-text-volt">
+        <div ref={liveLabel} className="absolute inset-x-0 top-[62%] text-center font-display text-[clamp(2.5rem,6.4vw,6rem)] uppercase leading-none text-white neon-text-volt">
           Passion <span className="text-volt">Live</span>
         </div>
-        <div ref={eventsLabel} className="absolute inset-x-0 top-[62%] text-center font-serif text-[clamp(2.5rem,7vw,6rem)] italic leading-none text-ink">
+        <div ref={eventsLabel} className="absolute inset-x-0 top-[62%] text-center font-serif text-[clamp(2.5rem,5.6vw,5.2rem)] italic leading-none text-ink">
           Passion <span className="text-rose">Events</span>
         </div>
       </div>

@@ -8,11 +8,6 @@ import { RevealText } from "@/motion/RevealText";
 import { useCoverflow } from "@/motion/useCoverflow";
 import { SectionLabel } from "../SectionLabel";
 import { EventsButton } from "../Button";
-import Link from "next/link";
-import { ReelRail } from "@/components/shared/Reels";
-import { InstagramIcon } from "@/components/shared/InstagramIcon";
-import { reels } from "@/content/reels";
-import { instagramUrl } from "@/content/proof";
 
 /** The four things the studio brings together (from the statement itself). */
 const pillars: { word: string; line: string; image: SiteImage }[] = [
@@ -71,7 +66,7 @@ export function BrandIntro() {
   );
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-ivory py-28 md:py-40" aria-labelledby="intro-title">
+    <section ref={root} className="relative overflow-hidden bg-ivory py-28 md:py-32" aria-labelledby="intro-title">
       <div className="pointer-events-none absolute -right-40 top-10 size-[620px] rounded-full bg-blush/30 blur-[130px]" />
       <div className="pointer-events-none absolute -left-40 bottom-0 size-[520px] rounded-full bg-mint/20 blur-[130px]" />
 
@@ -147,27 +142,6 @@ export function BrandIntro() {
 
         {/* Phones / tablets: swipeable pillars */}
         <MobilePillars />
-
-        {/* Our own reels — real work, straight from Instagram */}
-        <div className="mt-24 md:mt-32">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className="eyebrow text-rose-deep">Reels · behind the scenes</p>
-              <h3 className="mt-4 font-serif text-[clamp(2.2rem,4vw,3.8rem)] font-light leading-[1] text-ink">
-                Watch us <em className="text-rose-deep">at work.</em>
-              </h3>
-            </div>
-            <div className="flex items-center gap-6">
-              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="link-underline inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink">
-                <InstagramIcon className="size-4" /> @passionevents.p
-              </a>
-              <Link href="/reels" className="link-underline text-xs font-semibold uppercase tracking-[0.2em] text-rose-deep">
-                All reels →
-              </Link>
-            </div>
-          </div>
-          <ReelRail ids={reels.map((r) => r.id)} className="mt-10" label="Passion Events reels" />
-        </div>
 
         <div data-studio-foot="" className="mt-14 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <p className="max-w-xl text-lg leading-relaxed text-stone">

@@ -20,7 +20,7 @@ export function WeddingsSection() {
   const s = S("weddings");
   const [g0, g1, g2, g3] = s.gallery;
   return (
-    <SectionShell service={s} className="bg-ivory py-28 md:py-40">
+    <SectionShell service={s} className="bg-ivory py-28 md:py-32">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         <div className="grid gap-10 grid-cols-1 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
@@ -70,7 +70,7 @@ export function CorporateSection() {
   const s = S("corporate");
   const [g0, g1, g2] = s.gallery;
   return (
-    <SectionShell service={s} className="bg-ink py-28 text-ivory md:py-40">
+    <SectionShell service={s} className="bg-ink py-28 text-ivory md:py-32">
       <div className="mx-auto grid max-w-[1600px] gap-16 px-5 md:px-10 grid-cols-1 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-28">
@@ -100,7 +100,7 @@ export function CorporateSection() {
 export function ConcertsSection() {
   const s = S("concerts");
   return (
-    <SectionShell service={s} className="bg-void py-28 text-white md:py-36">
+    <SectionShell service={s} className="bg-void py-28 text-white md:py-28">
       <div className="mx-auto max-w-[1700px] px-5 md:px-10">
         <div className="relative">
           <ServicePhoto service={s} image={s.image} sizes="100vw" speed={1} tone="dark" radius="rounded-[2rem]" className="aspect-[4/5] md:aspect-[21/10]" />
@@ -201,7 +201,7 @@ export function PrivateSection() {
     { image: s.gallery[2], label: "Anniversaries", cls: "right-[14%] bottom-[2%] w-[24%] -rotate-3 z-20", sizes: "22vw" },
   ];
   return (
-    <SectionShell service={s} className="bg-[#f6e4e2] py-28 md:py-40">
+    <SectionShell service={s} className="bg-[#f6e4e2] py-28 md:py-32">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         <SectionTitle service={s} align="center" />
         <div className="relative mx-auto mt-16 hidden aspect-[16/9] max-w-6xl lg:block">
@@ -241,7 +241,7 @@ export function DestinationSection() {
   return (
     <SectionShell
       service={s}
-      className="bg-ivory py-28 md:py-40"
+      className="bg-ivory py-28 md:py-32"
       extra={(q) => {
         const pano = q("[data-pano]")[0];
         if (!pano) return;
@@ -285,7 +285,7 @@ export function ArtistsSection() {
   const s = S("artists");
   const pics = [s.image, s.gallery[0], s.gallery[1], s.gallery[2], s.image, s.gallery[0]];
   return (
-    <SectionShell service={s} className="bg-graphite py-28 text-ivory md:py-40">
+    <SectionShell service={s} className="bg-graphite py-28 text-ivory md:py-32">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         <div className="grid gap-12 grid-cols-1 lg:grid-cols-12">
           <div className="lg:col-span-5">
@@ -329,7 +329,7 @@ export function ProductionSection() {
   const s = S("production");
   const [g0, g1, g2, g3] = s.gallery;
   return (
-    <SectionShell service={s} className="bg-cream py-28 md:py-40">
+    <SectionShell service={s} className="bg-cream py-28 md:py-32">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         <div className="grid gap-10 grid-cols-1 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
@@ -374,7 +374,7 @@ export function CompleteSection() {
   return (
     <SectionShell
       service={s}
-      className="bg-ivory py-28 md:py-40"
+      className="bg-ivory py-28 md:py-32"
       extra={(q) => {
         const line = q("[data-timeline-fill]")[0];
         if (!line) return;

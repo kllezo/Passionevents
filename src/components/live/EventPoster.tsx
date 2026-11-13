@@ -89,7 +89,7 @@ export function PosterArt({ title, artist, city, large = false }: { title: strin
       <div className="live-grid-bg absolute inset-0 opacity-50" />
       <div className="absolute inset-x-5 bottom-[22%] text-center">
         {city && <p className="font-grotesk text-[0.65rem] uppercase tracking-[0.35em] text-volt">Live in {city}</p>}
-        <p className={`mt-3 font-display uppercase leading-[0.88] text-white ${large ? "text-[clamp(3.4rem,7vw,7rem)]" : "text-[clamp(2.6rem,5vw,3.6rem)]"}`}>{artist || title}</p>
+        <p className={`mt-3 font-display uppercase leading-[0.88] text-white ${large ? "text-[clamp(3.1rem,5.6vw,6rem)]" : "text-[clamp(2.6rem,5vw,3.6rem)]"}`}>{artist || title}</p>
         {artist && <p className="mt-3 font-grotesk text-xs uppercase tracking-[0.3em] text-white/60">{title.replace(artist, "").replace(/^[\s—-]+/, "") || "Live in concert"}</p>}
       </div>
     </div>

@@ -43,7 +43,7 @@ export function FinalCTA() {
         <div data-burst="" className="absolute left-1/2 top-1/2 size-[70vmax] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgb(255_90_31/0.55),rgb(139_92_255/0.25)_35%,transparent_65%)] blur-2xl" />
       </div>
       <div className="relative mx-auto w-full max-w-[1700px] px-5 text-center md:px-10">
-        <h2 id="final-title" data-final="" data-reveal="" className="font-display text-[clamp(3rem,9.2vw,11rem)] uppercase leading-[0.86] text-white">
+        <h2 id="final-title" data-final="" data-reveal="" className="font-display text-[clamp(3rem,7.4vw,9.5rem)] uppercase leading-[0.86] text-white">
           The next great night
           <br />
           <span className="text-volt neon-text-volt">starts with us.</span>

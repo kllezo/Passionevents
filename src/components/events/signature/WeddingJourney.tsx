@@ -109,7 +109,7 @@ export function WeddingJourney() {
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] opacity-70">
                   {String(i + 1).padStart(2, "0")} · {s.tag}
                 </p>
-                <h3 className="mt-5 font-serif text-[clamp(3.6rem,8vw,8.5rem)] font-light italic leading-[0.9]">{s.title}</h3>
+                <h3 className="mt-5 font-serif text-[clamp(3.3rem,6.4vw,7.3rem)] font-light italic leading-[0.9]">{s.title}</h3>
                 <p className="mt-8 max-w-lg text-xl leading-relaxed opacity-85">{s.text}</p>
               </div>
             </article>

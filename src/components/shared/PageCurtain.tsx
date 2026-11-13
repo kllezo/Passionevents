@@ -75,12 +75,12 @@ export function PageCurtain() {
           <circle r="3.4" fill="var(--color-magenta)" />
         </svg>
         <span className="overflow-hidden">
-          <span data-curtain-in="" data-curtain-title="" className="block font-serif text-[clamp(2.4rem,6vw,5rem)] font-light italic">
+          <span data-curtain-in="" data-curtain-title="" className="block font-serif text-[clamp(2.4rem,4.8vw,4.3rem)] font-light italic">
             Passion Events
           </span>
         </span>
         <span data-curtain-in="" className="eyebrow text-rose-deep">
-          Big or small · we make it special
+          Concept · Design · Production
         </span>
       </div>
     </>

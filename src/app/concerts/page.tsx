@@ -13,7 +13,6 @@ import { WhatWeHandle, Collaborate } from "@/components/live/HandleAndCollab";
 import { FinalCTA } from "@/components/live/FinalCTA";
 import { ProductionShowcase } from "@/components/live/ProductionShowcase";
 import { CautionTapes } from "@/components/live/CautionTapes";
-import { HypeMeter } from "@/components/live/HypeMeter";
 import { ConcertReels } from "@/components/live/ConcertReels";
 
 const liveTitle = "Passion Live — Concerts, Live Music & Artist Bookings in India";
@@ -103,7 +102,6 @@ export default function LiveHome() {
       </section>
 
       <Collaborate index="07" />
-      <HypeMeter />
       <FinalCTA />
     </>
   );

@@ -171,7 +171,7 @@ export function GuitarSection() {
   );
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-void py-28 md:py-40" aria-labelledby="guitar-title">
+    <section ref={root} className="relative overflow-hidden bg-void py-28 md:py-32" aria-labelledby="guitar-title">
       <p data-bg-word="" aria-hidden="true" className="pointer-events-none absolute left-0 top-10 whitespace-nowrap font-display text-[24vw] uppercase leading-none text-white/[0.035]">
         Strike a chord · Strike a chord
       </p>
@@ -179,7 +179,7 @@ export function GuitarSection() {
         <div className="grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
             <p className="font-grotesk text-[0.72rem] uppercase tracking-[0.4em] text-volt">The sound — play it</p>
-            <RevealText as="h2" id="guitar-title" flavor="live" split="chars" className="mt-6 font-display text-[clamp(3.2rem,9vw,9rem)] uppercase leading-[0.86] text-white">
+            <RevealText as="h2" id="guitar-title" flavor="live" split="chars" className="mt-6 font-display text-[clamp(3.2rem,7.2vw,7.7rem)] uppercase leading-[0.86] text-white">
               Strike a <span className="text-volt">chord.</span>
             </RevealText>
           </div>

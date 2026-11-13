@@ -38,7 +38,7 @@ export function FeaturedShow({ e }: { e: PublicEvent }) {
             {EVENT_STATUS_LABEL[e.eventStatus as EventStatus] ?? e.eventStatus}
           </span>
           {artists.length > 0 && <p className="mt-8 font-grotesk text-sm uppercase tracking-[0.3em] text-volt">{artists.join(" · ")}</p>}
-          <h3 className="mt-3 font-display text-[clamp(2.8rem,6vw,6rem)] uppercase leading-[0.88] text-white">
+          <h3 className="mt-3 font-display text-[clamp(2.8rem,4.8vw,5.2rem)] uppercase leading-[0.88] text-white">
             <Link href={`/concerts/events/${e.slug}`}>{e.title}</Link>
           </h3>
           {e.summary && <p className="mt-6 max-w-xl text-lg leading-relaxed text-fog">{e.summary}</p>}

@@ -9,7 +9,7 @@ type Beam = { x: number; color: string; speed: number; phase: number; spread: nu
 /**
  * Layered stage lighting on a single 2D canvas: sweeping moving-head beams,
  * drifting haze, a capped number of dust particles caught in the light and a
- * soft follow-spot under the cursor. Additive blending, no WebGL needed.
+ * slow-moving follow-spot. Additive blending, no WebGL needed.
  */
 export function StageCanvas({ className, intensity = 1, beams: beamCount = 5 }: { className?: string; intensity?: number; beams?: number }) {
   const beams = useMemo<Beam[]>(() => {

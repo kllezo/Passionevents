@@ -5,30 +5,21 @@ import { PortfolioGrid } from "../portfolio/PortfolioGrid";
 import { SectionLabel } from "../SectionLabel";
 import { EventsButton } from "../Button";
 
-async function PortfolioItems() {
+/**
+ * Published stories from the admin dashboard. Until the first one is
+ * published the whole section stays out of the page (no empty placeholder);
+ * the reels section that follows shows the real work meanwhile.
+ */
+async function PortfolioSection() {
   const events = await safeRead("portfolio preview", () => getPortfolioEvents(), []);
+  if (events.length === 0) return null;
   return (
-    <>
-      <PortfolioGrid events={events.slice(0, 4)} />
-      {events.length > 4 && (
-        <div className="mt-16 flex justify-center">
-          <EventsButton href="/portfolio" variant="outline">
-            View the full portfolio
-          </EventsButton>
-        </div>
-      )}
-    </>
-  );
-}
-
-export function PortfolioPreview({ index = "06" }: { index?: string }) {
-  return (
-    <section className="relative bg-ivory py-28 md:py-40" aria-labelledby="portfolio-title">
+    <section className="relative bg-ivory py-24 md:py-28" aria-labelledby="portfolio-title">
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-        <div className="mb-16 flex flex-wrap items-end justify-between gap-8">
+        <div className="mb-14 flex flex-wrap items-end justify-between gap-8">
           <div>
-            <SectionLabel index={index}>Portfolio</SectionLabel>
-            <RevealText as="h2" id="portfolio-title" className="mt-8 font-serif text-[clamp(2.8rem,6vw,6.4rem)] font-light leading-[0.92] text-ink">
+            <SectionLabel>Portfolio</SectionLabel>
+            <RevealText as="h2" id="portfolio-title" className="mt-6 font-serif text-[clamp(2.6rem,4.2vw,4.8rem)] font-light leading-[0.92] text-ink">
               Stories we&apos;ve <em className="text-rose-deep">told.</em>
             </RevealText>
           </div>
@@ -36,12 +27,24 @@ export function PortfolioPreview({ index = "06" }: { index?: string }) {
             Explore our work
           </EventsButton>
         </div>
-        {/* Rendered from published events in the admin dashboard. */}
-        <Suspense fallback={<PortfolioSkeleton />}>
-          <PortfolioItems />
-        </Suspense>
+        <PortfolioGrid events={events.slice(0, 4)} />
+        {events.length > 4 && (
+          <div className="mt-16 flex justify-center">
+            <EventsButton href="/portfolio" variant="outline">
+              View the full portfolio
+            </EventsButton>
+          </div>
+        )}
       </div>
     </section>
+  );
+}
+
+export function PortfolioPreview() {
+  return (
+    <Suspense fallback={null}>
+      <PortfolioSection />
+    </Suspense>
   );
 }
 

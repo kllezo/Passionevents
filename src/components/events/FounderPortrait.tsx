@@ -3,17 +3,14 @@
 import { useRef } from "react";
 import type { SiteImage } from "@/content/media";
 import { Pic } from "@/components/shared/Pic";
-import { gsap, useGSAP, media } from "@/motion/gsap";
+import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
 import { Bloom } from "./botanical/Sprig";
 
-const SLATS = 7;
-
 /**
- * Founder portrait assembled from vertical slats. As the section scrolls in,
- * the slats glide in from alternate directions and lock together inside the
- * arch, the rose frame draws itself around them, blooms open on the corners
- * and a light sweep crosses the finished photograph. Scroll-scrubbed, so it
- * moves exactly with the reader and never jumps.
+ * Founder portrait in a botanical arch. When it scrolls into view the photo
+ * eases from soft focus to sharp while the arch opens and the rose frame
+ * draws around it. Plays once. The photo is visible in the HTML from the
+ * start, so it never stays hidden if scripts or motion are unavailable.
  */
 export function FounderPortrait({ image }: { image: SiteImage }) {
   const root = useRef<HTMLDivElement>(null);
@@ -23,65 +20,46 @@ export function FounderPortrait({ image }: { image: SiteImage }) {
       const q = gsap.utils.selector(root.current);
       const mm = gsap.matchMedia();
       mm.add(media.ok, () => {
-        const slats = q<HTMLElement>("[data-slat]");
-        const tl = gsap.timeline({
-          defaults: { ease: "power3.out" },
-          scrollTrigger: { trigger: root.current, start: "top 85%", end: "center 55%", scrub: 1 },
-        });
-        tl.fromTo(slats, { y: 0, yPercent: (i) => (i % 2 ? 105 : -105), scale: 1.15 }, { y: 0, yPercent: 0, scale: 1, duration: 1, stagger: 0.06 }, 0)
-          .from(q("[data-frame]"), { drawSVG: "50% 50%", duration: 1.1, ease: "power2.inOut" }, 0.1)
-          .from(q("[data-frame-2]"), { drawSVG: "0%", duration: 1.1, ease: "power2.inOut" }, 0.25)
-          .from(q("[data-corner]"), { scale: 0, rotate: -120, duration: 0.6, stagger: 0.1, ease: "back.out(2)" }, 0.8)
-          .fromTo(q("[data-sheen]"), { xPercent: -120, opacity: 1 }, { xPercent: 320, duration: 0.7, ease: "power1.inOut" }, 1.05)
-          .from(q("[data-caption]"), { autoAlpha: 0, y: 20, duration: 0.5 }, 1.1);
-
-        // After it has assembled, the portrait drifts slowly against the page.
-        gsap.fromTo(q("[data-portrait-inner]"), { yPercent: -3 }, { yPercent: 3, ease: "none", scrollTrigger: { trigger: root.current, start: "top bottom", end: "bottom top", scrub: true } });
+        const photo = q("[data-photo]")[0];
+        const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+        tl.fromTo(q("[data-arch]"), { clipPath: "inset(18% 10% 0% 10% round 999px 999px 0 0)" }, { clipPath: "inset(0% 0% 0% 0% round 999px 999px 0 0)", duration: 1.4, ease: "expo.out" }, 0)
+          .fromTo(photo, { scale: 1.12, filter: "blur(14px)", opacity: 0.35 }, { scale: 1, filter: "blur(0px)", opacity: 1, duration: 1.6, clearProps: "filter" }, 0)
+          .from(q("[data-frame]"), { drawSVG: "50% 50%", duration: 1.4, ease: "power2.inOut" }, 0.15)
+          .from(q("[data-frame-2]"), { drawSVG: "0%", duration: 1.4, ease: "power2.inOut" }, 0.3)
+          .from(q("[data-corner]"), { scale: 0, rotate: -90, duration: 0.8, stagger: 0.12, ease: "back.out(1.8)" }, 0.7);
+        const stop = whenVisible(root.current!, () => tl.play(), "0px 0px -15% 0px");
+        // Gentle drift against the page once it has settled.
+        gsap.fromTo(q("[data-drift]"), { yPercent: -2.5 }, { yPercent: 2.5, ease: "none", scrollTrigger: { trigger: root.current, start: "top bottom", end: "bottom top", scrub: true } });
+        return () => stop();
       });
     },
     { scope: root }
   );
 
   return (
-    <div ref={root} className="relative max-sm:px-4">
-      <div className="relative aspect-[3/4] w-full">
-        <div className="arch absolute inset-0 overflow-hidden rounded-t-full bg-cream">
-          <div data-portrait-inner="" className="absolute inset-[-4%_0]">
-            {Array.from({ length: SLATS }, (_, i) => {
-              const l = (i / SLATS) * 100;
-              const r = 100 - ((i + 1) / SLATS) * 100;
-              return (
-                <div
-                  key={i}
-                  data-slat=""
-                  aria-hidden={i > 0 || undefined}
-                  className="absolute inset-0"
-                  // a hairline of overlap hides sub-pixel seams between slats
-                  style={{ clipPath: `inset(0 ${Math.max(0, r - 0.15)}% 0 ${Math.max(0, l - 0.15)}%)` }}
-                >
-                  <Pic image={image} alt={image.alt} sizes="(max-width: 1024px) 92vw, 40vw" className="object-top" />
-                </div>
-              );
-            })}
+    <div ref={root} className="relative">
+      <div className="relative aspect-[4/5] w-full">
+        <div data-arch="" className="absolute inset-0 overflow-hidden rounded-t-full bg-cream">
+          <div data-drift="" className="absolute inset-[-3%_0]">
+            <div data-photo="" className="absolute inset-0 will-change-transform">
+              <Pic image={image} alt={image.alt} sizes="(max-width: 768px) 90vw, 38vw" className="object-top" />
+            </div>
           </div>
-          <div data-sheen="" aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0" />
         </div>
 
-        <svg viewBox="0 0 300 400" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
-          <path data-frame="" d="M-12 412 V150 A162 162 0 0 1 312 150 V412 Z" fill="none" stroke="var(--color-rose)" strokeWidth="1.1" />
-          <path data-frame-2="" d="M-24 400 V150 A174 174 0 0 1 324 150 V400" fill="none" stroke="var(--color-blush)" strokeWidth="0.8" strokeDasharray="2 5" />
+        <svg viewBox="0 0 300 375" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
+          <path data-frame="" d="M-12 387 V150 A162 162 0 0 1 312 150 V387 Z" fill="none" stroke="var(--color-rose)" strokeWidth="1.1" vectorEffect="non-scaling-stroke" />
+          <path data-frame-2="" d="M-24 375 V150 A174 174 0 0 1 324 150 V375" fill="none" stroke="var(--color-blush)" strokeWidth="0.8" strokeDasharray="2 5" vectorEffect="non-scaling-stroke" />
         </svg>
 
-        <svg data-corner="" viewBox="-24 -24 48 48" className="absolute -right-6 top-[14%] size-16 md:-right-10" aria-hidden="true">
+        <svg data-corner="" viewBox="-24 -24 48 48" className="absolute -right-5 top-[14%] size-14 md:-right-8" aria-hidden="true">
           <Bloom r={18} />
         </svg>
-        <svg data-corner="" viewBox="-24 -24 48 48" className="absolute -left-5 bottom-[12%] size-12" aria-hidden="true">
+        <svg data-corner="" viewBox="-24 -24 48 48" className="absolute -left-4 bottom-[12%] size-11" aria-hidden="true">
           <Bloom r={16} />
         </svg>
       </div>
-      <p data-caption="" className="mt-6 text-xs text-stone-light">
-        {image.credit}
-      </p>
+      {image.credit && <p className="mt-5 text-xs text-stone-light">{image.credit}</p>}
     </div>
   );
 }

@@ -113,7 +113,7 @@ export function LiveNav() {
       {pathnameSync}
       <header className={`fixed inset-x-0 top-0 z-[90] transition-colors duration-500 ${scrolled && !open ? "bg-void/70 backdrop-blur-md" : "bg-transparent"}`}>
         <nav aria-label="Passion Live" className="mx-auto flex h-20 max-w-[1700px] items-center justify-between gap-6 px-5 md:px-10">
-          <Link href="/concerts" className="relative z-[95] text-2xl text-white md:text-[1.7rem]" aria-label="Passion Live home">
+          <Link href="/concerts" className="relative z-[95] shrink-0 text-xl text-white sm:text-2xl md:text-[1.7rem]" aria-label="Passion Live home">
             <LiveWordmark />
           </Link>
           <ul className="hidden items-center gap-1 xl:flex">
@@ -131,7 +131,7 @@ export function LiveNav() {
               </li>
             ))}
           </ul>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <span className="hidden md:block">
               <SoundToggle />
             </span>
@@ -146,9 +146,9 @@ export function LiveNav() {
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="live-menu"
-              className="relative z-[95] flex h-11 items-center gap-3 rounded-full border border-white/20 px-4 font-grotesk text-[0.7rem] uppercase tracking-[0.22em] text-white xl:hidden max-sm:px-3"
+              className="relative z-[95] flex h-11 items-center justify-center gap-3 rounded-full border border-white/20 px-4 font-grotesk text-[0.7rem] uppercase tracking-[0.22em] text-white xl:hidden max-sm:w-11 max-sm:px-0"
             >
-              {open ? "Close" : "Menu"}
+              <span className="max-sm:sr-only">{open ? "Close" : "Menu"}</span>
               <span className="flex flex-col gap-1" aria-hidden="true">
                 <span className={`block h-px w-4 bg-volt transition-transform ${open ? "translate-y-[2.5px] rotate-45" : ""}`} />
                 <span className={`block h-px w-4 bg-volt transition-transform ${open ? "-translate-y-[2.5px] -rotate-45" : ""}`} />

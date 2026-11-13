@@ -107,7 +107,7 @@ export function DestinationRoute() {
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
               <SectionLabel>Door to door</SectionLabel>
-              <h2 id="route-title" className="mt-5 font-serif text-[clamp(2.6rem,4.8vw,5rem)] font-light leading-[0.95]">
+              <h2 id="route-title" className="mt-5 font-serif text-[clamp(2.6rem,3.8vw,4.3rem)] font-light leading-[0.95]">
                 Wherever it takes you, <em className="text-rose-deep">we&apos;re there first.</em>
               </h2>
             </div>

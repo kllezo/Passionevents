@@ -23,7 +23,7 @@ export function LiveSectionHead({
         <p className={`font-grotesk text-[0.72rem] uppercase tracking-[0.4em] ${tone}`}>
           <ScrambleLabel>{`${index ? `(${index}) ` : ""}${eyebrow}`}</ScrambleLabel>
         </p>
-        <RevealText as="h2" id={id} flavor="live" split="chars" className="mt-6 font-display text-[clamp(3rem,8vw,8rem)] uppercase leading-[0.86] text-white">
+        <RevealText as="h2" id={id} flavor="live" split="chars" className="mt-6 font-display text-[clamp(3rem,6.4vw,6.9rem)] uppercase leading-[0.86] text-white">
           {title}
         </RevealText>
       </div>

@@ -112,7 +112,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
       </PageHero>
 
       {/* Narrative + services */}
-      <section className="bg-ivory py-28 md:py-40">
+      <section className="bg-ivory py-28 md:py-32">
         <div className="mx-auto grid max-w-[1600px] gap-16 px-5 md:px-10 lg:grid-cols-12">
           <div className="lg:col-span-6">
             <SectionLabel>How we approach {c.title.toLowerCase()}</SectionLabel>
@@ -155,7 +155,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
       <FanDeck images={[c.image, ...c.gallery]} word={c.title} script={c.script} />
 
       {/* Real work from the admin dashboard */}
-      <section className="bg-ivory py-28 md:py-36" aria-labelledby="work-title">
+      <section className="bg-ivory py-28 md:py-28" aria-labelledby="work-title">
         <div className="mx-auto max-w-[1600px] px-5 md:px-10">
           <SectionLabel>Portfolio</SectionLabel>
           <h2 id="work-title" className="mb-14 mt-6 font-serif text-4xl font-light text-ink md:text-6xl">

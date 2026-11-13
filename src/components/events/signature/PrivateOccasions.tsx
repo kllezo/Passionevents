@@ -88,7 +88,7 @@ export function PrivateOccasions() {
   );
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-[#fbf1ee] py-28 md:py-40" aria-labelledby="occasions-title">
+    <section ref={root} className="relative overflow-hidden bg-[#fbf1ee] py-28 md:py-32" aria-labelledby="occasions-title">
       {/* balloons */}
       <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" className="pointer-events-none absolute inset-0 h-full w-full opacity-70" aria-hidden="true">
         {[
@@ -109,7 +109,7 @@ export function PrivateOccasions() {
       <div className="relative mx-auto max-w-[1400px] px-5 md:px-10">
         <div className="text-center">
           <SectionLabel className="justify-center">Every reason to celebrate</SectionLabel>
-          <h2 id="occasions-title" className="mx-auto mt-6 max-w-3xl font-serif text-[clamp(2.6rem,5vw,5.2rem)] font-light leading-[0.95] text-ink">
+          <h2 id="occasions-title" className="mx-auto mt-6 max-w-3xl font-serif text-[clamp(2.6rem,4vw,4.5rem)] font-light leading-[0.95] text-ink">
             Close to the heart, <em className="text-coral-deep">styled with care.</em>
           </h2>
         </div>

@@ -141,7 +141,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 </Link>
               </nav>
               <p className="eyebrow mt-8 text-rose-deep">{p.tags.join(" · ")}</p>
-              <h1 id="post-title" className="mt-5 font-serif text-[clamp(2.6rem,5.6vw,5.6rem)] font-light leading-[0.95] tracking-[-0.015em] text-ink">
+              <h1 id="post-title" className="mt-5 font-serif text-[clamp(2.6rem,4.5vw,4.8rem)] font-light leading-[0.95] tracking-[-0.015em] text-ink">
                 {p.h1}
               </h1>
               <p className="mt-8 max-w-3xl text-xl leading-relaxed text-ink/80">{p.description}</p>
@@ -259,3 +259,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     </>
   );
 }
+
+// Slugs are prerendered from generateStaticParams; navigation into the
+// page may block on the server, which is fine (same as portfolio/[slug]).
+export const instant = false;

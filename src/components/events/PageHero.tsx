@@ -57,7 +57,7 @@ export function PageHero({
           <SectionLabel index={index} tone="ivory">
             {eyebrow}
           </SectionLabel>
-          <RevealText as="h1" trigger="mount" delay={0.4} className="mt-8 max-w-5xl font-serif text-[clamp(3.2rem,8.5vw,9rem)] font-light leading-[0.9] tracking-[-0.02em]">
+          <RevealText as="h1" trigger="mount" delay={0.4} className="mt-8 max-w-5xl font-serif text-[clamp(3.2rem,6.8vw,7.7rem)] font-light leading-[0.9] tracking-[-0.02em]">
             {title}
           </RevealText>
           {script && <p className="mt-2 font-script text-6xl text-blush md:text-8xl">{script}</p>}
@@ -74,7 +74,7 @@ export function PageHero({
       <div className="relative mx-auto grid max-w-[1600px] gap-14 px-5 md:px-10 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-7">
           <SectionLabel index={index}>{eyebrow}</SectionLabel>
-          <RevealText as="h1" trigger="mount" delay={0.15} className="mt-8 font-serif text-[clamp(3.2rem,8vw,8.4rem)] font-light leading-[0.9] tracking-[-0.02em] text-ink">
+          <RevealText as="h1" trigger="mount" delay={0.15} className="mt-8 font-serif text-[clamp(3.2rem,6.4vw,7.2rem)] font-light leading-[0.9] tracking-[-0.02em] text-ink">
             {title}
           </RevealText>
           {script && <p className="-mt-2 pl-[0.4em] font-script text-6xl text-coral md:text-8xl">{script}</p>}
