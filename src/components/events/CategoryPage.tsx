@@ -176,7 +176,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
               <li key={o.key}>
                 <Link href={o.href} className="group flex items-center gap-5">
                   <span className="relative size-24 shrink-0 overflow-hidden rounded-full">
-                    <Pic image={o.image} alt="" sizes="96px" className="transition-transform duration-1000 group-hover:scale-110" />
+                    <Pic image={o.image} sizes="96px" className="transition-transform duration-1000 group-hover:scale-110" />
                   </span>
                   <span className="min-w-0">
                     <span className="block font-serif text-3xl text-ink transition-colors group-hover:text-rose-deep">{o.title}</span>

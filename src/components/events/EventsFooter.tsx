@@ -4,6 +4,7 @@ import { Mail, MessageCircle, Phone } from "lucide-react";
 import { InstagramIcon } from "@/components/shared/InstagramIcon";
 import { brand } from "@/content/media";
 import { services } from "@/content/services";
+import { areas } from "@/content/areas";
 import { site, whatsappLink } from "@/lib/site";
 import { UniverseLink } from "@/components/shared/UniverseTransition";
 import { Year } from "@/components/shared/Year";
@@ -30,6 +31,7 @@ const nav = [
   { href: "/services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/reels", label: "Reels" },
+  { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -122,6 +124,31 @@ export function EventsFooter() {
           </div>
         </div>
       </div>
+
+      {/* Areas we serve: every city links to its own section of a region page. */}
+      <nav aria-labelledby="areas-title" className="mx-auto mb-12 max-w-[1600px] px-5 md:px-10">
+        <p id="areas-title" className="eyebrow text-rose-deep">
+          Areas we serve
+        </p>
+        <div className="mt-5 grid gap-6 border-t border-ink/10 pt-6 md:grid-cols-3">
+          {areas.map((a) => (
+            <div key={a.slug}>
+              <Link href={`/event-management/${a.slug}`} className="link-underline font-serif text-xl text-ink">
+                {`Event management in ${a.name}`}
+              </Link>
+              <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-sm text-stone">
+                {a.cities.map((c) => (
+                  <li key={c.id}>
+                    <Link href={`/event-management/${a.slug}#${c.id}`} className="link-underline">
+                      {c.name.replace(/ \(.*\)$/, "")}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </nav>
 
       {/* Passion Live doorway */}
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">

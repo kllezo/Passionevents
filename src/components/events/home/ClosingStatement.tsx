@@ -61,7 +61,7 @@ export function ClosingStatement() {
         </svg>
         {medallions.map((m) => (
           <div key={m.image.src} data-medal="" data-speed={m.speed} aria-hidden="true" className={`absolute hidden overflow-hidden rounded-full shadow-[0_30px_60px_-30px_rgb(94_52_64/0.7)] ring-4 ring-ivory sm:block ${m.cls}`}>
-            <Pic image={m.image} alt="" sizes="200px" />
+            <Pic image={m.image} sizes="200px" />
           </div>
         ))}
         <svg viewBox="-30 -30 60 60" aria-hidden="true" className="absolute left-1/2 top-0 size-12 -translate-x-1/2">

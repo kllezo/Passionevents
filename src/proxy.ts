@@ -2,8 +2,12 @@ import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 import { PrismaClient } from "@prisma/client";
 import { services } from "@/content/services";
+import { areas } from "@/content/areas";
+import { posts } from "@/content/blog";
 
 const SERVICE_SLUGS = new Set(services.map((s) => s.slug));
+const AREA_SLUGS = new Set<string>(areas.map((a) => a.slug));
+const POST_SLUGS = new Set(posts.map((p) => p.slug));
 
 const COOKIE = "pe_admin_session";
 
@@ -21,6 +25,18 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.proxyPrisma = db;
  */
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  const area = pathname.match(/^\/event-management\/([^/]+)\/?$/);
+  if (area) {
+    if (!AREA_SLUGS.has(decodeURIComponent(area[1]))) return NextResponse.rewrite(new URL("/_missing", req.url), { status: 404 });
+    return NextResponse.next();
+  }
+
+  const post = pathname.match(/^\/blog\/([^/]+)\/?$/);
+  if (post) {
+    if (!POST_SLUGS.has(decodeURIComponent(post[1]))) return NextResponse.rewrite(new URL("/_missing", req.url), { status: 404 });
+    return NextResponse.next();
+  }
 
   const service = pathname.match(/^\/services\/([^/]+)\/?$/);
   if (service) {
@@ -63,5 +79,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin", "/admin/:path*", "/portfolio/:slug", "/concerts/events/:slug", "/services/:slug"],
+  matcher: ["/admin", "/admin/:path*", "/portfolio/:slug", "/concerts/events/:slug", "/services/:slug", "/event-management/:slug", "/blog/:slug"],
 };

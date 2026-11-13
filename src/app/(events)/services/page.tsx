@@ -51,7 +51,7 @@ export default function ServicesPage() {
                   <span className="col-start-1 text-stone md:col-span-4 md:col-start-auto">{c.short}</span>
                   {/* phones: an arched thumbnail beside each service; desktop: the round one at the end */}
                   <span className="relative col-start-2 row-span-3 row-start-1 block h-24 w-20 self-center overflow-hidden rounded-t-full rounded-b-xl shadow-[0_16px_30px_-18px_rgb(94_52_64/0.7)] md:col-span-1 md:col-start-auto md:row-span-1 md:row-start-auto md:size-16 md:justify-self-end md:rounded-full md:shadow-none">
-                    <Pic image={c.image} alt="" sizes="96px" className="transition-transform duration-1000 group-hover:scale-125" />
+                    <Pic image={c.image} sizes="96px" className="transition-transform duration-1000 group-hover:scale-125" />
                   </span>
                 </Link>
               </li>

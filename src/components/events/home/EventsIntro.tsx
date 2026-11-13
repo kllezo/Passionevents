@@ -124,7 +124,7 @@ export function EventsIntro() {
           <SprigGroup g={sprigBottom} strokeWidth={5} />
         </svg>
         <div data-logo="" className="absolute inset-0">
-          <Pic image={brand.logo} alt="" sizes="(max-width: 768px) 78vw, 64vh" className="object-contain" preload skeleton={false} />
+          <Pic image={brand.logo} alt="Passion Events logo" sizes="(max-width: 768px) 78vw, 64vh" className="object-contain" preload skeleton={false} />
         </div>
       </div>
 

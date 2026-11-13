@@ -2,6 +2,7 @@ import { EventsIntro } from "@/components/events/home/EventsIntro";
 import { EventsHero } from "@/components/events/home/EventsHero";
 import { BrandIntro } from "@/components/events/home/BrandIntro";
 import { ClosingStatement } from "@/components/events/home/ClosingStatement";
+import { HomeAnswers } from "@/components/events/home/HomeAnswers";
 import { FlyThrough } from "@/components/events/home/FlyThrough";
 import { CinematicShowcase } from "@/components/events/home/CinematicShowcase";
 import { WhatWeDo } from "@/components/events/home/WhatWeDo";
@@ -16,11 +17,11 @@ import { organizationJsonLd, pageMetadata, websiteJsonLd } from "@/lib/seo";
 
 export const metadata = {
   ...pageMetadata({
-    title: "Passion Events — Weddings, Corporate & Live Events in Hyderabad",
-    description: "Big or small, we make it special. Hyderabad event planners for weddings, corporate events, concerts and private celebrations across AP, Telangana and India.",
+    title: "Passion Events | Event Management Company in Hyderabad",
+    description: "Event management company in Hyderabad for weddings, corporate events, concerts and parties across Andhra Pradesh, Telangana and Bengaluru.",
     path: "/",
   }),
-  title: { absolute: "Passion Events — Weddings, Corporate & Live Events in Hyderabad" },
+  title: { absolute: "Passion Events | Event Management Company in Hyderabad" },
 };
 
 export default function HomePage() {
@@ -38,8 +39,9 @@ export default function HomePage() {
       <PortfolioPreview index="05" />
       <FoundersFeature index="06" />
       <WhyUs index="07" />
+      <HomeAnswers index="08" />
       <ClosingStatement />
-      <EnquirySection index="08" />
+      <EnquirySection index="09" />
     </>
   );
 }

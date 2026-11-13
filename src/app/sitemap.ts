@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
 import { getSitemapEvents } from "@/lib/events";
 import { services } from "@/content/services";
+import { areas } from "@/content/areas";
+import { posts } from "@/content/blog";
 
 // Service detail pages that are their own page (the other five redirect to
 // the category pages already listed below).
@@ -20,6 +22,7 @@ const staticRoutes = [
   "/portfolio",
   "/founders",
   "/reels",
+  "/blog",
   "/contact",
   "/concerts",
   "/concerts/events",
@@ -34,6 +37,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${site.url}${p}`,
       changeFrequency: "weekly" as const,
       priority: p === "/" ? 1 : p === "/concerts" || p === "/what-we-do" ? 0.9 : 0.7,
+    })),
+    ...areas.map((a) => ({
+      url: `${site.url}/event-management/${a.slug}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    ...posts.map((p) => ({
+      url: `${site.url}/blog/${p.slug}`,
+      lastModified: new Date(p.updated),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
     ...events.map((e) => ({
       url: `${site.url}${e.experience === "LIVE" ? "/concerts/events/" : "/portfolio/"}${e.slug}`,

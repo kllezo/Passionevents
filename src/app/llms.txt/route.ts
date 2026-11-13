@@ -4,6 +4,8 @@ import { featuredArtists, instagramUrl, proofStats } from "@/content/proof";
 import { geoFaqs } from "@/content/events";
 import { reels, reelUrl } from "@/content/reels";
 import { foundersList } from "@/content/founders";
+import { areas } from "@/content/areas";
+import { posts } from "@/content/blog";
 
 /**
  * /llms.txt — a plain-text brief for AI assistants and answer engines
@@ -57,7 +59,23 @@ export function GET() {
     `- [Reels](${u}/reels): the company's own Instagram reels — weddings, décor and concerts`,
     `- [Portfolio](${u}/portfolio): published event stories`,
     `- [Passion Live](${u}/concerts): concerts, artists, upcoming and past shows`,
+    `- [Blog](${u}/blog): planning guides`,
     `- [Contact](${u}/contact): enquiry form`,
+    "",
+    "## Areas served",
+    "",
+    ...areas.flatMap((a) => [
+      `### [${a.h1}](${u}/event-management/${a.slug})`,
+      "",
+      a.summary,
+      "",
+      `Cities: ${a.cities.map((c) => `${c.name}${c.aka?.length ? ` (also ${c.aka.join(", ")})` : ""}`).join("; ")}.`,
+      ...(a.work.length ? ["", `Recent work: ${a.work.map((w) => `${w.label} (${w.detail})`).join("; ")}.`] : []),
+      "",
+    ]),
+    "## Guides",
+    "",
+    ...posts.map((p) => `- [${p.h1}](${u}/blog/${p.slug}): ${p.description}`),
     "",
     "## Questions and answers",
     "",

@@ -111,10 +111,11 @@ export function EventsHero() {
 
       <div className="relative mx-auto grid max-w-[1600px] grid-cols-1 gap-8 px-5 pb-16 md:gap-12 md:px-10 md:pb-20 lg:min-h-[calc(100svh-8rem)] lg:grid-cols-12 lg:items-center lg:gap-6">
         <div data-copy="" className="relative z-10 lg:col-span-7">
-          <p data-eyebrow="" data-hero-hidden="" className="eyebrow mb-5 flex items-center gap-3 text-rose-deep max-sm:justify-center max-sm:text-[0.6rem] max-sm:tracking-[0.22em] md:mb-8">
-            <span className="h-px w-10 bg-rose max-sm:hidden" /> Passion Events · Hyderabad · Across India
-          </p>
           <h1 id="hero-title" className="relative font-serif text-[clamp(3.4rem,9.4vw,9.6rem)] font-light leading-[0.88] tracking-[-0.02em] text-ink max-sm:text-center max-sm:text-[3.1rem]">
+            {/* The page topic, visible, as the first line of the heading. */}
+            <span data-eyebrow="" data-hero-hidden="" className="eyebrow mb-5 flex items-center gap-3 font-sans leading-normal not-italic text-rose-deep max-sm:justify-center max-sm:text-[0.6rem] max-sm:tracking-[0.2em] md:mb-8">
+              <span aria-hidden="true" className="h-px w-10 bg-rose max-sm:hidden" /> Passion Events · Event management company in Hyderabad
+            </span>
             <span data-headline="" data-reveal="" className="block">
               <span className="block">Big or small.</span>
               <span className="block italic text-rose-deep">We make it</span>
@@ -128,7 +129,7 @@ export function EventsHero() {
             </span>
           </h1>
           <p data-sub="" data-hero-hidden="" className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-stone max-sm:mx-auto max-sm:max-w-[21rem] max-sm:text-center sm:text-lg md:mt-8 md:text-xl">
-            From intimate celebrations to extraordinary productions, we bring every detail together to create experiences worth remembering.
+            Passion Events is a Hyderabad event management company for weddings, corporate events, concerts and private celebrations, from intimate gatherings to full productions, across Andhra Pradesh, Telangana and beyond.
           </p>
           <div data-cta="" className="mt-7 flex flex-wrap items-center gap-4 max-sm:justify-center md:mt-10">
             <span data-hero-hidden="">
@@ -155,7 +156,7 @@ export function EventsHero() {
             <div data-arch-img="" className="absolute inset-[-8%_0] will-change-transform">
               {slides.map((img, i) => (
                 <div key={img.src} data-slide="" className="absolute inset-0" style={{ opacity: i === 0 ? 1 : 0 }}>
-                  <Pic image={img} preload={i === 0} sizes="(max-width: 640px) 58vw, (max-width: 1024px) 400px, 34vw" quality={85} />
+                  <Pic image={img} preload={i === 0} loading={i === 0 ? undefined : "eager"} fetchPriority={i === 0 ? undefined : "low"} sizes="(max-width: 640px) 58vw, (max-width: 1024px) 400px, 34vw" quality={85} />
                 </div>
               ))}
             </div>
@@ -177,7 +178,7 @@ export function EventsHero() {
           </svg>
 
           <div data-orb="" className="absolute -left-[4%] top-[18%] size-[34%] overflow-hidden rounded-full border-[6px] border-ivory shadow-xl">
-            <Pic image={stock.liveCrowd} sizes="240px" className="" />
+            <Pic image={stock.liveCrowd} sizes="240px" loading="eager" className="" />
           </div>
 
           <div data-badge="" className="absolute -bottom-6 -right-2 grid size-28 place-items-center rounded-full bg-ivory/95 shadow-[0_20px_50px_-25px_rgb(148_96_108/0.6)] md:-right-6 md:size-36">

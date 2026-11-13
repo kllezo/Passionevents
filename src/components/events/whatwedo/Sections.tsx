@@ -307,7 +307,7 @@ export function ArtistsSection() {
                     </span>
                   </span>
                   <span className="relative hidden h-20 w-32 shrink-0 overflow-hidden rounded-xl opacity-0 transition-[opacity,transform] duration-500 group-hover:opacity-100 md:block md:translate-x-6 md:group-hover:translate-x-0">
-                    <Pic image={pics[i % pics.length]} alt="" sizes="128px" tone="dark" />
+                    <Pic image={pics[i % pics.length]} sizes="128px" tone="dark" />
                   </span>
                   <ArrowUpRight className="size-6 shrink-0 text-blush md:hidden" />
                 </Link>

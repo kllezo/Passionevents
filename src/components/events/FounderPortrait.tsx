@@ -59,7 +59,7 @@ export function FounderPortrait({ image }: { image: SiteImage }) {
                   // a hairline of overlap hides sub-pixel seams between slats
                   style={{ clipPath: `inset(0 ${Math.max(0, r - 0.15)}% 0 ${Math.max(0, l - 0.15)}%)` }}
                 >
-                  <Pic image={image} alt={i === 0 ? image.alt : ""} sizes="(max-width: 1024px) 92vw, 40vw" className="object-top" />
+                  <Pic image={image} alt={image.alt} sizes="(max-width: 1024px) 92vw, 40vw" className="object-top" />
                 </div>
               );
             })}

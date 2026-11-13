@@ -25,6 +25,14 @@ const pages = [
   ["/services/artist-and-entertainment-management", ["Sameera Bharadwaj"]],
   ["/services/complete-event-management", ["Conceptualisation"]],
   ["/reels", ["as they happened", "DeTkSCHtGHK"]],
+  ["/event-management/andhra-pradesh", ["Event management in Vijayawada", "Event management in Tirupati", "Nandigama", "FAQPage"]],
+  ["/event-management/telangana", ["Event management in Hyderabad", "Event management in Warangal", "Event management in Khammam"]],
+  ["/event-management/bengaluru", ["Event management in Bengaluru", "Sameera Bharadwaj"]],
+  ["/blog", ["Event planning guides", "telugu-wedding-planning-guide"]],
+  ["/blog/how-to-choose-an-event-management-company", ["12 questions to ask before you book", "BlogPosting"]],
+  ["/blog/telugu-wedding-planning-guide", ["Pellikuthuru", "DLImPaTz1bw", "BlogPosting"]],
+  ["/blog/how-a-live-concert-is-produced", ["technical rider", "BlogPosting"]],
+  ["/llms.txt", ["## Areas served", "## Guides", "Khammam"]],
   ["/contact", ["Enquire"]],
   ["/concerts", ["Turn the night", "We produce the", "starts with us"]],
   ["/concerts/events", ["Every"]],
@@ -50,7 +58,7 @@ for (const [path, needles] of pages) {
   check(!/Application error|Internal Server Error/i.test(body), `${path} has no error page`);
 }
 
-for (const path of ["/does-not-exist", "/portfolio/does-not-exist", "/concerts/events/does-not-exist", "/services/does-not-exist"]) {
+for (const path of ["/does-not-exist", "/portfolio/does-not-exist", "/concerts/events/does-not-exist", "/services/does-not-exist", "/event-management/does-not-exist", "/blog/does-not-exist"]) {
   const res = await fetch(base + path);
   check(res.status === 404, `${path} → ${res.status} (expect 404)`);
 }

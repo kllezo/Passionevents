@@ -35,7 +35,7 @@ export function ReturnLink({ className, onClick, compact = false }: { className?
     >
       <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-[140%] -skew-x-12 bg-gradient-to-r from-transparent via-[#f6e4e2] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[360%]" />
       <span className="relative block size-9 shrink-0 overflow-hidden rounded-full ring-1 ring-black/10 transition-transform duration-700 ease-out group-hover:rotate-[20deg]">
-        <Image src={brand.mark.src} alt="" width={72} height={72} className="size-full object-cover" />
+        <Image src={brand.mark.src} alt="Passion Events floral logo mark" width={72} height={72} className="size-full object-cover" />
       </span>
       <span className="relative font-grotesk text-[0.7rem] font-semibold uppercase tracking-[0.2em]">Return to Passion Events</span>
       <span className="relative grid size-9 shrink-0 place-items-center rounded-full bg-black text-white transition-transform duration-500 ease-out group-hover:translate-x-0.5">

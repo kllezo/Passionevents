@@ -194,3 +194,43 @@ export const geoFaqs = [
   },
 ];
 
+
+/**
+ * Home-page questions — what people search before hiring an event company,
+ * answered with published facts only. Rendered visibly on the home page with
+ * matching FAQPage structured data.
+ */
+export const homeFaqs = [
+  {
+    q: "What is Passion Events?",
+    a: "Passion Events is an event management company based in Hyderabad, founded by Ramya and P. Sai Tanush. It plans and runs weddings, corporate events, concerts, college fests, private parties and destination events, and offers A to Z event services from the first idea to the last guest leaving.",
+  },
+  {
+    q: "Which cities does Passion Events work in?",
+    a: "We are based in Hyderabad and plan events across Andhra Pradesh and Telangana, including Vijayawada, Amaravati, Guntur, Visakhapatnam, Rajahmundry, Kurnool, Tirupati, Warangal and Khammam. Our recent weddings were in Nandigama, Jaggayyapeta and Hyderabad, and Passion Live has produced concerts in Bengaluru.",
+  },
+  {
+    q: "Is Passion Events an end-to-end event management company?",
+    a: "Yes. You can hand us the whole event, covering concept, planning, vendors, décor, stage, sound and lighting, artists, logistics, guest management and on-site execution, or book a single service and run the rest yourself.",
+  },
+  {
+    q: "Does Passion Events organise concerts and book artists?",
+    a: "Yes. Through Passion Live we produce concerts and artist nights, such as Sameera Bharadwaj live in Bengaluru and at Illuzion Club in Hyderabad, and Geetha Madhuri live in concert. We also book singers, bands and DJs for weddings and corporate events.",
+  },
+  {
+    q: "Can Passion Events manage corporate events?",
+    a: "Yes. We plan conferences, product launches, award nights, annual celebrations and corporate entertainment, including stage, screens, sound, lighting and the run-of-show on the day.",
+  },
+  {
+    q: "Do you plan birthday parties and private celebrations?",
+    a: "Yes. Birthdays, anniversaries, engagements and other private parties are planned with the same care as a large production, from theme and décor to entertainment and guest hospitality.",
+  },
+  {
+    q: "How early should I contact an event company?",
+    a: "As early as you can. Popular wedding dates, venues, artists and décor teams get booked first, so share your date, city, guest count and the services you need, and we will tell you what is available.",
+  },
+  {
+    q: "How do I get a quote from Passion Events?",
+    a: "Send an enquiry from the contact page with your event type, date, city and guest count, or message @passionevents.p on Instagram. Every quote is prepared for the specific event, so we do not publish fixed packages.",
+  },
+];

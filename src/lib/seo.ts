@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { site } from "./site";
 import { services, type Service } from "@/content/services";
 import { foundersList, type Founder } from "@/content/founders";
+import { allCities } from "@/content/areas";
+import type { Post } from "@/content/blog";
+import { reelCover } from "@/content/reels";
 
 /** Per-page metadata with canonical URL + Open Graph in one call. */
 export function pageMetadata({
@@ -10,26 +13,31 @@ export function pageMetadata({
   path,
   image = "/brand/og-passion-events.jpg",
   live = false,
+  article,
 }: {
   title: string;
   description: string;
   path: string;
   image?: string;
   live?: boolean;
+  /** For blog posts: Open Graph article type with its dates. */
+  article?: { published: string; modified: string; tags?: string[] };
 }): Metadata {
+  const og = {
+    title,
+    description,
+    url: path,
+    siteName: live ? site.liveName : site.name,
+    images: [{ url: image, width: 1200, height: 630 }],
+    locale: "en_IN",
+  };
   return {
     title,
     description,
-    alternates: { canonical: path },
-    openGraph: {
-      title,
-      description,
-      url: path,
-      siteName: live ? site.liveName : site.name,
-      images: [{ url: image, width: 1200, height: 630 }],
-      locale: "en_IN",
-      type: "website",
-    },
+    alternates: { canonical: path, languages: { "en-IN": path, "x-default": path } },
+    openGraph: article
+      ? { ...og, type: "article", publishedTime: article.published, modifiedTime: article.modified, tags: article.tags }
+      : { ...og, type: "website" },
     twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }
@@ -59,8 +67,9 @@ export function organizationJsonLd() {
     slogan: "Big or small. We make it special.",
     founder: foundersList.map((f) => founderJsonLd(f, false)),
     foundingLocation: { "@type": "Place", name: "Hyderabad, Telangana, India" },
+    // The cities on the /event-management region pages, then the states.
     areaServed: [
-      { "@type": "City", name: "Hyderabad" },
+      ...allCities.map((c) => ({ "@type": "City", name: c.name.replace(/ \(.*\)$/, ""), url: `${site.url}/event-management/${c.region.slug}#${c.id}` })),
       { "@type": "State", name: "Telangana" },
       { "@type": "State", name: "Andhra Pradesh" },
       { "@type": "Country", name: "India" },
@@ -129,6 +138,33 @@ export function serviceJsonLd(s: Service) {
       { "@type": "Country", name: "India" },
     ],
     hasOfferCatalog: { "@type": "OfferCatalog", name: s.title, itemListElement: s.handles.map((h) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: h } })) },
+  };
+}
+
+/**
+ * A guide on /blog. Written and published by the company itself, so author
+ * and publisher are the organisation, never an invented person.
+ */
+export function articleJsonLd(p: Post) {
+  const url = `${site.url}/blog/${p.slug}`;
+  const org = { "@type": "Organization", "@id": ORG_ID(), name: site.name, url: site.url };
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${url}#article`,
+    headline: p.h1,
+    description: p.description,
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    image: `${site.url}${reelCover(p.cover)}`,
+    datePublished: p.published,
+    dateModified: p.updated,
+    inLanguage: "en-IN",
+    keywords: p.tags.join(", "),
+    articleSection: p.tags[0],
+    author: org,
+    publisher: { ...org, logo: { "@type": "ImageObject", url: `${site.url}/brand/logo-1400.webp` } },
+    isPartOf: { "@id": `${site.url}/#website` },
   };
 }
 

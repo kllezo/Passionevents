@@ -5,6 +5,7 @@ import { site } from "@/lib/site";
 import { SmoothScroll } from "@/motion/SmoothScroll";
 import { UniverseTransitionProvider } from "@/components/shared/UniverseTransition";
 import { ImageWarmup } from "@/components/shared/ImageWarmup";
+import { Analytics } from "@/components/shared/Analytics";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -21,7 +22,7 @@ const grotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["lat
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Passion Events — Weddings, Corporate & Live Events in Hyderabad",
+    default: "Passion Events | Event Management Company in Hyderabad",
     template: "%s | Passion Events",
   },
   description: site.description,
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: motionBootstrap }} />
+        <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
       </head>
       <body>
         <a href="#main" className="skip-link">
@@ -91,6 +93,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SmoothScroll>{children}</SmoothScroll>
         </UniverseTransitionProvider>
         <ImageWarmup />
+        <Analytics />
       </body>
     </html>
   );

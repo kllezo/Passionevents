@@ -30,7 +30,7 @@ export function ReelCard({ reel, onOpen, tone = "light", className = "", sizes =
         <span aria-hidden="true" className="absolute inset-0 scale-125 bg-cover bg-center blur-2xl" style={{ backgroundImage: `url(${reelCover(reel.id)})` }} />
       )}
       <span className="absolute inset-0 block transition-transform duration-[1.2s] ease-[var(--ease-silk)] group-hover:scale-[1.05]">
-        <Pic image={{ src: reelCover(reel.id), alt: "" }} sizes={sizes} className={reel.landscape ? "object-contain!" : ""} tone={dark ? "dark" : "light"} />
+        <Pic image={{ src: reelCover(reel.id), alt: `${reel.title}${meta ? `, ${meta}` : ""} — Passion Events reel` }} sizes={sizes} className={reel.landscape ? "object-contain!" : ""} tone={dark ? "dark" : "light"} />
       </span>
       {/* ring around Instagram's play mark */}
       <span aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[24%] rounded-full border-2 border-white/0 transition-colors duration-300 group-hover:border-white/80 group-focus-visible:border-white/80 motion-safe:group-hover:animate-[reelPulse_2.2s_ease-out_infinite] motion-safe:group-focus-visible:animate-[reelPulse_2.2s_ease-out_infinite]" style={{ transform: "translate(-50%,-50%)" }} />
