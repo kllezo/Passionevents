@@ -54,3 +54,6 @@ admin-credentials.local.txt
 
 # local embedded postgres
 .pgdata/
+
+# SEO/GEO working files (research, keyword maps, reports) — kept off the public repo
+/.seo-geo/

@@ -52,7 +52,7 @@ export function EventsHero() {
         const tl = gsap.timeline({ paused: true, defaults: { ease: "expo.out" } });
 
         gsap.set(q("[data-hero-hidden]"), { opacity: 1 });
-        split = SplitText.create(q("[data-headline]")[0], { type: "lines", mask: "lines", linesClass: "split-line" });
+        split = SplitText.create(q("[data-headline]")[0], { type: "lines", mask: "lines", linesClass: "split-line", aria: "none" });
         gsap.set(q("[data-headline]"), { visibility: "visible" });
 
         tl.from(q("[data-eyebrow]"), { autoAlpha: 0, y: 16, duration: 1 }, 0)
@@ -155,7 +155,7 @@ export function EventsHero() {
             <div data-arch-img="" className="absolute inset-[-8%_0] will-change-transform">
               {slides.map((img, i) => (
                 <div key={img.src} data-slide="" className="absolute inset-0" style={{ opacity: i === 0 ? 1 : 0 }}>
-                  <Pic image={img} preload={i === 0} sizes="(max-width: 1024px) 90vw, 36vw" quality={85} />
+                  <Pic image={img} preload={i === 0} sizes="(max-width: 640px) 58vw, (max-width: 1024px) 400px, 34vw" quality={85} />
                 </div>
               ))}
             </div>

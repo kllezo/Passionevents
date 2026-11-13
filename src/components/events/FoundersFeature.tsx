@@ -67,7 +67,7 @@ function Profile({ founder, detailed, className = "" }: { founder: Founder; deta
       {founder.image && <FounderPortrait image={founder.image} />}
       <div className="mt-10 max-sm:px-1">
         <p className="eyebrow text-rose-deep">{founder.role}</p>
-        <ScatterText as="h3" className="mt-4 block font-serif text-[clamp(2.8rem,5vw,5.2rem)] font-light leading-[0.95] text-ink">
+        <ScatterText as={detailed ? "h2" : "h3"} className="mt-4 block font-serif text-[clamp(2.8rem,5vw,5.2rem)] font-light leading-[0.95] text-ink">
           {founder.displayName}
         </ScatterText>
         {founder.name !== founder.displayName && <p className="mt-2 font-serif text-xl italic text-stone">{founder.name}</p>}

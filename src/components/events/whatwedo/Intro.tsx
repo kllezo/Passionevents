@@ -92,7 +92,7 @@ export function WhatWeDoIntro() {
                   onFocus={() => setHover(i)}
                   className="group flex items-baseline gap-5 border-b border-ink/10 py-3.5"
                 >
-                  <span className="font-serif text-sm italic text-rose">{s.index}</span>
+                  <span className="font-serif text-sm italic text-rose-deep">{s.index}</span>
                   <span className={`font-serif text-[clamp(1.6rem,2.8vw,2.6rem)] font-light leading-none transition-[color,transform] duration-500 group-hover:translate-x-2 ${hover === i ? "text-ink" : "text-ink/55"}`}>{s.title}</span>
                   <span className="ml-auto hidden font-script text-3xl text-coral opacity-0 transition-opacity duration-500 group-hover:opacity-100 md:block">{s.script}</span>
                 </a>

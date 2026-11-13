@@ -53,6 +53,11 @@ export function RevealText({
           mask: "lines",
           linesClass: "split-line",
           autoSplit: true,
+          // Lines and words keep whole words, so screen readers read them as
+          // normal text. SplitText's default puts an aria-label on the element,
+          // which <p>/<span> don't support — some readers would then skip it.
+          // Character splits are only used on headings, where it is valid.
+          aria: split === "chars" ? "auto" : "none",
           onSplit(self) {
             gsap.set(el, { visibility: "visible" });
             const targets = split === "chars" ? self.chars : split === "words" ? self.words : self.lines;

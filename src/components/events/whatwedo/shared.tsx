@@ -140,7 +140,7 @@ export function Handles({ service, tone = "light", columns = 1 }: { service: Ser
     <ul className={`mt-8 grid gap-x-8 ${columns === 2 ? "sm:grid-cols-2" : ""}`} aria-label={`What we handle — ${service.title}`}>
       {service.handles.map((h, i) => (
         <li key={h} data-rise="" className={`flex items-baseline gap-4 border-b py-3 ${dark ? "border-white/12 text-ivory/90" : "border-ink/10 text-ink"}`}>
-          <span className={`font-serif text-sm italic ${tone === "live" ? "text-volt" : dark ? "text-blush" : "text-rose"}`}>{String(i + 1).padStart(2, "0")}</span>
+          <span className={`font-serif text-sm italic ${tone === "live" ? "text-volt" : dark ? "text-blush" : "text-rose-deep"}`}>{String(i + 1).padStart(2, "0")}</span>
           <span className="text-[1.02rem]">{h}</span>
         </li>
       ))}

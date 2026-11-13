@@ -56,7 +56,9 @@ export function EnquirySection({
                 </dd>
               </div>
               {(phone || email || wa) && (
-                <div className="space-y-2 pt-2">
+                <div className="pt-2">
+                  <dt className="sr-only">Reach us</dt>
+                  <dd className="space-y-2">
                   {phone && (
                     <a href={`tel:${phone.replace(/\s/g, "")}`} className="link-underline flex items-center gap-2 max-lg:inline-flex max-lg:rounded-full max-lg:border max-lg:border-ink/15 max-lg:bg-ivory max-lg:px-5 max-lg:py-3">
                       <Phone className="size-4" /> {phone}
@@ -72,6 +74,7 @@ export function EnquirySection({
                       <MessageCircle className="size-4" /> Chat on WhatsApp
                     </a>
                   )}
+                  </dd>
                 </div>
               )}
             </dl>

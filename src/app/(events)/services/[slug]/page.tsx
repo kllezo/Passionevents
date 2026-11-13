@@ -103,7 +103,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
             <StaggerList className="mt-6 border-t border-ink/10">
               {s.handles.map((h, n) => (
                 <li key={h} className="flex items-baseline gap-5 border-b border-ink/10 py-4">
-                  <span className="font-serif text-sm italic text-rose">{String(n + 1).padStart(2, "0")}</span>
+                  <span className="font-serif text-sm italic text-rose-deep">{String(n + 1).padStart(2, "0")}</span>
                   <span className="font-serif text-2xl text-ink">{h}</span>
                 </li>
               ))}
@@ -132,7 +132,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               </div>
             )}
           </div>
-          <p className="col-span-12 mt-2 text-xs text-stone-light">Mood photography: Unsplash (temporary). Our own work is in the reels{s.reels.length ? " below" : " on our Instagram"}.</p>
+          <p className="col-span-12 mt-2 text-xs text-stone">Mood photography: Unsplash (temporary). Our own work is in the reels{s.reels.length ? " below" : " on our Instagram"}.</p>
         </div>
       </section>
 

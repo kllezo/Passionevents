@@ -11,7 +11,7 @@
   --color-cream: #f7efe3;
   --color-paper: #fbf4e8;
   --color-rose: #bf8592;
-  --color-rose-deep: #94606c;
+  --color-rose-deep: #87535f; /* darkened slightly from #94606c for WCAG AA contrast on the light backgrounds */
   --color-blush: #ebc3c8;
   --color-coral: #ec7b58;
   --color-coral-deep: #c8573a;
