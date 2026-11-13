@@ -1,9 +1,8 @@
 import { Pic } from "@/components/shared/Pic";
 import Link from "next/link";
-import { stock } from "@/content/media";
 import { categories } from "@/content/events";
 import { pageMetadata, breadcrumbJsonLd, organizationJsonLd } from "@/lib/seo";
-import { PageHero } from "@/components/events/PageHero";
+import { AboutHero } from "@/components/events/AboutHero";
 import { SectionLabel } from "@/components/events/SectionLabel";
 import { FoundersFeature } from "@/components/events/FoundersFeature";
 import { EnquirySection } from "@/components/events/EnquirySection";
@@ -22,17 +21,7 @@ export default function AboutPage() {
   return (
     <>
       <JsonLd data={[organizationJsonLd(), breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "About", path: "/about" }])]} />
-      <PageHero
-        eyebrow="About us"
-        title={
-          <>
-            Every event, <em className="text-rose-deep">made personal.</em>
-          </>
-        }
-        intro={<p>Passion Events plans, designs and manages celebrations of every size — from Hyderabad, for clients across India.</p>}
-        image={stock.celebrationStage}
-        secondary={stock.florals}
-      />
+      <AboutHero />
 
       <section className="bg-ivory py-28 md:py-32">
         <div className="mx-auto grid max-w-[1600px] gap-16 px-5 md:px-10 lg:grid-cols-12">

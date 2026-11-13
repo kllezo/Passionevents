@@ -117,15 +117,15 @@ export function EventsHero() {
               <span aria-hidden="true" className="h-px w-10 bg-rose max-sm:hidden" /> Passion Events · Event management company in Hyderabad
             </span>
             <span data-headline="" data-reveal="" className="block">
-              <span className="block">From first idea</span>
-              <span className="block italic text-rose-deep">to the final</span>
+              <span className="block">Big or small.</span>
+              <span className="block italic text-rose-deep">We make it</span>
             </span>
             <span
               data-script=""
               data-hero-hidden=""
               className="relative -mt-[0.1em] block pl-[0.6em] font-script text-[1.18em] leading-[1.05] text-coral [text-shadow:0_1px_0_rgb(255_255_255/0.4)] max-sm:pl-0"
             >
-              applause.
+              special.
             </span>
           </h1>
           <p data-sub="" data-hero-hidden="" className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-stone max-sm:mx-auto max-sm:max-w-[21rem] max-sm:text-center sm:text-lg md:mt-8 md:text-xl">

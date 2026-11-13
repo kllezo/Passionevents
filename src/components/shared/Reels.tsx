@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { Pic } from "./Pic";
 import { InstagramIcon } from "./InstagramIcon";
 import { ReelPlayer } from "./ReelPlayer";
-import { reelById, reelCover, reelUrl, type Reel } from "@/content/reels";
+import { reelById, reelCover, reelMode, reelUrl, type Reel } from "@/content/reels";
 import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
 
 type Tone = "light" | "dark";
@@ -22,7 +22,7 @@ export function ReelCard({ reel, onOpen, tone = "light", className = "", sizes =
     <button
       type="button"
       onClick={onOpen}
-      aria-label={`${reel.video || reel.embed ? "Play reel" : "Open reel"}: ${reel.title}${meta ? `, ${meta}` : ""}`}
+      aria-label={`${reelMode(reel) !== "none" ? "Play reel" : "Open reel"}: ${reel.title}${meta ? `, ${meta}` : ""}`}
       className={`group relative block aspect-[9/16] w-full overflow-hidden text-left transition-[transform,box-shadow] duration-500 ease-[var(--ease-silk)] hover:-translate-y-1.5 focus-visible:-translate-y-1.5 ${
         dark ? "rounded-[1.25rem] bg-graphite shadow-[0_30px_60px_-30px_rgb(0_0_0/0.9)] ring-1 ring-white/10" : "rounded-[1.5rem] bg-cream shadow-[0_30px_60px_-34px_rgb(94_52_64/0.65)]"
       } ${className}`}
@@ -43,7 +43,7 @@ export function ReelCard({ reel, onOpen, tone = "light", className = "", sizes =
         <span className={`block leading-tight text-white ${dark ? `font-display uppercase ${compact ? "text-sm" : "text-xl"}` : `font-serif ${compact ? "text-[0.95rem]" : "text-[1.35rem]"}`}`}>{reel.title}</span>
         {meta && <span className="mt-1.5 block text-[0.62rem] uppercase tracking-[0.16em] text-white/70">{meta}</span>}
         <span className={`mt-3 items-center gap-1.5 text-[0.65rem] ${compact ? "hidden" : "inline-flex"} font-semibold uppercase tracking-[0.2em] text-white/85 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 max-md:opacity-100`}>
-          {reel.video || reel.embed ? "▶ Play reel" : "Open reel"}
+          {reelMode(reel) !== "none" ? "▶ Play reel" : "Open reel"}
         </span>
       </span>
     </button>
@@ -65,7 +65,7 @@ function ReelViewer({ list, index, onClose, onMove, tone }: { list: Reel[]; inde
   const reel = list[index];
   const dark = tone === "dark";
   const meta = [reel.place, reel.date].filter(Boolean).join(" · ");
-  const mode: "video" | "embed" | "none" = reel.video ? "video" : reel.embed ? "embed" : "none";
+  const mode = reelMode(reel);
 
   useEffect(() => {
     closeRef.current?.focus();

@@ -9,12 +9,12 @@
 const base = (process.argv[2] || "http://localhost:3000").replace(/\/$/, "");
 
 const pages = [
-  ["/", ["From first idea", "Big or small", "Your event is our passion", "What we do", "How we", "What you can count on", "Watch us", "Let&#x27;s make your next event"]],
+  ["/", ["Big or small", "final applause", "Your event is our passion", "What we do", "How we", "What you can count on", "Watch us", "Let&#x27;s make your next event"]],
   ["/about", ["Every event"]],
   ["/services", ["One team"]],
   ["/weddings", ["Weddings", "ritual by ritual"]],
   ["/corporate-events", ["Corporate Events", "to the minute"]],
-  ["/private-events", ["Private Celebrations", "styled with care"]],
+  ["/private-events", ["Private Celebrations", "closest to", "Every reason", "What we handle"]],
   ["/destination-events", ["Destination Events", "Door to door"]],
   ["/event-production", ["Event Production", "whole show"]],
   ["/portfolio", ["Stories we"]],

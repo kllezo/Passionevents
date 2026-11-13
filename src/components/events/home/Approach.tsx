@@ -21,18 +21,25 @@ export function Approach({ index = "04" }: { index?: string }) {
       const q = gsap.utils.selector(root.current);
       const mm = gsap.matchMedia();
       mm.add(media.ok, () => {
-        // The stem draws across as the stages scroll into view; each bloom
-        // opens as the line reaches it. Scrubbed, so it never jumps.
-        const tl = gsap.timeline({ scrollTrigger: { trigger: q("[data-stages]")[0], start: "top 80%", end: "bottom 55%", scrub: 0.8 } });
-        tl.fromTo(q("[data-stem]"), { drawSVG: "0%" }, { drawSVG: "100%", ease: "none", duration: 1 }, 0);
-        q<SVGGElement>("[data-node]").forEach((n, i, all) => {
-          tl.fromTo(n, { scale: 0, rotate: -90 }, { scale: 1, rotate: 0, duration: 0.18, ease: "back.out(2)" }, (i / (all.length - 1)) * 0.85);
+        // When the stages come into view the stem draws all the way across
+        // once and each bloom opens as the line reaches it, then the stage
+        // names rise. Plays to the end, so it can never stop half-drawn.
+        const nodes = q<SVGGElement>("[data-node]");
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo(q("[data-stem]"), { drawSVG: "0%" }, { drawSVG: "100%", ease: "power2.inOut", duration: 1.8 }, 0);
+        nodes.forEach((n, i) => {
+          tl.fromTo(n, { scale: 0, rotate: -90, transformOrigin: "50% 50%" }, { scale: 1, rotate: 0, duration: 0.7, ease: "back.out(2.2)" }, 0.15 + (i / Math.max(1, nodes.length - 1)) * 1.45);
         });
+        tl.fromTo(q("[data-stage]"), { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.12, ease: "expo.out" }, 0.2);
+        const stopStages = whenVisible(q("[data-stages]")[0], () => tl.play(), "0px 0px -15% 0px");
         // The seven promises arrive once, left to right.
         const items = q<HTMLElement>("[data-promise]");
         gsap.set(items, { autoAlpha: 0, y: 18 });
         const stop = whenVisible(q("[data-promises]")[0], () => gsap.to(items, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: "expo.out" }), "0px 0px -15% 0px");
-        return () => stop();
+        return () => {
+          stop();
+          stopStages();
+        };
       });
     },
     { scope: root }
@@ -45,7 +52,7 @@ export function Approach({ index = "04" }: { index?: string }) {
           <div className="lg:col-span-7">
             <SectionLabel index={index}>How we work</SectionLabel>
             <RevealText as="h2" id="approach-title" className="mt-6 font-serif text-[clamp(2.3rem,3.8vw,3.9rem)] font-light leading-[1.02] text-ink">
-              From the first idea <em className="text-rose-deep">to the last cue.</em>
+              From first idea <em className="text-rose-deep">to the final applause.</em>
             </RevealText>
           </div>
           <p className="max-w-md text-lg leading-relaxed text-stone lg:col-span-4 lg:col-start-9">
@@ -60,7 +67,7 @@ export function Approach({ index = "04" }: { index?: string }) {
           </svg>
           <ol className="relative grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-5 md:gap-6">
             {approach.map((a) => (
-              <li key={a.step} className="relative max-md:border-l max-md:border-ink/10 max-md:pl-6">
+              <li key={a.step} data-stage="" className="relative max-md:border-l max-md:border-ink/10 max-md:pl-6">
                 <svg viewBox="-14 -14 28 28" className="mb-5 size-9 max-md:absolute max-md:-left-[1.15rem] max-md:top-0 max-md:size-8 max-md:bg-cream" aria-hidden="true">
                   <g data-node="">
                     <Bloom r={11} />

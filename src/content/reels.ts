@@ -37,6 +37,19 @@ export type Reel = {
   embed?: boolean;
 };
 
+/**
+ * Instagram's official embed for every reel. Instagram only serves embeds
+ * when the account allows them (Instagram > Settings > Sharing and reuse >
+ * Embeds). That setting is OFF for @passionevents.p today (checked
+ * 2026-11-14: the embed page says the link "may be broken"), so this stays
+ * false until it is switched on — then set it to true and every reel plays
+ * inside the site. A reel's own `video` file always takes priority.
+ */
+export const INSTAGRAM_EMBEDS = false;
+
+/** How a reel plays in the viewer. */
+export const reelMode = (r: Reel): "video" | "embed" | "none" => (r.video ? "video" : r.embed || INSTAGRAM_EMBEDS ? "embed" : "none");
+
 export const reels: Reel[] = [
   { id: "DeTkSCHtGHK", published: "2026-10-10", title: "Sameera Bharadwaj, live", place: "Bengaluru", date: "Oct 2026", category: "Concerts" },
   { id: "DIT7CNHzKqG", published: "2025-04-11", title: "An engagement evening", place: "Nandigama", date: "Apr 2025", category: "Weddings" },

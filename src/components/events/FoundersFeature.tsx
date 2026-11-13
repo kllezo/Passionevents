@@ -35,10 +35,10 @@ export function FoundersFeature({ index = "07", detailed = false }: { index?: st
         {/* The shared philosophy, said once */}
         <div className="mx-auto mt-20 max-w-4xl border-t border-ink/10 pt-14 text-center md:mt-24">
           <RevealText as="p" className="font-serif text-[clamp(2.2rem,4.2vw,4.2rem)] font-light italic leading-[1.05] text-ink">
-            Big or small, <span className="text-rose-deep">we make it special.</span>
+            Two founders, <span className="text-rose-deep">one promise.</span>
           </RevealText>
           <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-stone">
-            The promise both founders share. Whichever of them you meet first, you get one plan, one team and the same care from the first call to the last guest leaving.
+            The words written into our logo are the promise both founders keep. Whichever of them you meet first, you get one plan, one team and the same care from the first call to the last guest leaving.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-8">
             {!detailed && (
