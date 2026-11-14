@@ -18,6 +18,10 @@ export const site = {
   region: "India",
   contactPerson: "Pabbathi Sai Tanush",
   eventsExecuted: 50,
+  /** Last time the site's main content was reviewed (shown on the home page and in its schema). */
+  contentUpdated: "2026-11-14",
+  /** First publication of this site. */
+  launched: "2026-11-06",
   contact: {
     whatsapp: clean(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER),
     phone: clean(process.env.NEXT_PUBLIC_CONTACT_PHONE),

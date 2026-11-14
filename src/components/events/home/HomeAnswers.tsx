@@ -4,6 +4,11 @@ import { posts } from "@/content/blog";
 import { faqJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { SectionLabel } from "../SectionLabel";
+import { site } from "@/lib/site";
+
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const [uy, um, ud] = site.contentUpdated.split("-").map(Number);
+const updatedLabel = `${ud} ${MONTHS[um - 1]} ${uy}`;
 
 const compare = [
   { need: "Concept, theme and planning", one: "You plan; we deliver our part", full: "We plan it with you, start to finish" },
@@ -41,8 +46,11 @@ export function HomeAnswers({ index = "08" }: { index?: string }) {
             <h2 id="answers-title" className="mt-6 font-serif text-[clamp(2.4rem,3.6vw,3.8rem)] font-light leading-[0.98] text-ink">
               Event management in Hyderabad, <em className="text-rose-deep">answered.</em>
             </h2>
+            <p className="mt-4 text-xs uppercase tracking-[0.22em] text-stone">
+              Updated <time dateTime={site.contentUpdated}>{updatedLabel}</time> · By {site.name}
+            </p>
           </div>
-          <p className="relative rounded-[1.5rem] bg-cream/80 p-6 text-[1.05rem] leading-relaxed text-ink/80 ring-1 ring-rose/15 before:absolute before:inset-y-6 before:left-0 before:w-[3px] before:rounded-full before:bg-gradient-to-b before:from-rose before:to-coral md:p-7 lg:col-span-7">
+          <p data-summary="" className="relative rounded-[1.5rem] bg-cream/80 p-6 text-[1.05rem] leading-relaxed text-ink/80 ring-1 ring-rose/15 before:absolute before:inset-y-6 before:left-0 before:w-[3px] before:rounded-full before:bg-gradient-to-b before:from-rose before:to-coral md:p-7 lg:col-span-7">
             <strong className="font-semibold text-ink">In short:</strong> Passion Events is a Hyderabad event management company that plans and runs weddings, corporate events, concerts, college fests and private parties across Andhra Pradesh, Telangana and Bengaluru. Book one service, or hand us the whole event.
           </p>
         </div>

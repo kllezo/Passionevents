@@ -159,11 +159,11 @@ export function EventsHero() {
             {/* The page topic, visible, as the first line of the heading. */}
             <span data-eyebrow="" data-hero-hidden="" className="eyebrow mb-5 flex items-center gap-3 font-sans leading-normal not-italic text-rose-deep max-sm:justify-center max-sm:text-[0.6rem] max-sm:tracking-[0.2em] md:mb-8">
               <span aria-hidden="true" className="h-px w-10 bg-rose max-sm:hidden" /> Passion Events · Event management company in Hyderabad
-            </span>
+            </span>{" "}
             <span data-headline="" data-reveal="" className="block">
-              <span className="block">Big or small.</span>
+              <span className="block">Big or small.</span>{" "}
               <span className="block italic text-rose-deep">We make it</span>
-            </span>
+            </span>{" "}
             <span
               data-script=""
               data-hero-hidden=""

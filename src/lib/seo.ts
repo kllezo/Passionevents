@@ -122,6 +122,26 @@ export function websiteJsonLd() {
   };
 }
 
+/** The home page as a WebPage: what it is about, who publishes it, and when it changed. */
+export function homePageJsonLd(description: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${site.url}/#webpage`,
+    url: `${site.url}/`,
+    name: `${site.name} | Event Management Company in Hyderabad`,
+    description,
+    inLanguage: "en-IN",
+    isPartOf: { "@id": `${site.url}/#website` },
+    about: { "@id": ORG_ID() },
+    publisher: { "@id": ORG_ID() },
+    primaryImageOfPage: { "@type": "ImageObject", url: `${site.url}/brand/og-passion-events.jpg` },
+    datePublished: site.launched,
+    dateModified: site.contentUpdated,
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["#hero-title", "[data-summary]"] },
+  };
+}
+
 /** One of the eight services. */
 export function serviceJsonLd(s: Service) {
   return {

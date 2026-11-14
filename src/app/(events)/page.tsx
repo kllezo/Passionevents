@@ -12,12 +12,14 @@ import { FoundersFeature } from "@/components/events/FoundersFeature";
 import { HomeReels } from "@/components/events/home/HomeReels";
 import { EnquirySection } from "@/components/events/EnquirySection";
 import { JsonLd } from "@/components/shared/JsonLd";
-import { organizationJsonLd, pageMetadata, websiteJsonLd } from "@/lib/seo";
+import { homePageJsonLd, organizationJsonLd, pageMetadata, websiteJsonLd } from "@/lib/seo";
+
+const description = "Event management company in Hyderabad for weddings, corporate events, concerts and parties across Andhra Pradesh, Telangana and Bengaluru.";
 
 export const metadata = {
   ...pageMetadata({
     title: "Passion Events | Event Management Company in Hyderabad",
-    description: "Event management company in Hyderabad for weddings, corporate events, concerts and parties across Andhra Pradesh, Telangana and Bengaluru.",
+    description,
     path: "/",
   }),
   title: { absolute: "Passion Events | Event Management Company in Hyderabad" },
@@ -26,7 +28,7 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
+      <JsonLd data={[organizationJsonLd(), websiteJsonLd(), homePageJsonLd(description)]} />
       <EventsIntro />
       <EventsHero />
       <BrandIntro />
