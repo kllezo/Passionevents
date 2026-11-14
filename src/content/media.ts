@@ -22,6 +22,16 @@ export type SiteImage = {
   temporary?: boolean;
 };
 
+/** Same stock photo, self-hosted in pre-sized files (scripts/build-sized-images.mjs). */
+const sized = (name: string, alt: string, focus?: string, focusMobile?: string): SiteImage => ({
+  src: `/media/sized/${name}.webp`,
+  alt,
+  credit: "Unsplash (temporary)",
+  temporary: true,
+  focus,
+  focusMobile,
+});
+
 const u = (id: string, alt: string, focus?: string, focusMobile?: string): SiteImage => ({
   src: `https://images.unsplash.com/${id}?auto=format&fit=crop&w=2000&q=80`,
   alt,
@@ -57,7 +67,7 @@ export const founders = {
 
 export const stock = {
   // Passion Events — editorial / romantic
-  heroCanopy: u("photo-1587271636175-90d58cdad458", "A couple in traditional wedding attire seated beneath a floral canopy", "45% 68%", "48% 72%"),
+  heroCanopy: sized("hero-canopy", "A couple in traditional wedding attire seated beneath a floral canopy", "45% 68%", "48% 72%"),
   ceremonyStage: u("photo-1744805624954-a6686543c3ff", "A ceremony stage dressed with flowers and soft drapery", "50% 78%"),
   tableFloral: u("photo-1511795409834-ef04bbd61622", "An elegant table setting with a floral centrepiece"),
   vaseBloom: u("photo-1680491026542-a99730a0e235", "A vase of fresh flowers on a dressed table"),
@@ -65,7 +75,7 @@ export const stock = {
   receptionHall: u("photo-1665607437981-973dcd6a22bb", "A reception hall with tables set for a wedding"),
 
   weddingRitual: u("photo-1587271407850-8d438ca9fdf2", "A wedding ritual under a floral canopy in a ballroom", "50% 72%", "52% 78%"),
-  weddingArch: u("photo-1744804298431-57953e4eaba0", "A couple celebrating under a floral arch with confetti", "50% 55%"),
+  weddingArch: sized("wedding-arch", "A couple celebrating under a floral arch with confetti", "50% 55%"),
   weddingOutdoor: u("photo-1772127822562-a898d9f5733c", "An outdoor wedding ceremony with elegant seating", "50% 62%"),
   weddingHands: u("photo-1756190564669-215843660e93", "A couple in traditional Indian wedding attire holding hands", "50% 42%"),
 
@@ -86,7 +96,7 @@ export const stock = {
 
   venueHall: u("photo-1736155983520-a0f7d5949d39", "A banquet hall set up for an event", "50% 60%"),
   catering: u("photo-1525441273400-056e9c7517b3", "A fine dining place setting"),
-  decorArch: u("photo-1761472606347-bfebc5a3e546", "An ornate archway entrance with chandeliers", "50% 55%"),
+  decorArch: sized("decor-arch", "An ornate archway entrance with chandeliers", "50% 55%"),
   florals: u("photo-1590683673322-0f3fabd72169", "Pink and white roses in a glass vase"),
   stageDesign: u("photo-1708606811579-23b18fc48007", "A decorated stage with a chandelier", "50% 60%"),
   colourTents: u("photo-1744891470493-44321ef136a2", "A vibrant outdoor event decorated with colourful tents"),
@@ -95,7 +105,7 @@ export const stock = {
 
   // Passion Live — electric
   liveHero: u("photo-1470229722913-7c0e2dbbafd3", "Stage lights blazing in front of a concert audience", "50% 38%"),
-  liveCrowd: u("photo-1540039155733-5bb30b53aa14", "A crowd facing a brightly lit stage", "50% 40%"),
+  liveCrowd: sized("live-crowd", "A crowd facing a brightly lit stage", "50% 40%"),
   liveHands: u("photo-1506157786151-b8491531f063", "Concert-goers raising their hands", "50% 35%"),
   liveBand: u("photo-1524368535928-5b5e00ddc76b", "A band performing on stage in front of people", "50% 40%"),
   liveFrontRow: u("photo-1514525253161-7a46d19cd819", "A crowd gathered in front of the stage", "50% 40%"),

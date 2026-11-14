@@ -82,9 +82,26 @@ export function EventsHero() {
             .fromTo(next, { opacity: 0, scale: 1.12 }, { opacity: 1, duration: 1.4, ease: "power2.inOut", immediateRender: false }, i * 5 + 4.6);
         });
 
+        // Never fade to a photo that has not arrived: wait until every slide's
+        // image is loaded and decoded (or 8 s at most) before cycling.
+        const ready = Promise.race([
+          Promise.all(
+            slideEls.map((s) => {
+              const img = s.querySelector("img");
+              if (!img) return Promise.resolve();
+              if (img.complete && img.naturalWidth) return img.decode().catch(() => {});
+              return new Promise<void>((r) => {
+                img.addEventListener("load", () => r(), { once: true });
+                img.addEventListener("error", () => r(), { once: true });
+              });
+            })
+          ),
+          new Promise((r) => setTimeout(r, 8000)),
+        ]);
+        let killed = false;
         const off = onIntroDone(() => {
           tl.play();
-          gsap.delayedCall(2.4, () => loop.play());
+          gsap.delayedCall(2.4, () => void ready.then(() => { if (!killed) loop.play(); }));
         });
 
         // Scroll: the composition drifts apart as the hero leaves.
@@ -93,6 +110,7 @@ export function EventsHero() {
         gsap.to(q("[data-orb]"), { yPercent: -60, ease: "none", scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true } });
 
         return () => {
+          killed = true;
           off();
           loop.kill();
           split?.revert();
@@ -156,7 +174,7 @@ export function EventsHero() {
             <div data-arch-img="" className="absolute inset-[-8%_0] will-change-transform">
               {slides.map((img, i) => (
                 <div key={img.src} data-slide="" className="absolute inset-0" style={{ opacity: i === 0 ? 1 : 0 }}>
-                  <Pic image={img} preload={i === 0} loading={i === 0 ? undefined : "eager"} fetchPriority={i === 0 ? undefined : "low"} sizes="(max-width: 640px) 58vw, (max-width: 1024px) 400px, 34vw" quality={85} />
+                  <Pic image={img} preload={i === 0} loading="eager" fetchPriority={i === 0 ? "high" : "auto"} sizes="(max-width: 640px) 58vw, (max-width: 1024px) 400px, 34vw" />
                 </div>
               ))}
             </div>

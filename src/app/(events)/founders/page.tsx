@@ -1,6 +1,7 @@
 import { pageMetadata, breadcrumbJsonLd, founderJsonLd } from "@/lib/seo";
 import { foundersList } from "@/content/founders";
 import { FoundersFeature } from "@/components/events/FoundersFeature";
+import { FounderMoments } from "@/components/events/FounderMoments";
 import { EnquirySection } from "@/components/events/EnquirySection";
 import { JsonLd } from "@/components/shared/JsonLd";
 
@@ -26,6 +27,7 @@ export default function FoundersPage() {
       <div className="pt-16 md:pt-20">
         <FoundersFeature index="01" detailed />
       </div>
+      <FounderMoments />
       <EnquirySection
         index="02"
         title={

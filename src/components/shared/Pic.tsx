@@ -24,6 +24,14 @@ const unsplashLoader: ImageLoader = ({ src, width, quality }) => {
   return url.toString();
 };
 
+/** Self-hosted, pre-sized photos (scripts/build-sized-images.mjs). */
+const SIZED = "/media/sized/";
+const SIZED_WIDTHS = [480, 800, 1200, 1600];
+const sizedLoader: ImageLoader = ({ src, width }) => {
+  const w = SIZED_WIDTHS.find((x) => x >= width) ?? SIZED_WIDTHS[SIZED_WIDTHS.length - 1];
+  return src.replace(/\.webp$/, `-${w}.webp`);
+};
+
 /** A ~1 KB, 40px version of the photo, blurred, shown instantly while the real one loads. */
 function tinyPreview(src: string) {
   const url = new URL(src);
@@ -72,22 +80,24 @@ export function Pic({
   }
 
   const stock = image.src.startsWith(UNSPLASH);
+  const sized = image.src.startsWith(SIZED);
+  const preview = stock ? tinyPreview(image.src) : sized ? image.src.replace(/\.webp$/, "-24.webp") : null;
 
   return (
     <>
       {skeleton && !loaded &&
-        (stock ? (
+        (preview ? (
           <span
             aria-hidden="true"
             className="absolute inset-0 scale-110 bg-cover blur-xl"
-            style={{ backgroundImage: `url("${tinyPreview(image.src)}")`, backgroundPosition: focus }}
+            style={{ backgroundImage: `url("${preview}")`, backgroundPosition: focus }}
           />
         ) : (
           <span aria-hidden="true" className={`absolute inset-0 animate-pulse ${tone === "dark" ? "bg-graphite" : "bg-cream"}`} />
         ))}
       <Image
         {...rest}
-        loader={stock ? unsplashLoader : undefined}
+        loader={stock ? unsplashLoader : sized ? sizedLoader : undefined}
         src={image.src}
         alt={alt ?? image.alt}
         fill
