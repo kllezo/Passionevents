@@ -25,6 +25,8 @@ const nextConfig = {
   async redirects() {
     return [
       { source: "/concerts/shows", destination: "/concerts/events", permanent: false },
+      // Complete Event Management was retired as a separate service page.
+      { source: "/services/complete-event-management", destination: "/what-we-do", permanent: true },
       { source: "/concerts/shows/:slug", destination: "/concerts/events/:slug", permanent: false },
     ];
   },

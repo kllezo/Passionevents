@@ -39,7 +39,7 @@ export function PastGallery({ events }: { events: PublicEvent[] }) {
         return whenVisible(root.current!, () => tl.play(), "0px 0px -20% 0px");
       });
     },
-    { scope: root, dependencies: [pinned] }
+    { scope: root, dependencies: [pinned], eager: true }
   );
 
   useGSAP(
@@ -60,7 +60,7 @@ export function PastGallery({ events }: { events: PublicEvent[] }) {
         );
       });
     },
-    { scope: root, dependencies: [frames.length] }
+    { scope: root, dependencies: [frames.length], eager: true }
   );
 
   if (events.length === 0) {

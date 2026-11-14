@@ -184,7 +184,7 @@ export function EventsNav() {
                         type="button"
                         aria-expanded={servicesOpen}
                         aria-controls="services-menu"
-                        aria-label="Show the nine services"
+                        aria-label="Show the eight services"
                         onClick={() => setServicesOpen((v) => !v)}
                         className="-ml-2 p-1.5 opacity-70"
                       >
@@ -211,7 +211,7 @@ export function EventsNav() {
                         </Link>
                       ))}
                       <Link href="/what-we-do" className="col-span-2 mt-1 rounded-2xl bg-ink px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-ivory">
-                        Explore all nine
+                        Explore all eight
                       </Link>
                       <Link href="/services" className="mt-1 rounded-2xl bg-cream px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-ink">
                         Individual services

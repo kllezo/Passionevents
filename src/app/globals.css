@@ -291,3 +291,9 @@ html.motion-ready .pe-intro { animation: none; }
 /* Infinite CSS animations pause while their element is off screen
    (OffscreenPause marks them); they look identical when visible. */
 [data-offscreen], [data-offscreen] * { animation-play-state: paused !important; }
+
+/* Refresh / back-forward at a scroll position: content stays hidden for the
+   moment it takes to rebuild pinned sections and restore the position, so the
+   page never shows a half-built layout. Failsafe after 3 s. */
+html.pe-restore main, html.pe-restore footer { opacity: 0; animation: restore-failsafe 0s 5s forwards; }
+@keyframes restore-failsafe { to { opacity: 1; } }

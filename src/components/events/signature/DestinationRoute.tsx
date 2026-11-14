@@ -87,7 +87,7 @@ export function DestinationRoute() {
         });
       });
     },
-    { scope: root, dependencies: [n] }
+    { scope: root, dependencies: [n], eager: true }
   );
 
   return (

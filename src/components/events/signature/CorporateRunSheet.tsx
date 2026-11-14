@@ -63,7 +63,7 @@ export function CorporateRunSheet() {
         gsap.fromTo(rows, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.9, stagger: 0.06, ease: "expo.out", clearProps: "opacity,visibility,transform", scrollTrigger: { trigger: q("[data-m-cues]")[0], start: "top 85%", once: true } });
       });
     },
-    { scope: root, dependencies: [n] }
+    { scope: root, dependencies: [n], eager: true }
   );
 
   return (

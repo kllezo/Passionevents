@@ -61,7 +61,7 @@ export function OccasionCards() {
         });
       });
     },
-    { scope: root }
+    { scope: root, eager: true }
   );
 
   return (

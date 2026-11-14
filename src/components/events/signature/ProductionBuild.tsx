@@ -89,7 +89,7 @@ export function ProductionBuild() {
         gsap.to(q("[data-beam]"), { rotate: (i) => (i % 2 ? 18 : -18), transformOrigin: "50% 0%", duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: -1, stagger: 0.3 });
       });
     },
-    { scope: root, dependencies: [n] }
+    { scope: root, dependencies: [n], eager: true }
   );
 
   const fixtures = [140, 230, 320, 410, 590, 680, 770, 860];

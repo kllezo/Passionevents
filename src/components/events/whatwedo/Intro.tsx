@@ -16,7 +16,6 @@ const chip: Record<string, string> = {
   destination: "Destination",
   artists: "Artists",
   production: "Production",
-  complete: "Full management",
 };
 
 const go = (lenis: ReturnType<typeof useLenis>, id: string) => {
@@ -27,7 +26,7 @@ const go = (lenis: ReturnType<typeof useLenis>, id: string) => {
   history.replaceState(null, "", `#${id}`);
 };
 
-/** Page opener: the title, and the nine services as an index you can jump from. */
+/** Page opener: the title, and the eight services as an index you can jump from. */
 export function WhatWeDoIntro() {
   const root = useRef<HTMLElement>(null);
   const lenis = useLenis();
@@ -60,7 +59,7 @@ export function WhatWeDoIntro() {
       </svg>
       <div className="relative mx-auto max-w-[1600px] px-5 md:px-10">
         <p data-hero-fade="" className="eyebrow text-rose-deep">
-          What we do · nine services, one team
+          What we do · eight services, one team
         </p>
         <h1 id="wwd-title" className="mt-8 font-serif text-[clamp(3.6rem,11vw,12rem)] font-light leading-[0.86] tracking-[-0.03em] text-ink">
           <span className="block overflow-hidden pb-[0.06em]">
@@ -79,7 +78,7 @@ export function WhatWeDoIntro() {
         </p>
 
         <div className="mt-16 grid gap-10 grid-cols-1 lg:grid-cols-12 lg:items-center">
-          <ol className="lg:col-span-7" aria-label="The nine services">
+          <ol className="lg:col-span-7" aria-label="The eight services">
             {services.map((s, i) => (
               <li key={s.key} data-index-row="">
                 <a
@@ -117,7 +116,7 @@ export function WhatWeDoIntro() {
 }
 
 /**
- * Where-am-I index for the nine sections: a slim vertical rail on desktop,
+ * Where-am-I index for the eight sections: a slim vertical rail on desktop,
  * a sticky chip bar on phones. Follows the section in view.
  */
 export function SectionIndex() {

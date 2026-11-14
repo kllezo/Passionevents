@@ -48,6 +48,53 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     };
   }, [isAdmin]);
 
+  // Scroll restoration we control (the browser's restores before pinned
+  // sections exist, which lands on the wrong section). Save the position when
+  // leaving; on reload / back-forward, wait for fonts and the pinned layout,
+  // re-measure every trigger, then return to the saved position.
+  useEffect(() => {
+    const root = document.documentElement;
+    const save = () => {
+      try {
+        sessionStorage.setItem(`pe-scroll:${location.pathname}`, String(Math.round(window.scrollY)));
+      } catch {}
+    };
+    const onShow = (e: PageTransitionEvent) => {
+      if (e.persisted) ScrollTrigger.refresh(); // back-forward cache
+    };
+    window.addEventListener("pagehide", save);
+    window.addEventListener("pageshow", onShow);
+    let cancelled = false;
+    if (root.classList.contains("pe-restore")) {
+      const y = Number((window as unknown as { __peRestoreY?: number }).__peRestoreY) || 0;
+      void (async () => {
+        // The page's sections hydrate after this layout, so wait for the real
+        // layout: load event, fonts, and no new scroll triggers for ~250 ms.
+        if (document.readyState !== "complete") await new Promise((r) => window.addEventListener("load", r, { once: true }));
+        await (document.fonts?.ready ?? Promise.resolve()).catch(() => {});
+        let stable = 0;
+        let count = -1;
+        for (let i = 0; i < 40 && stable < 5; i++) {
+          await new Promise((r) => setTimeout(r, 50));
+          const n = ScrollTrigger.getAll().length;
+          stable = n === count ? stable + 1 : 0;
+          count = n;
+        }
+        if (cancelled) return;
+        ScrollTrigger.refresh();
+        window.scrollTo(0, y);
+        lenisRef.current?.scrollTo(y, { immediate: true, force: true });
+        ScrollTrigger.update();
+        requestAnimationFrame(() => root.classList.remove("pe-restore"));
+      })();
+    }
+    return () => {
+      cancelled = true;
+      window.removeEventListener("pagehide", save);
+      window.removeEventListener("pageshow", onShow);
+    };
+  }, []);
+
   // Hydrated: switch off the CSS failsafes so they never fight live animations.
   useEffect(() => {
     document.documentElement.classList.add("motion-ready");

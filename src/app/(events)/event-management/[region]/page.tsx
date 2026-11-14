@@ -77,7 +77,7 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
           <div className="mt-10 flex flex-wrap items-center gap-5">
             <EventsButton href="#enquire">{`Plan an event in ${a.name}`}</EventsButton>
             <Link href="/what-we-do" className="link-underline text-xs font-semibold uppercase tracking-[0.2em] text-ink">
-              All nine services
+              All eight services
             </Link>
           </div>
           <ul className="mt-12 flex flex-wrap gap-2" aria-label={`Cities in ${a.name}`}>

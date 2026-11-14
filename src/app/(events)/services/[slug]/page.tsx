@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 /**
- * Detail view for one of the nine services. Services that already have their
+ * Detail view for one of the eight services. Services that already have their
  * own landing page (weddings, corporate, private, destination, production)
  * redirect there, so every link to /services/<slug> works.
  */

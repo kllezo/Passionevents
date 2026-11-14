@@ -358,61 +358,7 @@ export function ProductionSection() {
   );
 }
 
-const steps: Record<string, string> = {
-  Conceptualisation: "Your story, mood and guest list become one clear concept.",
-  Planning: "Budget, timeline and run-of-show — agreed before anything is booked.",
-  "Vendor coordination": "Venues, décor, catering and artists through one point of contact.",
-  Logistics: "Travel, stays, transport and load-in schedules, all mapped.",
-  Production: "Stage, sound, light, screens and décor built and tested.",
-  "Guest management": "Invites, RSVPs, welcomes and hospitality for every guest.",
-  "On-site execution": "Our team runs the day, so you can live it.",
-};
 
-/* 09 — COMPLETE MANAGEMENT: the whole journey as a drawn timeline. */
-export function CompleteSection() {
-  const s = S("complete");
-  return (
-    <SectionShell
-      service={s}
-      className="bg-ivory py-28 md:py-32"
-      extra={(q) => {
-        const line = q("[data-timeline-fill]")[0];
-        if (!line) return;
-        gsap.fromTo(line, { scaleY: 0 }, { scaleY: 1, ease: "none", scrollTrigger: { trigger: q("[data-timeline]")[0], start: "top 70%", end: "bottom 60%", scrub: true } });
-      }}
-    >
-      <div className="mx-auto grid max-w-[1600px] gap-16 px-5 md:px-10 grid-cols-1 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-28">
-            <SectionTitle service={s} />
-            <div className="mt-12 grid grid-cols-5 gap-4">
-              <ServicePhoto service={s} image={s.image} label="Guest management" sizes="(max-width: 1024px) 60vw, 24vw" speed={1} className="col-span-3 aspect-[3/4]" />
-              <div className="col-span-2 max-w-[200px] self-end">
-                <ReelRail ids={s.reels} label="Founder behind-the-scenes reel" compact />
-              </div>
-            </div>
-          </div>
-        </div>
-        <ol data-timeline="" className="relative lg:col-span-6 lg:col-start-7" aria-label="How we run an event, end to end">
-          <span aria-hidden="true" className="absolute bottom-2 left-[1.15rem] top-2 w-px bg-ink/10" />
-          <span aria-hidden="true" data-timeline-fill="" className="absolute bottom-2 left-[1.15rem] top-2 w-px origin-top bg-gradient-to-b from-rose via-coral to-mint" />
-          {s.handles.map((h, i) => (
-            <li key={h} data-rise="" className="relative flex gap-8 pb-12 last:pb-0">
-              <span className="relative z-10 grid size-[2.3rem] shrink-0 place-items-center rounded-full border border-rose bg-ivory font-serif text-sm italic text-rose-deep">{String(i + 1).padStart(2, "0")}</span>
-              <div className="pt-0.5">
-                <h3 className="font-serif text-[clamp(1.8rem,3vw,2.8rem)] font-light leading-none text-ink">{h}</h3>
-                <p className="mt-3 max-w-md text-[1.02rem] leading-relaxed text-stone">{steps[h]}</p>
-              </div>
-            </li>
-          ))}
-          <li data-rise="" className="relative pt-6 sm:pl-[4.3rem]">
-            <DetailsLink service={s} label="Hand us the whole event" />
-          </li>
-        </ol>
-      </div>
-    </SectionShell>
-  );
-}
 
 export const nineSections: Record<string, () => React.ReactElement> = {
   weddings: WeddingsSection,
@@ -423,7 +369,6 @@ export const nineSections: Record<string, () => React.ReactElement> = {
   destination: DestinationSection,
   artists: ArtistsSection,
   production: ProductionSection,
-  complete: CompleteSection,
 };
 
 export type { Service };

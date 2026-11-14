@@ -14,7 +14,7 @@ import { SectionLabel } from "../SectionLabel";
 const STEP = 24; // degrees between cards on the wheel
 
 /**
- * "Wheel of worlds": on desktop the nine services ride a giant rotating
+ * "Wheel of worlds": on desktop the eight services ride a giant rotating
  * wheel. Scrolling turns it; the card at the top grows into focus while its
  * title, story and services roll in beneath. Transforms only, so it stays
  * smooth. Tablet/mobile get an editorial column with reveal-on-scroll cards.
@@ -107,7 +107,7 @@ export function WhatWeDo() {
         return whenVisible(cards[0], () => t.play(), "0px 0px -15% 0px");
       });
     },
-    { scope: root, dependencies: [n] }
+    { scope: root, dependencies: [n], eager: true }
   );
 
   return (
@@ -118,7 +118,7 @@ export function WhatWeDo() {
         <div className="absolute left-10 top-1/2 z-[200] max-w-[22vw] -translate-y-1/2">
           <SectionLabel index="02">What we do</SectionLabel>
           <h2 id="what-title" className="mt-6 font-serif text-[clamp(2.6rem,3.5vw,4.1rem)] font-light leading-[0.95] tracking-[-0.02em] text-ink">
-            Nine worlds. <em className="text-rose-deep">One team.</em>
+            Eight worlds. <em className="text-rose-deep">One team.</em>
           </h2>
           <p className="mt-5 max-w-sm text-[0.97rem] leading-relaxed text-stone">
             Not only a wedding planner — from boardrooms to ballrooms to concert stages, we plan, design and run every category.
@@ -220,7 +220,7 @@ function MobileWorlds() {
       <div className="relative px-5 md:px-10">
         <SectionLabel index="02">What we do</SectionLabel>
         <RevealText as="h2" className="mt-6 font-serif text-[clamp(2.9rem,9vw,4.4rem)] font-light leading-[0.92] tracking-[-0.02em] text-ink">
-          Nine worlds. <em className="text-rose-deep">One team.</em>
+          Eight worlds. <em className="text-rose-deep">One team.</em>
         </RevealText>
         <p className="mt-5 max-w-md text-[0.98rem] leading-relaxed text-stone">
           Not only a wedding planner — from boardrooms to ballrooms to concert stages, we plan, design and run every category.

@@ -52,7 +52,7 @@ export function useSectionMotion(root: RefObject<HTMLElement | null>, extra?: (q
         };
       });
     },
-    { scope: root }
+    { scope: root, eager: Boolean(extra) }
   );
 }
 

@@ -70,7 +70,7 @@ export function WeddingJourney() {
         return whenVisible(cards[0], () => t.play(), "0px 0px -15% 0px");
       });
     },
-    { scope: root, dependencies: [n] }
+    { scope: root, dependencies: [n], eager: true }
   );
 
   return (

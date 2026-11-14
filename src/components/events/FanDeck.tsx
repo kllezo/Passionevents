@@ -59,7 +59,7 @@ export function FanDeck({ images, word, script }: { images: SiteImage[]; word: s
           .from(q("[data-deck-script]"), { autoAlpha: 0, y: 40, duration: 0.6 }, 0.9);
       });
     },
-    { scope: root, dependencies: [n] }
+    { scope: root, dependencies: [n], eager: true }
   );
 
   return (

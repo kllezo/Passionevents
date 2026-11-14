@@ -73,7 +73,7 @@ export const viewport: Viewport = {
 };
 
 /** Marks the document as motion-capable before paint so reveal targets don't flash. */
-const motionBootstrap = `try{var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('motion-ok');if(location.pathname==='/'&&!sessionStorage.getItem('pe-intro-seen'))d.classList.add('intro-pending')}}catch(e){}`;
+const motionBootstrap = `try{var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('motion-ok');if(location.pathname==='/'&&!sessionStorage.getItem('pe-intro-seen'))d.classList.add('intro-pending')}}catch(e){}try{history.scrollRestoration='manual';var n=performance.getEntriesByType('navigation')[0],k='pe-scroll:'+location.pathname,y=+sessionStorage.getItem(k)||0;if(n&&(n.type==='reload'||n.type==='back_forward')&&y>0&&!location.hash){d.classList.add('pe-restore');window.__peRestoreY=y}else{sessionStorage.removeItem(k)}}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

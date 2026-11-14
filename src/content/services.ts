@@ -195,25 +195,6 @@ export const services: Service[] = [
     enquiryCategory: "Other",
     source: "[instagram] décor reels · [site]",
   },
-  {
-    key: "complete",
-    slug: "complete-event-management",
-    index: "09",
-    title: "Complete Event Management",
-    lines: ["Complete", "management"],
-    script: "A to Z",
-    href: "/services/complete-event-management",
-    hasCategoryPage: false,
-    short: "One team from the first idea to the last guest leaving.",
-    description:
-      "“A to Z event services” is how we describe ourselves, and we mean it. Hand us the whole event and we take it from concept to close: the plan, the vendors, the logistics, the production, the guests and the day itself — with one person you can always call.",
-    handles: ["Conceptualisation", "Planning", "Vendor coordination", "Logistics", "Production", "Guest management", "On-site execution"],
-    image: stock.venueHall,
-    gallery: [stock.longTable, stock.decorArch, stock.catering, stock.celebrationStage],
-    reels: ["DXmBXWMkzwd"],
-    enquiryCategory: "Other",
-    source: "[instagram] bio (A to Z event services)",
-  },
 ];
 
 export const serviceBySlug = (slug: string) => services.find((s) => s.slug === slug);

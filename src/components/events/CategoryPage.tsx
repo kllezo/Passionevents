@@ -100,7 +100,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
       >
         <Link href={`/what-we-do#${whatWeDoAnchor[c.key]}`} className="mt-8 inline-flex items-center gap-3 rounded-full bg-ivory/90 py-2 pl-2 pr-5 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-ink backdrop-blur-md transition-colors hover:bg-ivory">
           <span className="grid size-8 place-items-center rounded-full bg-ink text-ivory">←</span>
-          All nine services
+          All eight services
         </Link>
         {/* phones: a clear next step right in the first screen */}
         <div className="mt-8 flex items-center gap-5 lg:hidden">

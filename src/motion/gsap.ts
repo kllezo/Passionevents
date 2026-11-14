@@ -71,10 +71,8 @@ type GSAPConfig ={ scope?: RefObject<Element | null> | Element | string; depende
  * shortly before they can be seen, which keeps the main thread free while
  * the page loads.
  *
- * If a section is set up while it sits above the viewport (after a jump or
- * a restored scroll position) and it adds pinned scroll distance, the page
- * is refreshed and the scroll offset compensated so nothing moves on screen.
- * `eager: true` keeps the old behaviour for a component.
+ * Sections that pin (and so change the page height) pass `eager: true` and
+ * are built at load, in page order, so the layout never changes later.
  */
 export function useGSAP(callback: Parameters<typeof baseUseGSAP>[0], config: GSAPConfig = {}) {
   const { eager, ...rest } = config;
@@ -104,17 +102,7 @@ export function useGSAP(callback: Parameters<typeof baseUseGSAP>[0], config: GSA
   return baseUseGSAP(
     (context, contextSafe) => {
       if (!near || typeof callback !== "function") return;
-      const el = scope?.current;
-      const above = el ? el.getBoundingClientRect().bottom < 0 : false;
-      const pinsBefore = above ? ScrollTrigger.getAll().filter((t) => t.pin).length : 0;
-      const heightBefore = above ? document.documentElement.scrollHeight : 0;
-      const result = callback(context, contextSafe);
-      if (above && ScrollTrigger.getAll().filter((t) => t.pin).length !== pinsBefore) {
-        ScrollTrigger.refresh();
-        const delta = document.documentElement.scrollHeight - heightBefore;
-        if (delta) window.scrollBy(0, delta);
-      }
-      return result;
+      return callback(context, contextSafe);
     },
     { ...rest, dependencies: [...(rest.dependencies ?? []), near] } as Parameters<typeof baseUseGSAP>[1]
   );

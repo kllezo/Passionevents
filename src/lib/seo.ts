@@ -122,7 +122,7 @@ export function websiteJsonLd() {
   };
 }
 
-/** One of the nine services. */
+/** One of the eight services. */
 export function serviceJsonLd(s: Service) {
   return {
     "@context": "https://schema.org",

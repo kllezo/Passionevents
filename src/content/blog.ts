@@ -134,7 +134,7 @@ export const posts: Post[] = [
           {
             type: "links",
             items: [
-              { label: "All nine services", href: "/what-we-do" },
+              { label: "All eight services", href: "/what-we-do" },
               { label: "Event management in Andhra Pradesh", href: "/event-management/andhra-pradesh" },
               { label: "Event management in Hyderabad and Telangana", href: "/event-management/telangana" },
               { label: "Send an enquiry", href: "/contact#enquire" },

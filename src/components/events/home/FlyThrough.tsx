@@ -87,7 +87,7 @@ export function FlyThrough() {
           .to(q("[data-progress]"), { scaleX: 1, duration: 1 }, 0);
       });
     },
-    { scope: root }
+    { scope: root, eager: true }
   );
 
   return (

@@ -71,7 +71,7 @@ export function Approach({ index = "04" }: { index?: string }) {
         return whenVisible(q("[data-promises]")[0], () => gsap.to(items, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: "expo.out" }), "0px 0px -15% 0px");
       });
     },
-    { scope: root }
+    { scope: root, eager: true }
   );
 
   return (
