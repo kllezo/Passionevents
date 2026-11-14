@@ -198,6 +198,9 @@ export function EventsHero() {
         <div className="relative mx-auto aspect-[4/5] w-[min(66vw,calc((100svh-24rem)*0.8))] max-w-[460px] max-lg:order-first sm:w-full lg:col-span-5 lg:w-[min(100%,calc((100svh-11rem)*0.8))] lg:max-w-none">
           <div data-arch="" data-hero-hidden="" className="absolute inset-[3%_8%_0_8%] overflow-hidden rounded-t-full bg-cream shadow-[0_40px_90px_-40px_rgb(148_96_108/0.55)]" style={{ clipPath: "inset(0% 0% 0% 0% round 999px 999px 0 0)" }}>
             <div data-arch-img="" className="absolute inset-[-8%_0] will-change-transform">
+              {/* Never an empty arch: the first photo's ~1 KB blurred preview is
+                  painted with the page, under the photo, before anything loads. */}
+              <div aria-hidden="true" className="absolute inset-0 scale-110 bg-cover bg-center blur-xl" style={{ backgroundImage: `url(${slides[0].src.replace(/\.webp$/, "-24.webp")})`, backgroundPosition: slides[0].focus }} />
               {slides.map((img, i) => (
                 <div key={img.src} data-slide="" className="absolute inset-0" style={{ opacity: i === 0 ? 1 : 0 }}>
                   {(i === 0 || moreSlides) && <Pic image={img} preload={i === 0} loading="eager" fetchPriority={i === 0 ? "high" : "low"} sizes="(max-width: 640px) 58vw, (max-width: 1024px) 400px, 34vw" />}
