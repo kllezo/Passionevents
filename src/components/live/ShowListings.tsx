@@ -6,7 +6,7 @@ import { PastGallery } from "./PastGallery";
 import { ArtistsList } from "./ArtistsList";
 import { LiveButton } from "./LiveButton";
 import { Waveform } from "./Waveform";
-import { pastShows, pastShowAsEvent } from "@/content/shows";
+import { pastShows, pastShowAsEvent, showPhotoSrc } from "@/content/shows";
 
 /** Upcoming shows grid (published LIVE events only). */
 export async function UpcomingShows({ limit }: { limit?: number }) {
@@ -54,10 +54,20 @@ export async function PastExperiences() {
 
 export async function Artists() {
   const fromShows = await safeRead("artists", () => getVerifiedArtists(), []);
-  // Add artists verified from the company's own profile that have no published show yet.
-  const known = new Set(fromShows.map((a) => a.name.toLowerCase()));
-  const extra = featuredArtists.filter((a) => !known.has(a.name.toLowerCase())).map((a) => ({ name: a.name, image: null, events: [] }));
-  return <ArtistsList artists={[...fromShows, ...extra]} />;
+  // Shows kept in code (with the photographer's pictures) count as shows too:
+  // their artists link to the show page and use its photo.
+  const map = new Map(fromShows.map((a) => [a.name.toLowerCase(), { ...a, events: [...a.events] }]));
+  for (const show of pastShows) {
+    const key = show.artist.toLowerCase();
+    const entry = map.get(key) ?? { name: show.artist, image: null, events: [] };
+    if (!entry.events.some((e) => e.slug === show.slug)) entry.events.push({ slug: show.slug, title: show.title });
+    entry.image = entry.image ?? showPhotoSrc(show.photos[0].name, 640);
+    map.set(key, entry);
+  }
+  const withShows = [...map.values()];
+  // Add artists verified from the company's own profile that have no show page yet.
+  const extra = featuredArtists.filter((a) => !map.has(a.name.toLowerCase())).map((a) => ({ name: a.name, image: null, events: [] }));
+  return <ArtistsList artists={[...withShows, ...extra]} />;
 }
 
 export function GridSkeleton() {

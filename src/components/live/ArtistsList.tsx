@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { VerifiedArtist } from "@/lib/events";
 import { gsap, media } from "@/motion/gsap";
+import { MediaImage } from "@/components/shared/MediaImage";
 
 const tones = ["text-white", "text-volt", "text-laser", "text-hot", "text-acid", "text-violet"];
 
@@ -65,7 +66,13 @@ export function ArtistsList({ artists }: { artists: VerifiedArtist[] }) {
                   <textPath href="#labelArc">Passion Live · side A · Passion Live · side A ·</textPath>
                 </text>
               </svg>
-              <span className="relative max-w-[78%] font-display text-[clamp(0.9rem,1.6vw,1.35rem)] uppercase leading-[0.95] text-black">{current.name}</span>
+              {current.image && (
+                <span className="absolute inset-[3%] overflow-hidden rounded-full" aria-hidden="true">
+                  <MediaImage key={current.image} src={current.image} alt="" fill sizes="200px" className="object-cover" />
+                  <span className="absolute inset-0 bg-black/45" />
+                </span>
+              )}
+              <span className={`relative max-w-[78%] font-display text-[clamp(0.9rem,1.6vw,1.35rem)] uppercase leading-[0.95] ${current.image ? "text-white [text-shadow:0_1px_8px_rgb(0_0_0/0.7)]" : "text-black"}`}>{current.name}</span>
               <span className="absolute left-1/2 top-1/2 size-[9%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-void" />
             </div>
           </div>
