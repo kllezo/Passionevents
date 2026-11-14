@@ -6,6 +6,7 @@ import { reels, reelUrl } from "@/content/reels";
 import { foundersList } from "@/content/founders";
 import { areas } from "@/content/areas";
 import { posts } from "@/content/blog";
+import { pastShows } from "@/content/shows";
 
 /**
  * /llms.txt — a plain-text brief for AI assistants and answer engines
@@ -37,6 +38,10 @@ export function GET() {
     "## Recent ticketed shows (public listings on MeraEvents)",
     "",
     ...ticketedShows.map((e) => `- ${e.title}, ${e.label}, ${e.venue}: ${e.url}`),
+    "",
+    "## Past shows with photos",
+    "",
+    ...pastShows.map((s) => `- [${s.title}](${u}/concerts/events/${s.slug}): ${s.artist}, ${s.venue}, ${s.area}, ${s.city}, ${s.date}. Photos: ${s.credit}.`),
     "",
     "## Founders",
     "",

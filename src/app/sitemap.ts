@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
 import { getSitemapEvents } from "@/lib/events";
+import { pastShows } from "@/content/shows";
 import { services } from "@/content/services";
 import { areas } from "@/content/areas";
 import { posts } from "@/content/blog";
@@ -55,5 +56,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
+    ...pastShows
+      .filter((s) => !events.some((e) => e.slug === s.slug))
+      .map((s) => ({ url: `${site.url}/concerts/events/${s.slug}`, lastModified: new Date(`${s.date}T00:00:00+05:30`), changeFrequency: "yearly" as const, priority: 0.6 })),
   ];
 }

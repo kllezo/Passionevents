@@ -6,6 +6,7 @@ import { PastGallery } from "./PastGallery";
 import { ArtistsList } from "./ArtistsList";
 import { LiveButton } from "./LiveButton";
 import { Waveform } from "./Waveform";
+import { pastShows, pastShowAsEvent } from "@/content/shows";
 
 /** Upcoming shows grid (published LIVE events only). */
 export async function UpcomingShows({ limit }: { limit?: number }) {
@@ -43,7 +44,12 @@ export function ShowsEmpty() {
 
 export async function PastExperiences() {
   const events = await safeRead("past shows", () => getPastLiveEvents(), []);
-  return <PastGallery events={events} />;
+  // Shows kept in code (with the photographer's pictures) join the archive, newest first.
+  const known = new Set(events.map((e) => e.slug));
+  const merged = [...events, ...pastShows.filter((s) => !known.has(s.slug)).map(pastShowAsEvent)].sort(
+    (a, b) => (b.startsAt?.getTime() ?? 0) - (a.startsAt?.getTime() ?? 0)
+  );
+  return <PastGallery events={merged} />;
 }
 
 export async function Artists() {

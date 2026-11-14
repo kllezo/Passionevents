@@ -4,10 +4,12 @@ import { PrismaClient } from "@prisma/client";
 import { services } from "@/content/services";
 import { areas } from "@/content/areas";
 import { posts } from "@/content/blog";
+import { pastShows } from "@/content/shows";
 
 const SERVICE_SLUGS = new Set(services.map((s) => s.slug));
 const AREA_SLUGS = new Set<string>(areas.map((a) => a.slug));
 const POST_SLUGS = new Set(posts.map((p) => p.slug));
+const SHOW_SLUGS = new Set(pastShows.map((s) => s.slug));
 
 const COOKIE = "pe_admin_session";
 
@@ -47,6 +49,8 @@ export async function proxy(req: NextRequest) {
   const detail = pathname.match(/^\/(portfolio|concerts\/events)\/([^/]+)\/?$/);
   if (detail) {
     const experience = detail[1] === "portfolio" ? "EVENTS" : "LIVE";
+    // Shows kept in code (src/content/shows.ts) exist without a database row.
+    if (experience === "LIVE" && SHOW_SLUGS.has(decodeURIComponent(detail[2]))) return NextResponse.next();
     try {
       const found = await db.event.findFirst({
         where: { slug: decodeURIComponent(detail[2]), experience, status: "PUBLISHED" },

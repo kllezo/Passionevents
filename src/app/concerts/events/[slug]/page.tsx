@@ -11,9 +11,23 @@ import { JsonLd } from "@/components/shared/JsonLd";
 import { StageCanvas } from "@/components/live/StageCanvas";
 import { LiveButton } from "@/components/live/LiveButton";
 import { liveDateParts } from "@/lib/event-format";
+import { pastShowBySlug, showPhotoSrc } from "@/content/shows";
+import { PastShowPage } from "@/components/live/PastShowPage";
 
 export async function generateMetadata({ params }: PageProps<"/concerts/events/[slug]">): Promise<Metadata> {
   const { slug } = await params;
+  const show = pastShowBySlug(slug);
+  if (show) {
+    const [y, m, dd] = show.date.split("-").map(Number);
+    const when = `${dd} ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][m - 1]} ${y}`;
+    return pageMetadata({
+      title: `${show.title} (${when})`,
+      description: `${show.artist} live at ${show.venue}, ${show.area}, ${show.city} on ${when} — photos from the night. Presented by Passion Live, the concert brand of Passion Events.`,
+      path: `/concerts/events/${show.slug}`,
+      image: showPhotoSrc(show.photos[0].name, 1200),
+      live: true,
+    });
+  }
   const e = await getPublishedEventBySlug(slug, "LIVE");
   if (!e) return { title: "Show" };
   const where = [e.venue, e.city].filter(Boolean).join(", ");
@@ -37,6 +51,8 @@ const statusSchema: Record<string, string> = {
 
 async function ShowContent({ params }: { params: PageProps<"/concerts/events/[slug]">["params"] }) {
   const { slug } = await params;
+  const show = pastShowBySlug(slug);
+  if (show) return <PastShowPage show={show} />;
   const e = await getPublishedEventBySlug(slug, "LIVE");
   if (!e) notFound();
   const d = liveDateParts(e.startsAt);
