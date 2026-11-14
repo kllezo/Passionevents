@@ -34,3 +34,16 @@ export const featuredArtists = [
 ];
 
 export const instagramUrl = "https://www.instagram.com/passionevents.p/";
+
+/** The company's ticketing page on MeraEvents (confirmed as theirs by the client, 14 Nov 2026). */
+export const meraEventsUrl = "https://www.meraevents.com/o/Passion-Events";
+
+/**
+ * Ticketed shows as listed on MeraEvents (checked 14 Nov 2026). Each links to
+ * its public listing, so the date and venue can be verified independently.
+ */
+export const ticketedShows = [
+  { title: "Sameera Bharadwaj — Live in Bengaluru", date: "2026-10-09", label: "9 Oct 2026", venue: "DND – The Venue, Bengaluru", url: "https://www.meraevents.com/events/sameera-bharadwaj-live-in-bengaluru" },
+  { title: "Kalyan Babu DJ Night by Passion Events", date: "2026-09-01", label: "1 Sept 2026", venue: "HYP3 Nightclub", url: "https://www.meraevents.com/events/kalyan-babu-dj-night-by-passion-events" },
+  { title: "Mohana Bhogaraju — Live at Illuzion", date: "2026-07-04", label: "4 Jul 2026", venue: "Illuzion Club & Kitchen, Hyderabad", url: "https://www.meraevents.com/events/mohana-bhogaraju-live-at-illuzion" },
+];

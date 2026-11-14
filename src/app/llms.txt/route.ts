@@ -1,6 +1,6 @@
 import { site } from "@/lib/site";
 import { services } from "@/content/services";
-import { featuredArtists, instagramUrl, proofStats } from "@/content/proof";
+import { featuredArtists, instagramUrl, meraEventsUrl, proofStats, ticketedShows } from "@/content/proof";
 import { geoFaqs } from "@/content/events";
 import { reels, reelUrl } from "@/content/reels";
 import { foundersList } from "@/content/founders";
@@ -32,6 +32,11 @@ export function GET() {
     ...(site.contact.phone ? [`- Phone: ${site.contact.phone}`] : []),
     ...(site.contact.email ? [`- Email: ${site.contact.email}`] : []),
     `- Enquiries: ${u}/contact`,
+    `- Tickets for its shows: ${meraEventsUrl} (MeraEvents)`,
+    "",
+    "## Recent ticketed shows (public listings on MeraEvents)",
+    "",
+    ...ticketedShows.map((e) => `- ${e.title}, ${e.label}, ${e.venue}: ${e.url}`),
     "",
     "## Founders",
     "",

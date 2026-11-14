@@ -5,6 +5,16 @@ import { faqJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { SectionLabel } from "../SectionLabel";
 import { site } from "@/lib/site";
+import { meraEventsUrl, ticketedShows } from "@/content/proof";
+import { reelUrl } from "@/content/reels";
+
+/** Weddings and celebrations from the company's own reels (first-hand footage). */
+const ownCelebrations = [
+  { title: "Engagement evening", place: "Nandigama", label: "Apr 2025", reel: "DIT7CNHzKqG" },
+  { title: "Wedding day", place: "Nandigama", label: "Apr 2025", reel: "DIlOuTfIzG6" },
+  { title: "Sunflower haldi", place: "Jaggayyapeta", label: "Jun 2025", reel: "DLImPaTz1bw" },
+  { title: "Sangeet night", place: "Hyderabad", label: "Aug 2025", reel: "DNyDrfV5tsF" },
+];
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const [uy, um, ud] = site.contentUpdated.split("-").map(Number);
@@ -66,6 +76,33 @@ export function HomeAnswers({ index = "08" }: { index?: string }) {
             </li>
           ))}
         </ul>
+
+        {/* First-hand record: real dates and venues, each with its source */}
+        <div className="mt-14">
+          <h3 className="font-serif text-2xl text-ink">From our own events</h3>
+          <p className="mt-2 max-w-3xl text-[0.95rem] leading-relaxed text-stone">
+            Real dates and real venues. Ticketed shows link to their public listing on{" "}
+            <a href={meraEventsUrl} target="_blank" rel="noopener noreferrer" className="link-underline text-ink">MeraEvents</a>; weddings and celebrations link to our own footage on Instagram.
+          </p>
+          <ul className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {ticketedShows.map((e) => (
+              <li key={e.url} className="rounded-[1.25rem] bg-cream/70 p-5 ring-1 ring-ink/5">
+                <time dateTime={e.date} className="font-serif text-sm italic text-rose-deep">{e.label}</time>
+                <span className="mt-1.5 block font-semibold leading-snug text-ink">{e.title}</span>
+                <span className="mt-1 block text-[0.88rem] leading-snug text-stone">{e.venue}</span>
+                <a href={e.url} target="_blank" rel="noopener noreferrer" className="link-underline mt-2 inline-block text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-ink">Listing on MeraEvents</a>
+              </li>
+            ))}
+            {ownCelebrations.map((e) => (
+              <li key={e.reel} className="rounded-[1.25rem] bg-cream/70 p-5 ring-1 ring-ink/5">
+                <span className="font-serif text-sm italic text-rose-deep">{e.label}</span>
+                <span className="mt-1.5 block font-semibold leading-snug text-ink">{e.title}</span>
+                <span className="mt-1 block text-[0.88rem] leading-snug text-stone">{e.place}</span>
+                <a href={reelUrl(e.reel)} target="_blank" rel="noopener noreferrer" className="link-underline mt-2 inline-block text-[0.78rem] font-semibold uppercase tracking-[0.16em] text-ink">Watch our reel</a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         {/* Comparison beside the questions */}
         <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-12">

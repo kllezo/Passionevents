@@ -173,7 +173,7 @@ export function EventsHero() {
             </span>
           </h1>
           <p data-sub="" data-hero-hidden="" className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-stone max-sm:mx-auto max-sm:max-w-[21rem] max-sm:text-center sm:text-lg md:mt-8 md:text-xl">
-            Passion Events is a Hyderabad event management company for weddings, corporate events, concerts and private celebrations, from intimate gatherings to full productions, across Andhra Pradesh, Telangana and beyond.
+            <strong className="font-semibold text-ink">In short:</strong> Passion Events is a Hyderabad event management company for weddings, corporate events, concerts and private celebrations, from intimate gatherings to full productions, across Andhra Pradesh, Telangana and beyond.
           </p>
           <div data-cta="" className="mt-7 flex flex-wrap items-center gap-4 max-sm:justify-center md:mt-10">
             <span data-hero-hidden="">

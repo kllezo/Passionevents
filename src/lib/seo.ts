@@ -5,6 +5,7 @@ import { foundersList, type Founder } from "@/content/founders";
 import { allCities } from "@/content/areas";
 import type { Post } from "@/content/blog";
 import { reelCover } from "@/content/reels";
+import { meraEventsUrl } from "@/content/proof";
 
 /** Per-page metadata with canonical URL + Open Graph in one call. */
 export function pageMetadata({
@@ -51,7 +52,7 @@ const ORG_ID = () => `${site.url}/#organization`;
  * figure from the client's brief, contact details from environment variables.
  */
 export function organizationJsonLd() {
-  const sameAs = [site.contact.instagram].filter(Boolean);
+  const sameAs = [site.contact.instagram, meraEventsUrl].filter(Boolean);
   return {
     "@context": "https://schema.org",
     "@type": "EventPlanner",
