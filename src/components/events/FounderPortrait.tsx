@@ -59,7 +59,7 @@ export function FounderPortrait({ image }: { image: SiteImage }) {
           <Bloom r={16} />
         </svg>
       </div>
-      {image.credit && <p className="mt-5 text-xs text-stone-light">{image.credit}</p>}
+      {image.credit && <p className="mt-5 text-xs text-stone">{image.credit}</p>}
     </div>
   );
 }

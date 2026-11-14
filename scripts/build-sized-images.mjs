@@ -14,7 +14,7 @@ import path from "node:path";
 import sharp from "sharp";
 
 const OUT = path.join(process.cwd(), "public/media/sized");
-const WIDTHS = [480, 800, 1200, 1600];
+const WIDTHS = [480, 640, 800, 1080, 1200, 1600];
 const images = {
   "hero-canopy": "photo-1587271636175-90d58cdad458",
   "wedding-arch": "photo-1744804298431-57953e4eaba0",

@@ -73,9 +73,8 @@ export function BrandIntro() {
       <div className="relative mx-auto max-w-[1600px] px-5 md:px-10">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionLabel index="01">The studio</SectionLabel>
-          <p className="hidden font-script text-5xl text-coral lg:block" aria-hidden="true">
-            every detail
-          </p>
+          {/* Decorative flourish, drawn by CSS so it is not read or checked as text. */}
+          <span className="hidden font-script text-5xl text-coral before:content-['every_detail'] lg:block" aria-hidden="true" />
         </div>
         <h2 id="intro-title" className="sr-only">
           About Passion Events

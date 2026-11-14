@@ -7,10 +7,11 @@ import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { Draggable } from "gsap/Draggable";
-import { useGSAP } from "@gsap/react";
+import { useGSAP as baseUseGSAP } from "@gsap/react";
+import { useEffect, useState, type RefObject } from "react";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin, ScrambleTextPlugin, Draggable, useGSAP);
+  gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin, ScrambleTextPlugin, Draggable, baseUseGSAP);
   gsap.defaults({ ease: "expo.out", duration: 1.1 });
   ScrollTrigger.config({ ignoreMobileResize: true });
   // Development-only handle for debugging timelines from the console.
@@ -38,7 +39,86 @@ export function prefersReducedMotion() {
   return typeof window !== "undefined" && window.matchMedia(media.reduced).matches;
 }
 
-export { gsap, ScrollTrigger, SplitText, DrawSVGPlugin, Draggable, useGSAP };
+export { gsap, ScrollTrigger, SplitText, DrawSVGPlugin, Draggable };
+
+/**
+ * Setup queue: sections that become ready together are set up one per
+ * macrotask (top of the page first), never all inside one long task.
+ */
+const setupQueue: (() => void)[] = [];
+let pumping = false;
+function pumpSetup() {
+  const fn = setupQueue.shift();
+  if (fn) fn();
+  if (setupQueue.length) setTimeout(pumpSetup, 0);
+  else pumping = false;
+}
+function scheduleSetup(fn: () => void) {
+  setupQueue.push(fn);
+  if (!pumping) {
+    pumping = true;
+    setTimeout(pumpSetup, 0);
+  }
+}
+
+type GSAPConfig ={ scope?: RefObject<Element | null> | Element | string; dependencies?: unknown[]; revertOnUpdate?: boolean; eager?: boolean };
+
+/**
+ * useGSAP, set up just in time. A component's animation setup (timelines,
+ * ScrollTriggers, SplitText measuring) runs when its scope element comes
+ * within ~1.5 screens of the viewport instead of all at once during page
+ * load. The animations themselves are unchanged — they are simply built
+ * shortly before they can be seen, which keeps the main thread free while
+ * the page loads.
+ *
+ * If a section is set up while it sits above the viewport (after a jump or
+ * a restored scroll position) and it adds pinned scroll distance, the page
+ * is refreshed and the scroll offset compensated so nothing moves on screen.
+ * `eager: true` keeps the old behaviour for a component.
+ */
+export function useGSAP(callback: Parameters<typeof baseUseGSAP>[0], config: GSAPConfig = {}) {
+  const { eager, ...rest } = config;
+  const scope = rest.scope && typeof rest.scope === "object" && "current" in rest.scope ? (rest.scope as RefObject<Element | null>) : undefined;
+  const [near, setNear] = useState(Boolean(eager));
+
+  useEffect(() => {
+    if (near) return;
+    const el = scope?.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      scheduleSetup(() => setNear(true));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          scheduleSetup(() => setNear(true));
+        }
+      },
+      { rootMargin: "150% 0px 150% 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [near, scope]);
+
+  return baseUseGSAP(
+    (context, contextSafe) => {
+      if (!near || typeof callback !== "function") return;
+      const el = scope?.current;
+      const above = el ? el.getBoundingClientRect().bottom < 0 : false;
+      const pinsBefore = above ? ScrollTrigger.getAll().filter((t) => t.pin).length : 0;
+      const heightBefore = above ? document.documentElement.scrollHeight : 0;
+      const result = callback(context, contextSafe);
+      if (above && ScrollTrigger.getAll().filter((t) => t.pin).length !== pinsBefore) {
+        ScrollTrigger.refresh();
+        const delta = document.documentElement.scrollHeight - heightBefore;
+        if (delta) window.scrollBy(0, delta);
+      }
+      return result;
+    },
+    { ...rest, dependencies: [...(rest.dependencies ?? []), near] } as Parameters<typeof baseUseGSAP>[1]
+  );
+}
 
 /**
  * Runs `cb` once when `el` scrolls into view. Based on real visibility

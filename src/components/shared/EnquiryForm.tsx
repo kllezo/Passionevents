@@ -3,7 +3,6 @@
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Check, Loader2, MessageCircle } from "lucide-react";
 import { BUDGET_RANGES, ENQUIRY_CATEGORIES, ENQUIRY_SERVICES } from "@/lib/constants";
-import { enquirySchema } from "@/lib/validation/enquiry";
 import { gsap } from "@/motion/gsap";
 
 type Theme = "events" | "live";
@@ -90,6 +89,8 @@ export function EnquiryForm({
       source,
     };
 
+    // Validation library loads on first submit, not with the page.
+    const { enquirySchema } = await import("@/lib/validation/enquiry");
     const check = enquirySchema.safeParse(payload);
     if (!check.success) {
       const fe: Record<string, string> = {};

@@ -1,4 +1,4 @@
-const securityHeaders = [
+﻿const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
@@ -18,7 +18,7 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       // Temporary, Unsplash-licensed stock imagery. Replace with client photography
-      // in src/content/media.ts — see docs/CONTENT.md.
+      // in src/content/media.ts â€” see docs/CONTENT.md.
       { protocol: "https", hostname: "images.unsplash.com", pathname: "/photo-**" },
     ],
   },

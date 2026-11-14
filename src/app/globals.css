@@ -283,3 +283,11 @@ html.motion-ready .pe-intro { animation: none; }
 }
 .balloon { animation: balloonRise 16s linear infinite; will-change: transform; }
 @media (prefers-reduced-motion: reduce) { .balloon { animation: none; display: none; } }
+
+/* Performance (no visual change):
+   Large soft glows (rounded-full + blur-[100px+]) get their own compositor
+   layer, so the blur is rasterised once instead of on every repaint nearby. */
+.rounded-full[class*="blur-[1"] { will-change: transform; transform: translateZ(0); }
+/* Infinite CSS animations pause while their element is off screen
+   (OffscreenPause marks them); they look identical when visible. */
+[data-offscreen], [data-offscreen] * { animation-play-state: paused !important; }

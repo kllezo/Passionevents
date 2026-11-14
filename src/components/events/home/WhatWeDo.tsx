@@ -154,7 +154,7 @@ export function WhatWeDo() {
                         <Pic image={c.image} sizes="(max-width: 1600px) 30vw, 420px" className="transition-transform duration-[1.6s] ease-[var(--ease-silk)] group-hover:scale-[1.06]" />
                         <div className={`absolute inset-0 ${Boolean(c.live) ? "bg-gradient-to-t from-void/80 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/55 via-transparent to-transparent"}`} />
                         <div className="absolute inset-0 bg-ivory [opacity:var(--dim,0)]" />
-                        <span className="absolute bottom-4 right-5 font-script text-5xl text-ivory/95">{c.script}</span>
+                        <span aria-hidden="true" className="absolute bottom-4 right-5 font-script text-5xl text-ivory/95">{c.script}</span>
                       </div>
                     </CardLink>
                   </div>
@@ -241,11 +241,11 @@ function MobileWorlds() {
           const live = Boolean(c.live);
           return (
             <article key={c.key} data-cf="" className="w-[76vw] max-w-[380px] shrink-0 snap-center will-change-transform">
-              <CardLink live={live} href={c.href} label={`${c.title} — discover more`} className="block">
+              <CardLink live={live} href={c.href} className="block">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] border-[5px] border-ivory shadow-[0_40px_70px_-40px_rgb(94_52_64/0.7)]">
                   <Pic image={c.image} sizes="76vw" />
                   <div className={`absolute inset-0 ${live ? "bg-gradient-to-t from-void/85 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/70 via-transparent to-transparent"}`} />
-                  <span className="absolute right-5 top-[20%] font-script text-4xl text-ivory/95">{c.script}</span>
+                  <span aria-hidden="true" className="absolute right-5 top-[20%] font-script text-4xl text-ivory/95">{c.script}</span>
                   <span className="absolute inset-x-5 bottom-5">
                     <span className="block font-serif text-3xl leading-tight text-ivory">{c.title}</span>
                     <span className="mt-1 block text-sm text-ivory/80">{c.short}</span>
@@ -289,7 +289,7 @@ function CardLink({
 }: {
   live: boolean;
   href: string;
-  label: string;
+  label?: string;
   className?: string;
   tabIndex?: number;
   children: React.ReactNode;

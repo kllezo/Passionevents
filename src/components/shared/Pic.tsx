@@ -26,7 +26,7 @@ const unsplashLoader: ImageLoader = ({ src, width, quality }) => {
 
 /** Self-hosted, pre-sized photos (scripts/build-sized-images.mjs). */
 const SIZED = "/media/sized/";
-const SIZED_WIDTHS = [480, 800, 1200, 1600];
+const SIZED_WIDTHS = [480, 640, 800, 1080, 1200, 1600];
 const sizedLoader: ImageLoader = ({ src, width }) => {
   const w = SIZED_WIDTHS.find((x) => x >= width) ?? SIZED_WIDTHS[SIZED_WIDTHS.length - 1];
   return src.replace(/\.webp$/, `-${w}.webp`);

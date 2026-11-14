@@ -22,7 +22,6 @@ export function ReelCard({ reel, onOpen, tone = "light", className = "", sizes =
     <button
       type="button"
       onClick={onOpen}
-      aria-label={`${reelMode(reel) !== "none" ? "Play reel" : "Open reel"}: ${reel.title}${meta ? `, ${meta}` : ""}`}
       className={`group relative block aspect-[9/16] w-full overflow-hidden text-left transition-[transform,box-shadow] duration-500 ease-[var(--ease-silk)] hover:-translate-y-1.5 focus-visible:-translate-y-1.5 ${
         dark ? "rounded-[1.25rem] bg-graphite shadow-[0_30px_60px_-30px_rgb(0_0_0/0.9)] ring-1 ring-white/10" : "rounded-[1.5rem] bg-cream shadow-[0_30px_60px_-34px_rgb(94_52_64/0.65)]"
       } ${className}`}

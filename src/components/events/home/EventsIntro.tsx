@@ -92,7 +92,7 @@ export function EventsIntro() {
         tl.kill();
       };
     },
-    { scope: root }
+    { scope: root, eager: true }
   );
 
   const skip = () => {

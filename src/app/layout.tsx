@@ -5,6 +5,7 @@ import { site } from "@/lib/site";
 import { SmoothScroll } from "@/motion/SmoothScroll";
 import { UniverseTransitionProvider } from "@/components/shared/UniverseTransition";
 import { ImageWarmup } from "@/components/shared/ImageWarmup";
+import { OffscreenPause } from "@/components/shared/OffscreenPause";
 import { Analytics } from "@/components/shared/Analytics";
 
 const cormorant = Cormorant_Garamond({
@@ -93,6 +94,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SmoothScroll>{children}</SmoothScroll>
         </UniverseTransitionProvider>
         <ImageWarmup />
+        <OffscreenPause />
         <Analytics />
       </body>
     </html>

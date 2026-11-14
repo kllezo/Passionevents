@@ -79,7 +79,7 @@ export function ImageWarmup() {
     // New pages (client navigation) and late-mounted sections bring new photos.
     const rescan = () => {
       window.clearTimeout(scanTimer);
-      scanTimer = window.setTimeout(scan, 900);
+      scanTimer = window.setTimeout(scan, 2500);
     };
     const mo = new MutationObserver(rescan);
 
@@ -89,8 +89,13 @@ export function ImageWarmup() {
         scan();
         mo.observe(document.body, { childList: true, subtree: true });
       };
-      if (typeof window.requestIdleCallback === "function") idle = window.requestIdleCallback(kick, { timeout: 1500 });
-      else idle = setTimeout(kick, 400) as unknown as number;
+      // Well after load, when the browser is idle, so it never competes
+      // with the first screen or the opening animation.
+      const later = () => {
+        if (typeof window.requestIdleCallback === "function") idle = window.requestIdleCallback(kick, { timeout: 4000 });
+        else idle = setTimeout(kick, 600) as unknown as number;
+      };
+      idle = setTimeout(later, 3500) as unknown as number;
     };
     if (document.readyState === "complete") start();
     else window.addEventListener("load", start, { once: true });
