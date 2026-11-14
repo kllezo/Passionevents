@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } fr
 import { Check, Loader2, MessageCircle } from "lucide-react";
 import { BUDGET_RANGES, ENQUIRY_CATEGORIES, ENQUIRY_SERVICES } from "@/lib/constants";
 import { gsap } from "@/motion/gsap";
+import { enquiryWhatsappUrl } from "@/lib/enquiry-whatsapp";
 
 type Theme = "events" | "live";
 type Status = "idle" | "submitting" | "success" | "error";
@@ -57,6 +58,11 @@ export function EnquiryForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [name, setName] = useState("");
   const [partner, setPartner] = useState<string>("");
+  // WhatsApp hand-off to Sai Tanush: the prefilled message, and whether it opened by itself.
+  const [waUrl, setWaUrl] = useState<string | null>(null);
+  const [waOpened, setWaOpened] = useState(false);
+  // Guards against double submits, including the moment before the state updates.
+  const busy = useRef(false);
 
   // Pre-select a partnership type from ?type=… (set by the collaboration cards).
   useEffect(() => {
@@ -70,8 +76,17 @@ export function EnquiryForm({
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (status === "submitting") return;
-    const fd = new FormData(e.currentTarget);
+    if (busy.current || status === "submitting") return;
+    busy.current = true;
+    try {
+      await submit(e.currentTarget);
+    } finally {
+      busy.current = false;
+    }
+  }
+
+  async function submit(form: HTMLFormElement) {
+    const fd = new FormData(form);
     const payload = {
       fullName: String(fd.get("fullName") ?? ""),
       phone: String(fd.get("phone") ?? ""),
@@ -106,6 +121,9 @@ export function EnquiryForm({
       return;
     }
 
+    const partnerLabel = partner ? (partnerTypes?.find((p) => p.key === partner)?.label ?? partner) : "";
+    const wa = enquiryWhatsappUrl({ ...payload, partnerType: partnerLabel, details: String(fd.get("details") ?? "") });
+    setWaUrl(wa);
     setErrors({});
     setStatus("submitting");
     setMessage("");
@@ -123,6 +141,17 @@ export function EnquiryForm({
         return;
       }
       setName(payload.fullName.split(" ")[0]);
+      // Open the WhatsApp chat with the enquiry filled in. Browsers may block
+      // this after the network wait; the success panel then offers the button.
+      let opened = false;
+      if (wa) {
+        const w = window.open(wa, "_blank");
+        if (w) {
+          w.opener = null;
+          opened = true;
+        }
+      }
+      setWaOpened(opened);
       setStatus("success");
       requestAnimationFrame(() => {
         if (successRef.current) {
@@ -144,7 +173,24 @@ export function EnquiryForm({
         </span>
         <h3 className={`mt-8 ${theme === "live" ? "font-display text-5xl uppercase" : "font-serif text-5xl font-light"}`}>Thank you{name ? `, ${name}` : ""}.</h3>
         <p className="mt-4 max-w-lg text-lg opacity-80">Your enquiry has been received. Our team will review the details and get back to you.</p>
-        {whatsappHref && (
+        {waUrl && (
+          <div className="mt-8 max-w-lg">
+            <p className="opacity-80">
+              {waOpened
+                ? "WhatsApp has opened with your enquiry written out for Sai Tanush. Press Send in WhatsApp to deliver it. If it didn't open, use the button below."
+                : "One last step: send your enquiry straight to Sai Tanush on WhatsApp. The message is already written. Press the button, then press Send in WhatsApp."}
+            </p>
+            <a
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`mt-6 inline-flex items-center gap-3 rounded-full px-8 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition-colors ${t.submit}`}
+            >
+              <MessageCircle className="size-4" /> Send on WhatsApp
+            </a>
+          </div>
+        )}
+        {!waUrl && whatsappHref && (
           <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 underline underline-offset-4">
             <MessageCircle className="size-4" /> Prefer to chat? Message us on WhatsApp
           </a>
@@ -272,6 +318,11 @@ export function EnquiryForm({
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
         <div id={id("status")} role="status" aria-live="polite" className={`text-sm ${status === "error" ? t.error : "opacity-70"}`}>
           {message}
+          {status === "error" && waUrl && !Object.keys(errors).length && (
+            <a href={waUrl} target="_blank" rel="noopener noreferrer" className="mt-2 flex items-center gap-2 underline underline-offset-4">
+              <MessageCircle className="size-4" /> Send your enquiry on WhatsApp instead
+            </a>
+          )}
         </div>
         <div className="flex flex-wrap items-center gap-4">
           {whatsappHref && (

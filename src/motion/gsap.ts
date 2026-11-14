@@ -13,6 +13,9 @@ import { useEffect, useState, type RefObject } from "react";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin, ScrambleTextPlugin, Draggable, baseUseGSAP);
   gsap.defaults({ ease: "expo.out", duration: 1.1 });
+  // Shared animations run over optional parts (rules, masks, zooms) that some
+  // sections don't have; an empty selection is a no-op, so don't log it.
+  gsap.config({ nullTargetWarn: false });
   ScrollTrigger.config({ ignoreMobileResize: true });
   // Development-only handle for debugging timelines from the console.
   if (process.env.NODE_ENV === "development") (window as unknown as { __pe: unknown }).__pe = { gsap, ScrollTrigger };

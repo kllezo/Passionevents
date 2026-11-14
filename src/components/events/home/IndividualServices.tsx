@@ -108,10 +108,10 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
                   data-cap-inner=""
                   className={`relative grid h-full origin-top grid-rows-[auto_1fr] overflow-hidden rounded-[1.75rem] shadow-[0_-30px_80px_-50px_rgb(94_52_64/0.55)] md:grid-rows-1 md:grid-cols-12 md:rounded-[2rem] ${t.card}`}
                 >
-                  <div className="relative flex flex-col justify-between gap-5 p-6 md:col-span-6 md:gap-10 md:p-12 xl:p-16">
+                  <div data-cap-text="" className="relative flex flex-col justify-between gap-5 p-6 md:col-span-6 md:gap-10 md:p-12 xl:p-16">
                     <div className="flex items-start justify-between gap-6">
                       <span className="block overflow-hidden">
-                        <span data-cap-head="" className={`block font-serif text-[clamp(3.2rem,7.2vw,7.7rem)] font-light italic leading-[0.85] ${t.num}`}>
+                        <span data-cap-head="" data-cap-num="" className={`block font-serif text-[clamp(3.2rem,7.2vw,7.7rem)] font-light italic leading-[0.85] ${t.num}`}>
                           {String(i + 1).padStart(2, "0")}
                         </span>
                       </span>

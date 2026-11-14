@@ -39,6 +39,11 @@ type Ctx = {
 };
 
 const noop = () => {};
+// A closed context can't be resumed or suspended; never let that surface as an error.
+const resumeSafe = (ctx: AudioContext) => (ctx.state === "closed" ? Promise.resolve() : ctx.resume().catch(() => {}));
+const suspendSafe = (ctx: AudioContext) => {
+  if (ctx.state !== "closed") ctx.suspend().catch(() => {});
+};
 const SoundContext = createContext<Ctx>({
   enabled: false,
   blocked: false,
@@ -90,7 +95,7 @@ export function LiveSoundProvider({ children }: { children: ReactNode }) {
   const volumeRef = useRef(0.7);
 
   const ensure = useCallback(() => {
-    if (ac.current) return ac.current;
+    if (ac.current && ac.current.state !== "closed") return ac.current;
     const Ctor = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!Ctor) return null;
     const ctx = new Ctor();
@@ -116,7 +121,7 @@ export function LiveSoundProvider({ children }: { children: ReactNode }) {
     writePref("on");
     const ctx = ensure();
     if (!ctx) return;
-    void ctx.resume().then(() => {
+    resumeSafe(ctx).then(() => {
       if (ctx.state !== "running") return;
       runningRef.current = true;
       setRunning(true);
@@ -133,7 +138,7 @@ export function LiveSoundProvider({ children }: { children: ReactNode }) {
     track.current?.pause();
     setPlaying(false);
     const ctx = ac.current;
-    if (ctx) window.setTimeout(() => void ctx.suspend(), 250);
+    if (ctx) window.setTimeout(() => suspendSafe(ctx), 250);
   }, []);
 
   const toggle = useCallback(() => {
@@ -199,10 +204,10 @@ export function LiveSoundProvider({ children }: { children: ReactNode }) {
       if (!ctx) return;
       if ((e as CustomEvent<{ playing: boolean }>).detail?.playing) {
         resume = resume || ctx.state === "running";
-        void ctx.suspend();
+        suspendSafe(ctx);
       } else if (resume) {
         resume = false;
-        if (readPref() === "on") void ctx.resume();
+        if (readPref() === "on") void resumeSafe(ctx);
       }
     };
     window.addEventListener("pe:media", onMedia);
@@ -217,9 +222,9 @@ export function LiveSoundProvider({ children }: { children: ReactNode }) {
       if (!ctx) return;
       if (document.hidden) {
         resume = ctx.state === "running";
-        void ctx.suspend();
+        suspendSafe(ctx);
       } else if (resume && readPref() === "on") {
-        void ctx.resume();
+        void resumeSafe(ctx);
       }
     };
     document.addEventListener("visibilitychange", onVis);
@@ -230,7 +235,13 @@ export function LiveSoundProvider({ children }: { children: ReactNode }) {
   useEffect(
     () => () => {
       track.current?.dispose();
-      void ac.current?.close();
+      track.current = null;
+      const ctx = ac.current;
+      ac.current = null;
+      master.current = null;
+      fx.current = null;
+      runningRef.current = false;
+      if (ctx && ctx.state !== "closed") ctx.close().catch(() => {});
     },
     []
   );

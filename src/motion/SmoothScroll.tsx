@@ -6,6 +6,29 @@ import { gsap, ScrollTrigger, prefersReducedMotion } from "./gsap";
 import { usePathnameState } from "@/components/shared/PathnameSync";
 
 const LenisContext = createContext<Lenis | null>(null);
+
+/**
+ * Wait until the page's real layout exists (load, fonts, and no new scroll
+ * triggers for ~250 ms), re-measure every trigger, then go to `y`.
+ */
+async function settleAndScroll(y: number, lenis: () => Lenis | null, cancelled: () => boolean) {
+  if (document.readyState !== "complete") await new Promise((r) => window.addEventListener("load", r, { once: true }));
+  await (document.fonts?.ready ?? Promise.resolve()).catch(() => {});
+  let stable = 0;
+  let count = -1;
+  for (let i = 0; i < 40 && stable < 5; i++) {
+    await new Promise((r) => setTimeout(r, 50));
+    const n = ScrollTrigger.getAll().length;
+    stable = n === count ? stable + 1 : 0;
+    count = n;
+  }
+  if (cancelled()) return;
+  ScrollTrigger.refresh();
+  window.scrollTo(0, y);
+  lenis()?.scrollTo(y, { immediate: true, force: true });
+  ScrollTrigger.update();
+  requestAnimationFrame(() => document.documentElement.classList.remove("pe-restore"));
+}
 export const useLenis = () => useContext(LenisContext);
 
 /**
@@ -18,6 +41,9 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   const isAdmin = pathname === null ? null : pathname.startsWith("/admin");
   const lastPath = useRef<string | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
+  // Last scroll position of each page this visit, for Back / Forward.
+  const positions = useRef(new Map<string, number>());
+  const popped = useRef(false);
   useEffect(() => {
     lenisRef.current = lenis;
   }, [lenis]);
@@ -67,29 +93,32 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     let cancelled = false;
     if (root.classList.contains("pe-restore")) {
       const y = Number((window as unknown as { __peRestoreY?: number }).__peRestoreY) || 0;
-      void (async () => {
-        // The page's sections hydrate after this layout, so wait for the real
-        // layout: load event, fonts, and no new scroll triggers for ~250 ms.
-        if (document.readyState !== "complete") await new Promise((r) => window.addEventListener("load", r, { once: true }));
-        await (document.fonts?.ready ?? Promise.resolve()).catch(() => {});
-        let stable = 0;
-        let count = -1;
-        for (let i = 0; i < 40 && stable < 5; i++) {
-          await new Promise((r) => setTimeout(r, 50));
-          const n = ScrollTrigger.getAll().length;
-          stable = n === count ? stable + 1 : 0;
-          count = n;
-        }
-        if (cancelled) return;
-        ScrollTrigger.refresh();
-        window.scrollTo(0, y);
-        lenisRef.current?.scrollTo(y, { immediate: true, force: true });
-        ScrollTrigger.update();
-        requestAnimationFrame(() => root.classList.remove("pe-restore"));
-      })();
+      void settleAndScroll(y, () => lenisRef.current, () => cancelled);
     }
+    // In-site Back / Forward: remember positions per page while scrolling
+    // (only while the URL still belongs to the page being scrolled), and hide
+    // the page the moment the history entry changes so the restore is unseen.
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const path = lastPath.current;
+        if (path && path === location.pathname) positions.current.set(path, Math.round(window.scrollY));
+      });
+    };
+    const onPop = () => {
+      if (location.pathname === lastPath.current) return; // same page (e.g. a #hash step)
+      popped.current = true;
+      if (!location.hash && (positions.current.get(location.pathname) ?? 0) > 0) root.classList.add("pe-restore");
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("popstate", onPop);
     return () => {
       cancelled = true;
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("popstate", onPop);
       window.removeEventListener("pagehide", save);
       window.removeEventListener("pageshow", onShow);
     };
@@ -133,12 +162,24 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // New route: start at the top and re-measure every trigger.
+  // New route: start at the top and re-measure every trigger. Arriving by
+  // Back / Forward instead returns to where that page was left.
   useEffect(() => {
     if (pathname === null) return;
     const previous = lastPath.current;
     lastPath.current = pathname;
+    const fromHistory = popped.current;
+    popped.current = false;
     if (previous === null || previous === pathname) return; // first load or same route
+    const saved = positions.current.get(pathname) ?? 0;
+    if (fromHistory && saved > 0 && !window.location.hash) {
+      let cancelled = false;
+      void settleAndScroll(saved, () => lenisRef.current, () => cancelled);
+      return () => {
+        cancelled = true;
+        document.documentElement.classList.remove("pe-restore");
+      };
+    }
     if (!window.location.hash) {
       if (lenisRef.current) lenisRef.current.scrollTo(0, { immediate: true, force: true });
       else window.scrollTo(0, 0);

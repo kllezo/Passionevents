@@ -19,6 +19,9 @@ const pg = new EmbeddedPostgres({
   password: "postgres",
   port: 5433,
   persistent: true,
+  // UTF-8 like production (Neon). Windows would otherwise default to WIN1252,
+  // which rejects characters such as "₹" in the budget field.
+  initdbFlags: ["--encoding=UTF8", "--locale=C"],
 });
 
 const fresh = !existsSync(path.join(dataDir, "PG_VERSION"));

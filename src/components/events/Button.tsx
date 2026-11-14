@@ -40,7 +40,7 @@ export function EventsButton({
       </span>
     </>
   );
-  const cls = `group inline-flex items-center gap-4 whitespace-nowrap rounded-full py-2.5 pl-7 pr-2.5 text-[0.8rem] font-semibold uppercase tracking-[0.18em] transition-colors duration-500 ${styles[variant]} ${className ?? ""}`;
+  const cls = `group inline-flex max-w-full items-center gap-4 whitespace-normal rounded-full sm:whitespace-nowrap py-2.5 pl-7 pr-2.5 text-[0.8rem] font-semibold uppercase tracking-[0.18em] transition-colors duration-500 ${styles[variant]} ${className ?? ""}`;
   return (
     <>
       {external ? (

@@ -13,11 +13,26 @@ const SELECTOR = '[class*="animate-marquee"], [class*="animate-spin-slow"], [cla
 
 export function OffscreenPause() {
   useEffect(() => {
-    if (typeof IntersectionObserver === "undefined") return;
+    if (typeof IntersectionObserver === "undefined" || typeof Element.prototype.getAnimations !== "function" || typeof CSSAnimation === "undefined") return;
     const seen = new WeakSet<Element>();
+    const paused = new WeakSet<Animation>();
     const io = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) e.target.toggleAttribute("data-offscreen", !e.isIntersecting);
+        // Pause through the Web Animations API rather than an attribute, so the
+        // server-rendered HTML is never touched (an attribute added before a
+        // late section hydrates would be a hydration mismatch).
+        for (const e of entries) {
+          const anims = e.target.getAnimations({ subtree: true }).filter((a) => a instanceof CSSAnimation);
+          for (const a of anims) {
+            if (!e.isIntersecting && a.playState === "running") {
+              a.pause();
+              paused.add(a);
+            } else if (e.isIntersecting && paused.has(a)) {
+              a.play();
+              paused.delete(a);
+            }
+          }
+        }
       },
       { rootMargin: "200px 0px" }
     );

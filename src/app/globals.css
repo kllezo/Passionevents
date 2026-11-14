@@ -288,12 +288,18 @@ html.motion-ready .pe-intro { animation: none; }
    Large soft glows (rounded-full + blur-[100px+]) get their own compositor
    layer, so the blur is rasterised once instead of on every repaint nearby. */
 .rounded-full[class*="blur-[1"] { will-change: transform; transform: translateZ(0); }
-/* Infinite CSS animations pause while their element is off screen
-   (OffscreenPause marks them); they look identical when visible. */
-[data-offscreen], [data-offscreen] * { animation-play-state: paused !important; }
 
 /* Refresh / back-forward at a scroll position: content stays hidden for the
    moment it takes to rebuild pinned sections and restore the position, so the
    page never shows a half-built layout. Failsafe after 3 s. */
 html.pe-restore main, html.pe-restore footer { opacity: 0; animation: restore-failsafe 0s 5s forwards; }
 @keyframes restore-failsafe { to { opacity: 1; } }
+
+/* Capability cards on short desktop screens (e.g. 1366x768, 1024x768): the
+   card is a share of the viewport height, so tighten the text column to fit
+   it instead of clipping. Same design, slightly smaller number and padding. */
+@media (min-width: 768px) and (max-height: 820px) {
+  [data-cap-text] { padding: 2rem 2.25rem; gap: 1.25rem; }
+  [data-cap-num] { font-size: clamp(2.8rem, 4.6vw, 4.4rem); }
+  [data-cap-text] h3 { font-size: clamp(2rem, 3.4vw, 3.4rem); }
+}
