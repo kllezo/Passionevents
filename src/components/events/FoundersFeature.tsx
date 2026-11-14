@@ -1,10 +1,9 @@
 import { foundersList, type Founder } from "@/content/founders";
 import { RevealText } from "@/motion/RevealText";
-import { ReelRail } from "@/components/shared/Reels";
 import { FounderPortrait } from "./FounderPortrait";
 import { SectionLabel } from "./SectionLabel";
-import { EventsButton } from "./Button";
 import { Bloom } from "./botanical/Sprig";
+import { PromiseBlock } from "./PromiseBlock";
 
 /**
  * Founders — Tanush, then Ramya, stacked and alternating (portrait left,
@@ -33,24 +32,7 @@ export function FoundersFeature({ index = "07", detailed = false }: { index?: st
         </div>
 
         {/* The shared philosophy, said once */}
-        <div className="mx-auto mt-20 max-w-4xl border-t border-ink/10 pt-14 text-center md:mt-24">
-          <RevealText as="p" className="font-serif text-[clamp(2.2rem,4.2vw,4.2rem)] font-light italic leading-[1.05] text-ink">
-            Two founders, <span className="text-rose-deep">one promise.</span>
-          </RevealText>
-          <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-stone">
-            The words written into our logo are the promise both founders keep. Whichever of them you meet first, you get one plan, one team and the same care from the first call to the last guest leaving.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-8">
-            {!detailed && (
-              <EventsButton href="/founders" variant="outline">
-                Meet the founders
-              </EventsButton>
-            )}
-            <div className="w-[min(60vw,200px)] text-left">
-              <ReelRail ids={["DXmBXWMkzwd"]} compact label="Founder behind-the-scenes reel" />
-            </div>
-          </div>
-        </div>
+        <PromiseBlock detailed={detailed} />
       </div>
     </section>
   );

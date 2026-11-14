@@ -125,6 +125,7 @@ export function IndividualServices({ showIntro = true, index = "04" }: { showInt
                           {g.title}
                         </h3>
                       </span>
+                      <p data-cap-chip="" className={`mt-3 max-w-md text-[0.92rem] leading-relaxed md:mt-4 md:text-base ${t.sub}`}>{g.blurb}</p>
                       <ul className="mt-4 flex flex-wrap gap-2 md:mt-6">
                         {g.items.map((it) => (
                           <li key={it} data-cap-chip="" className={`rounded-full border px-3 py-1 text-xs md:px-4 md:py-1.5 md:text-sm ${t.chip}`}>

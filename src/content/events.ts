@@ -104,17 +104,19 @@ export const categories: Category[] = [
 ];
 
 /** Individually bookable services (Section 5). */
-export type ServiceGroup = { title: string; image: SiteImage; items: string[] };
+export type ServiceGroup = { title: string;
+  /** One or two lines describing the capability (shown on the card). */
+  blurb: string; image: SiteImage; items: string[] };
 
 export const serviceGroups: ServiceGroup[] = [
-  { title: "Venue & Hospitality", image: stock.venueHall, items: ["Venue arrangements", "Hotels", "Accommodation", "Guest management"] },
-  { title: "Food & Table", image: stock.catering, items: ["Catering", "Table styling", "Private dining"] },
-  { title: "Design & Decor", image: stock.decorArch, items: ["Decoration", "Floral styling", "Stage design", "Theme concepts"] },
-  { title: "Picture & Film", image: stock.weddingHands, items: ["Photography", "Videography", "Content & reels"] },
-  { title: "Sound, Light & Stage", image: stock.liveHaze, items: ["Sound", "Lighting", "LED & AV", "Stage fabrication"] },
-  { title: "Artists & Entertainment", image: stock.liveSinger, items: ["Artist bookings", "Singer bookings", "Live bands", "Anchors & performers"] },
-  { title: "Travel & Movement", image: stock.destinationPalace, items: ["Transportation", "Car rentals", "Guest transfers"] },
-  { title: "Complete Management", image: stock.celebrationStage, items: ["Complete event management", "Vendor coordination", "Run of show"] },
+  { title: "Venue & Hospitality", blurb: "Venues, hotel stays and guest management for weddings and corporate events in Hyderabad, Andhra Pradesh and Telangana.", image: stock.venueHall, items: ["Venue arrangements", "Hotels", "Accommodation", "Guest management"] },
+  { title: "Food & Table", blurb: "Catering coordination, table styling and private dining, matched to the occasion and the guest list.", image: stock.catering, items: ["Catering", "Table styling", "Private dining"] },
+  { title: "Design & Decor", blurb: "Theme concepts, floral styling, stage design and décor, planned as one look for every function.", image: stock.decorArch, items: ["Decoration", "Floral styling", "Stage design", "Theme concepts"] },
+  { title: "Picture & Film", blurb: "Photography, videography and reels that capture the day and give you content to share.", image: stock.weddingHands, items: ["Photography", "Videography", "Content & reels"] },
+  { title: "Sound, Light & Stage", blurb: "Sound, lighting, LED screens and stage fabrication for weddings, corporate shows and concerts.", image: stock.liveHaze, items: ["Sound", "Lighting", "LED & AV", "Stage fabrication"] },
+  { title: "Artists & Entertainment", blurb: "Singers, live bands, anchors and performers booked and managed, from sangeets to concerts.", image: stock.liveSinger, items: ["Artist bookings", "Singer bookings", "Live bands", "Anchors & performers"] },
+  { title: "Travel & Movement", blurb: "Transport, car rentals and guest transfers for city and destination events.", image: stock.destinationPalace, items: ["Transportation", "Car rentals", "Guest transfers"] },
+  { title: "Complete Management", blurb: "End-to-end event management: one team coordinating every vendor and running the event to plan.", image: stock.celebrationStage, items: ["Complete event management", "Vendor coordination", "Run of show"] },
 ];
 
 export const allServices = serviceGroups.flatMap((g) => g.items);
