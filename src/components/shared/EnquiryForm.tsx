@@ -58,7 +58,7 @@ export function EnquiryForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [name, setName] = useState("");
   const [partner, setPartner] = useState<string>("");
-  // WhatsApp hand-off to Sai Tanush: the prefilled message, and whether it opened by itself.
+  // WhatsApp hand-off to the Passion Events team: the prefilled message, and whether it opened by itself.
   const [waUrl, setWaUrl] = useState<string | null>(null);
   const [waOpened, setWaOpened] = useState(false);
   // Guards against double submits, including the moment before the state updates.
@@ -177,8 +177,8 @@ export function EnquiryForm({
           <div className="mt-8 max-w-lg">
             <p className="opacity-80">
               {waOpened
-                ? "WhatsApp has opened with your enquiry written out for Sai Tanush. Press Send in WhatsApp to deliver it. If it didn't open, use the button below."
-                : "One last step: send your enquiry straight to Sai Tanush on WhatsApp. The message is already written. Press the button, then press Send in WhatsApp."}
+                ? "WhatsApp has opened with your enquiry already written to the Passion Events team. Press Send in WhatsApp to deliver it. If it didn't open, use the button below."
+                : "One last step: send your enquiry to the Passion Events team on WhatsApp. The message is already written. Press the button, then press Send in WhatsApp."}
             </p>
             <a
               href={waUrl}
