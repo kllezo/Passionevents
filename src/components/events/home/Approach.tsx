@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { approach, whyUs } from "@/content/events";
-import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
+import { gsap, useGSAP, media, whenVisible, blurFrom, blurTo } from "@/motion/gsap";
 import { RevealText } from "@/motion/RevealText";
 import { SectionLabel } from "../SectionLabel";
 import { Bloom } from "../botanical/Sprig";
@@ -61,7 +61,7 @@ export function Approach({ index = "04" }: { index?: string }) {
           gsap
             .timeline({ scrollTrigger: { trigger: li, start: "top 78%", toggleActions: "play none none reverse" } })
             .fromTo(bloom, { scale: 0, rotate: -180 }, { scale: 1, rotate: 0, duration: 0.9, ease: "back.out(2.4)" }, 0)
-            .fromTo(li.querySelectorAll("h3, p"), { x: 30, autoAlpha: 0.1, filter: "blur(6px)" }, { x: 0, autoAlpha: 1, filter: "blur(0px)", duration: 0.9, stagger: 0.08, ease: "expo.out" }, 0.05);
+            .fromTo(li.querySelectorAll("h3, p"), { x: 30, autoAlpha: 0.1, ...blurFrom(6) }, { x: 0, autoAlpha: 1, ...blurTo(), duration: 0.9, stagger: 0.08, ease: "expo.out" }, 0.05);
         });
       });
 

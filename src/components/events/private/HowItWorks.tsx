@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
+import { gsap, useGSAP, media, whenVisible, blurFrom, blurTo } from "@/motion/gsap";
 import { RevealText } from "@/motion/RevealText";
 import { SectionLabel } from "../SectionLabel";
 import { Bloom } from "../botanical/Sprig";
@@ -24,7 +24,7 @@ export function HowItWorks() {
         tl.fromTo(q("[data-line]"), { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: "expo.inOut" }, 0)
           .fromTo(q("[data-bloom]"), { scale: 0, rotate: -180 }, { scale: 1, rotate: 0, duration: 0.9, stagger: 0.25, ease: "back.out(2.6)" }, 0.3)
           .fromTo(q("[data-num]"), { yPercent: 120, rotateX: -90, autoAlpha: 0 }, { yPercent: 0, rotateX: 0, autoAlpha: 1, duration: 1.1, stagger: 0.25, ease: "expo.out", transformPerspective: 600 }, 0.35)
-          .fromTo(q("[data-copy]"), { autoAlpha: 0, y: 24, filter: "blur(8px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 1, stagger: 0.25, ease: "expo.out" }, 0.5);
+          .fromTo(q("[data-copy]"), { autoAlpha: 0, y: 24, ...blurFrom(8) }, { autoAlpha: 1, y: 0, ...blurTo(), duration: 1, stagger: 0.25, ease: "expo.out" }, 0.5);
         return whenVisible(q("[data-steps]")[0], () => tl.play(), "0px 0px -15% 0px");
       });
     },

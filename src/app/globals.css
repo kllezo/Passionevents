@@ -289,6 +289,52 @@ html.motion-ready .pe-intro { animation: none; }
    layer, so the blur is rasterised once instead of on every repaint nearby. */
 .rounded-full[class*="blur-[1"] { will-change: transform; transform: translateZ(0); }
 
+/* Phones and tablets (touch-first): Safari on iOS renders large CSS blur
+   filters very slowly, and the decorative glows use blurs of 110-160px — in
+   WebKit they cut the home page to under 1 frame per second. On touch screens
+   the same soft glow is drawn with a radial fade (a mask) instead, which costs
+   almost nothing, and frosted-glass backdrop blurs are switched off (the
+   backgrounds behind them are already 70-95% opaque). Desktop is unchanged. */
+@media (hover: none), (pointer: coarse) {
+  .rounded-full[class*="blur-"]:not([class*="backdrop-blur"]) {
+    filter: none !important;
+    will-change: auto;
+    transform: none;
+  }
+  /* the glow itself: a radial gradient in the element's colour, no filter, no mask */
+  .rounded-full[class*="blur-"]:not([class*="backdrop-blur"]):not([class*="bg-[radial-gradient"]) {
+    background-color: transparent !important;
+    background-image: radial-gradient(closest-side, var(--glow, transparent) 0%, color-mix(in srgb, var(--glow, transparent) 45%, transparent) 45%, transparent 100%);
+  }
+  .rounded-full[class*="blur-"].bg-blush\/20 { --glow: color-mix(in srgb, var(--color-blush) 20%, transparent); }
+  .rounded-full[class*="blur-"].bg-blush\/30 { --glow: color-mix(in srgb, var(--color-blush) 30%, transparent); }
+  .rounded-full[class*="blur-"].bg-blush\/35 { --glow: color-mix(in srgb, var(--color-blush) 35%, transparent); }
+  .rounded-full[class*="blur-"].bg-mint\/20 { --glow: color-mix(in srgb, var(--color-mint) 20%, transparent); }
+  .rounded-full[class*="blur-"].bg-mint\/25 { --glow: color-mix(in srgb, var(--color-mint) 25%, transparent); }
+  .rounded-full[class*="blur-"].bg-violet\/20 { --glow: color-mix(in srgb, var(--color-violet) 20%, transparent); }
+  .rounded-full[class*="blur-"].bg-violet\/25 { --glow: color-mix(in srgb, var(--color-violet) 25%, transparent); }
+  .rounded-full[class*="blur-"][class*="bg-[#f2d6a2]"] { --glow: rgb(242 214 162 / 0.35); }
+  /* Passion Live hero grid: fade without a mask (masks re-composite every frame). */
+  .live-grid-bg[class*="mask-image"] { -webkit-mask-image: none !important; mask-image: none !important; opacity: 0.18 !important; }
+  [class*="backdrop-blur"] { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  /* Keep text readable where a translucent panel loses its frosted blur. */
+  [class*="backdrop-blur"].bg-ivory\/70, [class*="backdrop-blur"].bg-ivory\/75, [class*="backdrop-blur"].bg-ivory\/80 { background-color: rgb(254 249 238 / 0.99); }
+  [class*="backdrop-blur"].bg-black\/25 { background-color: rgb(0 0 0 / 0.5); }
+  /* Blurred photo backdrops (reel cards, image placeholders): blur a quarter-
+     size copy and scale it up — same soft look, a tiny fraction of the work. */
+  .bg-cover[class*="blur-"]:not([class*="backdrop-blur"]), img[class*="blur-"] {
+    width: 25% !important;
+    height: 25% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform-origin: 0 0;
+    transform: scale(4);
+    filter: blur(8px) !important;
+  }
+  /* Large drop-shadow filters on moving cards (Passion Live posters). */
+  [class*="filter:drop-shadow"] { filter: none !important; }
+}
+
 /* Refresh / back-forward at a scroll position: content stays hidden for the
    moment it takes to rebuild pinned sections and restore the position, so the
    page never shows a half-built layout. Failsafe after 3 s. */

@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { Pic } from "@/components/shared/Pic";
-import { gsap, useGSAP, media } from "@/motion/gsap";
+import { gsap, useGSAP, media, blurFrom, blurTo } from "@/motion/gsap";
 import type { SiteImage } from "@/content/media";
 import { SectionLabel } from "./SectionLabel";
 import { Bloom } from "./botanical/Sprig";
@@ -26,7 +26,7 @@ export function FounderMoments() {
       mm.add(media.ok, () => {
         const tl = gsap.timeline({ scrollTrigger: { trigger: q("[data-stage]")[0], start: "top 75%", once: true } });
         tl.fromTo(q("[data-m1]"), { clipPath: "inset(0% 100% 0% 0% round 1.25rem)" }, { clipPath: "inset(0% 0% 0% 0% round 1.25rem)", duration: 1.5, ease: "expo.inOut" }, 0)
-          .fromTo(q("[data-m1-img]"), { scale: 1.2, filter: "blur(12px)" }, { scale: 1, filter: "blur(0px)", duration: 1.8, ease: "expo.out", clearProps: "filter" }, 0.2)
+          .fromTo(q("[data-m1-img]"), { scale: 1.2, ...blurFrom(12) }, { scale: 1, ...blurTo(), duration: 1.8, ease: "expo.out", clearProps: "filter" }, 0.2)
           .from(q("[data-gold]"), { drawSVG: "0%", duration: 1.8, ease: "power2.inOut" }, 0.3)
           .fromTo(q("[data-m2]"), { y: 120, rotate: 14, autoAlpha: 0 }, { y: 0, rotate: 4, autoAlpha: 1, duration: 1.4, ease: "back.out(1.4)" }, 0.8)
           .fromTo(q("[data-m-cap]"), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.12, ease: "expo.out" }, 1.1)

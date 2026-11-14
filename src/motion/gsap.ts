@@ -17,6 +17,9 @@ if (typeof window !== "undefined") {
   // sections don't have; an empty selection is a no-op, so don't log it.
   gsap.config({ nullTargetWarn: false });
   ScrollTrigger.config({ ignoreMobileResize: true });
+  // Touch screens (iOS especially) scroll on a separate thread, so a pin can
+  // engage a frame late and visibly jump; start pins a touch early there.
+  if (window.matchMedia("(hover: none), (pointer: coarse)").matches) ScrollTrigger.defaults({ anticipatePin: 1 });
   // Development-only handle for debugging timelines from the console.
   if (process.env.NODE_ENV === "development") (window as unknown as { __pe: unknown }).__pe = { gsap, ScrollTrigger };
 }
@@ -37,6 +40,19 @@ export const media = {
   mobile: "(max-width: 1023px) and (prefers-reduced-motion: no-preference)",
   finePointer: "(pointer: fine) and (hover: hover)",
 };
+
+/** Touch-first screens (phones, tablets). */
+export function isTouchScreen() {
+  return typeof window !== "undefined" && window.matchMedia("(hover: none), (pointer: coarse)").matches;
+}
+
+/**
+ * Blur for entrance animations ("comes into focus"). Skipped on touch screens:
+ * Safari on iOS re-renders an animated blur every frame, which stutters.
+ * Use as `{ ...blurFrom(12), y: 20 }` → `{ ...blurTo(), y: 0 }`.
+ */
+export const blurFrom = (px: number) => (isTouchScreen() ? {} : { filter: `blur(${px}px)` });
+export const blurTo = () => (isTouchScreen() ? {} : { filter: "blur(0px)" });
 
 export function prefersReducedMotion() {
   return typeof window !== "undefined" && window.matchMedia(media.reduced).matches;

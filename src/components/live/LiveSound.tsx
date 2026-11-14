@@ -433,7 +433,7 @@ function SoundPrompt() {
       aria-label="Turn on sound"
       aria-hidden={!show}
       inert={!show}
-      className={`fixed bottom-24 left-1/2 z-[95] w-[min(92vw,470px)] -translate-x-1/2 transition-[opacity,transform] duration-500 ease-out max-sm:bottom-20 ${show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"}`}
+      className={`fixed bottom-24 left-1/2 z-[95] w-[min(92vw,470px)] -translate-x-1/2 transition-[opacity,transform] duration-500 ease-out max-sm:bottom-[max(0.75rem,env(safe-area-inset-bottom))] ${show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"}`}
     >
       <div className="flex items-center gap-4 rounded-[1.6rem] bg-black/80 p-3 pl-4 shadow-[0_30px_80px_-20px_rgb(0_0_0/0.9)] ring-1 ring-white/15 backdrop-blur-xl">
         <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[conic-gradient(from_200deg,#ff5a1f,#ff2e88,#8b5cff,#2ec5ff,#ff5a1f)] text-black">

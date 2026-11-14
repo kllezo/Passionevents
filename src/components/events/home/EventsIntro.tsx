@@ -3,7 +3,7 @@
 import { Pic } from "@/components/shared/Pic";
 import { useRef } from "react";
 import { brand } from "@/content/media";
-import { gsap, useGSAP } from "@/motion/gsap";
+import { gsap, useGSAP, blurFrom } from "@/motion/gsap";
 import { introPending, markIntroDone } from "@/motion/introGate";
 import { useLenis } from "@/motion/SmoothScroll";
 import { SprigGroup } from "../botanical/Sprig";
@@ -80,7 +80,7 @@ export function EventsIntro() {
         .to(q("[data-sketch]"), { autoAlpha: 0, duration: 0.6 }, 2.45)
         .addLabel("lift", 3.25)
         // 1) the artwork gently recedes first — nothing is ever sliced by the curtain edge
-        .to(q("[data-stage]"), { scale: 0.9, autoAlpha: 0, filter: "blur(6px)", duration: 0.55, ease: "power2.in" }, "lift")
+        .to(q("[data-stage]"), { scale: 0.9, autoAlpha: 0, ...blurFrom(6), duration: 0.55, ease: "power2.in" }, "lift")
         .to(q("[data-skip]"), { autoAlpha: 0, y: -10, duration: 0.35, ease: "power2.in" }, "lift")
         // 2) the hero starts as the curtain begins to rise
         .add(() => markIntroDone(), "lift+=0.4")

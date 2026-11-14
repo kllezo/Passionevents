@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { privateOccasions } from "@/content/categoryStories";
-import { gsap, useGSAP, media } from "@/motion/gsap";
+import { gsap, useGSAP, media, isTouchScreen } from "@/motion/gsap";
 import { RevealText } from "@/motion/RevealText";
 import { SectionLabel } from "../SectionLabel";
 
@@ -29,13 +29,15 @@ export function OccasionCards() {
         const cards = q<HTMLElement>("[data-invite]");
         const burst = new Set<number>();
         const dist = () => track.scrollWidth - window.innerWidth;
+        // Per-frame filters on photo cards stutter on iOS; touch screens skip them.
+        const tint = !isTouchScreen();
         const place = () => {
           const mid = window.innerWidth / 2;
           cards.forEach((c, i) => {
             const r = c.getBoundingClientRect();
             const d = gsap.utils.clamp(-1.6, 1.6, (r.left + r.width / 2 - mid) / (window.innerWidth * 0.42));
             const a = Math.abs(d);
-            gsap.set(c, { rotateY: d * -38, z: -a * 260, scale: 1 - a * 0.12, filter: `saturate(${1 - a * 0.35}) brightness(${1 - a * 0.12})` });
+            gsap.set(c, { rotateY: d * -38, z: -a * 260, scale: 1 - a * 0.12, ...(tint ? { filter: `saturate(${1 - a * 0.35}) brightness(${1 - a * 0.12})` } : {}) });
             c.style.zIndex = String(100 - Math.round(a * 20));
             if (a < 0.12 && !burst.has(i)) {
               burst.add(i);

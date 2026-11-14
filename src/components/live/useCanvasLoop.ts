@@ -31,7 +31,12 @@ export function useCanvasLoop(draw: (c: LoopCtx) => void, opts: { maxDpr?: numbe
     if (!ctx) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const mobile = window.matchMedia("(max-width: 767px)").matches;
-    const dpr = Math.min(window.devicePixelRatio || 1, opts.maxDpr ?? (mobile ? 1.25 : 1.6));
+    // Touch screens: soft-light canvases (maxDpr <= 1) draw at half resolution
+    // and 30 fps — indistinguishable for haze and beams, far lighter on iOS.
+    const touch = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    const soft = touch && (opts.maxDpr ?? 2) <= 1;
+    const dpr = soft ? 0.5 : Math.min(window.devicePixelRatio || 1, opts.maxDpr ?? (mobile ? 1.25 : 1.6));
+    let skip = false;
     let w = 0;
     let h = 0;
     let raf = 0;
@@ -52,6 +57,13 @@ export function useCanvasLoop(draw: (c: LoopCtx) => void, opts: { maxDpr?: numbe
     };
 
     const frame = (now: number, once = false) => {
+      if (soft && !once && running) {
+        skip = !skip;
+        if (skip) {
+          raf = requestAnimationFrame((n) => frame(n));
+          return;
+        }
+      }
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       drawRef.current({ ctx, w, h, t: (now - start) / 1000, dt, pointer, mobile });

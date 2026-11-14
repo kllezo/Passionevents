@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ElementType, type ReactNode } from "react";
-import { gsap, SplitText, useGSAP, media, whenVisible } from "./gsap";
+import { gsap, SplitText, useGSAP, media, whenVisible, blurFrom } from "./gsap";
 
 /**
  * Letters fly in from scattered positions and settle into the word — used
@@ -24,7 +24,7 @@ export function ScatterText({ as: Tag = "span", className, children }: { as?: El
           rotate: () => rand(-90, 90),
           scale: () => rand(0.3, 1.6),
           autoAlpha: 0,
-          filter: "blur(8px)",
+          ...blurFrom(8),
           duration: 1.6,
           ease: "expo.out",
           stagger: { each: 0.035, from: "random" },

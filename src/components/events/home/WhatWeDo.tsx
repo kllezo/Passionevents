@@ -244,7 +244,7 @@ function MobileWorlds() {
               <CardLink live={live} href={c.href} className="block">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] border-[5px] border-ivory shadow-[0_40px_70px_-40px_rgb(94_52_64/0.7)]">
                   <Pic image={c.image} sizes="76vw" />
-                  <div className={`absolute inset-0 ${live ? "bg-gradient-to-t from-void/85 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/70 via-transparent to-transparent"}`} />
+                  <div className={`absolute inset-0 ${live ? "bg-gradient-to-t from-void/85 via-violet/20 to-transparent" : "bg-gradient-to-t from-ink/85 via-ink/30 via-45% to-transparent"}`} />
                   <span aria-hidden="true" className="absolute right-5 top-[20%] font-script text-4xl text-ivory/95">{c.script}</span>
                   <span className="absolute inset-x-5 bottom-5">
                     <span className="block font-serif text-3xl leading-tight text-ivory">{c.title}</span>

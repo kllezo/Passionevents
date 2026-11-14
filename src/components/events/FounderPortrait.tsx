@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import type { SiteImage } from "@/content/media";
 import { Pic } from "@/components/shared/Pic";
-import { gsap, useGSAP, media, whenVisible } from "@/motion/gsap";
+import { gsap, useGSAP, media, whenVisible, blurFrom, blurTo } from "@/motion/gsap";
 import { Bloom } from "./botanical/Sprig";
 
 /**
@@ -23,7 +23,7 @@ export function FounderPortrait({ image }: { image: SiteImage }) {
         const photo = q("[data-photo]")[0];
         const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
         tl.fromTo(q("[data-arch]"), { clipPath: "inset(18% 10% 0% 10% round 999px 999px 0 0)" }, { clipPath: "inset(0% 0% 0% 0% round 999px 999px 0 0)", duration: 1.4, ease: "expo.out" }, 0)
-          .fromTo(photo, { scale: 1.12, filter: "blur(14px)", opacity: 0.35 }, { scale: 1, filter: "blur(0px)", opacity: 1, duration: 1.6, clearProps: "filter" }, 0)
+          .fromTo(photo, { scale: 1.12, ...blurFrom(14), opacity: 0.35 }, { scale: 1, ...blurTo(), opacity: 1, duration: 1.6, clearProps: "filter" }, 0)
           .from(q("[data-frame]"), { drawSVG: "50% 50%", duration: 1.4, ease: "power2.inOut" }, 0.15)
           .from(q("[data-frame-2]"), { drawSVG: "0%", duration: 1.4, ease: "power2.inOut" }, 0.3)
           .from(q("[data-corner]"), { scale: 0, rotate: -90, duration: 0.8, stagger: 0.12, ease: "back.out(1.8)" }, 0.7);
