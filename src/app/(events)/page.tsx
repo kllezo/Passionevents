@@ -30,10 +30,10 @@ export default function HomePage() {
       <EventsIntro />
       <EventsHero />
       <BrandIntro />
-      <FlyThrough />
       <WhatWeDo />
       <IndividualServices index="03" />
       <Approach index="04" />
+      <FlyThrough />
       <PortfolioPreview />
       <HomeReels index="05" />
       <FoundersFeature index="06" />

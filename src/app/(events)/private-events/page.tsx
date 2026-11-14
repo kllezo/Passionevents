@@ -10,6 +10,9 @@ import { EnquirySection } from "@/components/events/EnquirySection";
 import { Bloom } from "@/components/events/botanical/Sprig";
 import { PrivateHero } from "@/components/events/private/PrivateHero";
 import { OccasionCards } from "@/components/events/private/OccasionCards";
+import { HowItWorks } from "@/components/events/private/HowItWorks";
+import { Marquee } from "@/motion/primitives";
+import { privateOccasions } from "@/content/categoryStories";
 import { RevealText } from "@/motion/RevealText";
 import { StaggerList } from "@/motion/StaggerList";
 
@@ -19,11 +22,6 @@ export const metadata = pageMetadata({
   path: "/private-events",
 });
 
-const steps = [
-  { n: "01", title: "Tell us the occasion", text: "Who it is for, how many guests, the date and the feeling you want." },
-  { n: "02", title: "We design the theme", text: "Colours, décor, food, entertainment and favours, planned as one idea." },
-  { n: "03", title: "We style and host", text: "Our team sets up, runs the celebration and clears away afterwards." },
-];
 
 /** Private celebrations: hero, occasions, how it works, what we handle, reels, enquiry. */
 export default function PrivateEventsPage() {
@@ -44,27 +42,17 @@ export default function PrivateEventsPage() {
       <PrivateHero title={c.title} description={c.description} />
       <OccasionCards />
 
-      {/* How it works */}
-      <section className="bg-ivory py-24 md:py-28" aria-labelledby="how-title">
-        <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-          <SectionLabel index="02">How it works</SectionLabel>
-          <RevealText as="h2" id="how-title" className="mt-6 max-w-3xl font-serif text-[clamp(2.3rem,3.8vw,3.9rem)] font-light leading-[1] text-ink">
-            You enjoy the party. <em className="text-rose-deep">We handle the rest.</em>
-          </RevealText>
-          <StaggerList className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6">
-            {steps.map((s) => (
-              <li key={s.n} className="relative border-t border-ink/15 pt-6">
-                <svg viewBox="-14 -14 28 28" className="absolute -top-4 left-0 size-8 bg-ivory" aria-hidden="true">
-                  <Bloom r={11} />
-                </svg>
-                <p className="mt-3 font-serif text-sm italic text-rose-deep">{s.n}</p>
-                <h3 className="mt-1 font-serif text-2xl text-ink md:text-3xl">{s.title}</h3>
-                <p className="mt-3 max-w-sm leading-relaxed text-stone">{s.text}</p>
-              </li>
-            ))}
-          </StaggerList>
-        </div>
-      </section>
+      <div className="overflow-hidden border-y border-rose/20 bg-ivory py-6" aria-hidden="true">
+        <Marquee duration={38}>
+          {privateOccasions.map((o) => (
+            <span key={o.title} className="flex items-center gap-10 pr-10 font-script text-6xl text-rose-deep md:text-8xl">
+              {o.script}
+              <span className="inline-block size-3 rotate-45 bg-coral/70" />
+            </span>
+          ))}
+        </Marquee>
+      </div>
+      <HowItWorks />
 
       {/* What we handle */}
       <section className="bg-cream py-24 md:py-28" aria-labelledby="handle-title">
