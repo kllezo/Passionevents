@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { Soundtrack, TRACK_LENGTH, TRACK_TITLE } from "./soundtrack";
 
@@ -60,7 +60,17 @@ const SoundContext = createContext<Ctx>({
   pluck: noop,
   drum: noop,
 });
-export const useLiveSound = () => useContext(SoundContext);
+const noSubscribe = () => () => {};
+/**
+ * Sound state for a component. Until that component itself has hydrated it
+ * sees the server's values (no sound), so its first render always matches the
+ * HTML even when the provider has already read the stored preference.
+ */
+export const useLiveSound = () => {
+  const ctx = useContext(SoundContext);
+  const hydrated = useSyncExternalStore(noSubscribe, () => true, () => false);
+  return hydrated ? ctx : { ...ctx, enabled: false, blocked: false, playing: false };
+};
 
 const KEY = "pl-sound";
 const readPref = (): Pref => {
