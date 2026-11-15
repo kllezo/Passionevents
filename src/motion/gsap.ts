@@ -54,8 +54,17 @@ export function isTouchScreen() {
 export const blurFrom = (px: number) => (isTouchScreen() ? {} : { filter: `blur(${px}px)` });
 export const blurTo = () => (isTouchScreen() ? {} : { filter: "blur(0px)" });
 
+/**
+ * Automated agents (search crawlers, AI fetchers, headless browsers) are marked
+ * at startup (app/layout.tsx) and see the page without animation, like "reduce
+ * motion": identical content, nothing starting hidden.
+ */
+export function isStaticAgent() {
+  return typeof window !== "undefined" && (window as unknown as { __peStatic?: number }).__peStatic === 1;
+}
+
 export function prefersReducedMotion() {
-  return typeof window !== "undefined" && window.matchMedia(media.reduced).matches;
+  return typeof window !== "undefined" && (isStaticAgent() || window.matchMedia(media.reduced).matches);
 }
 
 export { gsap, ScrollTrigger, SplitText, DrawSVGPlugin, Draggable };
@@ -120,7 +129,7 @@ export function useGSAP(callback: Parameters<typeof baseUseGSAP>[0], config: GSA
 
   return baseUseGSAP(
     (context, contextSafe) => {
-      if (!near || typeof callback !== "function") return;
+      if (!near || typeof callback !== "function" || isStaticAgent()) return;
       return callback(context, contextSafe);
     },
     { ...rest, dependencies: [...(rest.dependencies ?? []), near] } as Parameters<typeof baseUseGSAP>[1]

@@ -64,8 +64,8 @@ export function organizationJsonLd() {
     logo: `${site.url}/brand/logo-1400.webp`,
     image: `${site.url}/brand/og-passion-events.jpg`,
     description: site.description,
-    // Another business called "Passion Events" exists in Mumbai; say plainly which one this is.
-    disambiguatingDescription: "Event company based in Hyderabad, Telangana, founded by Ramya and P. Sai Tanush (“By Ramya & Tanush”), with the concert brand Passion Live and Instagram @passionevents.p.",
+    // Other businesses called "Passion Events" exist (Barcelona, Mumbai); say plainly which one this is.
+    disambiguatingDescription: "Event company based in Hyderabad, Telangana, founded by Ramya and P. Sai Tanush (“By Ramya & Tanush”), with the concert brand Passion Live and Instagram @passionevents.p. Not affiliated with Passion Events S.L. (Barcelona, Spain) or other companies of the same name.",
     slogan: "Big or small. We make it special.",
     founder: foundersList.map((f) => founderJsonLd(f, false)),
     foundingLocation: { "@type": "Place", name: "Hyderabad, Telangana, India" },

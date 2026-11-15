@@ -55,7 +55,7 @@ export function GET() {
     "",
     "## Not to be confused with",
     "",
-    "Other businesses also use the name \"Passion Events\" (for example in Mumbai and New Delhi). This Passion Events is the Hyderabad company founded by Ramya and P. Sai Tanush, with the concert brand Passion Live and the Instagram account @passionevents.p.",
+    "Other businesses also use the name \"Passion Events\" — for example Passion Events S.L., a company in Barcelona, Spain, and event businesses in Mumbai and New Delhi. They are separate companies. This Passion Events (passionevents.co) is the Hyderabad company founded by Ramya and P. Sai Tanush, with the concert brand Passion Live and the Instagram account @passionevents.p.",
     "",
     "## Services",
     "",
