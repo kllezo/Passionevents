@@ -1,11 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { services, type Service } from "@/content/services";
-import { featuredArtists } from "@/content/proof";
 import { ReelRail } from "@/components/shared/Reels";
-import { Pic } from "@/components/shared/Pic";
 import { UniverseLink } from "@/components/shared/UniverseTransition";
 import { Marquee } from "@/motion/primitives";
 import { gsap, media } from "@/motion/gsap";
@@ -116,7 +113,6 @@ export function ConcertsSection() {
           <div className="lg:col-span-5">
             <Handles service={s} tone="live" columns={2} />
             <div className="flex flex-wrap items-center gap-4">
-              <DetailsLink service={s} tone="live" label="Concert details" />
               <UniverseLink href="/concerts" to="live" data-rise="" className="link-underline mt-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-white">
                 Enter Passion Live <ArrowUpRight className="size-4" />
               </UniverseLink>
@@ -279,52 +275,7 @@ export function DestinationSection() {
   );
 }
 
-/* 07 — ARTISTS: a big typographic programme. Hovering a line lights it up
-   and slides its photograph in beside it (no cursor following). */
-export function ArtistsSection() {
-  const s = S("artists");
-  const pics = [s.image, s.gallery[0], s.gallery[1], s.gallery[2], s.image, s.gallery[0]];
-  return (
-    <SectionShell service={s} className="bg-graphite py-28 text-ivory md:py-32">
-      <div className="mx-auto max-w-[1600px] px-5 md:px-10">
-        <div className="grid gap-12 grid-cols-1 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <SectionTitle service={s} tone="dark" />
-            <div data-rise="" className="mt-10">
-              <p className="eyebrow text-blush">Artists from our shows</p>
-              <p className="mt-4 font-serif text-2xl leading-relaxed text-ivory/90">{featuredArtists.map((a) => a.name).join(" · ")}</p>
-            </div>
-            <DetailsLink service={s} tone="dark" label="Explore artist management" />
-          </div>
-          <ul className="lg:col-span-7" aria-label={`What we handle — ${s.title}`}>
-            {s.handles.map((h, i) => (
-              <li key={h} data-rise="" className="group relative border-b border-white/12">
-                <Link href={s.href} className="flex items-center justify-between gap-6 py-5 md:py-6">
-                  <span className="flex items-baseline gap-5">
-                    <span className="font-serif text-sm italic text-blush">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="font-serif text-[clamp(2rem,4.4vw,4.4rem)] font-light leading-none text-ivory/80 transition-[color,transform] duration-500 group-hover:translate-x-3 group-hover:text-ivory group-focus-visible:text-ivory">
-                      {h}
-                    </span>
-                  </span>
-                  <span className="relative hidden h-20 w-32 shrink-0 overflow-hidden rounded-xl opacity-0 transition-[opacity,transform] duration-500 group-hover:opacity-100 md:block md:translate-x-6 md:group-hover:translate-x-0">
-                    <Pic image={pics[i % pics.length]} sizes="128px" tone="dark" />
-                  </span>
-                  <ArrowUpRight className="size-6 shrink-0 text-blush md:hidden" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="mt-20">
-          <p data-rise="" className="eyebrow text-blush">Artist nights on our reels</p>
-          <ReelRail ids={s.reels} tone="dark" className="mt-6" label="Artist reels" />
-        </div>
-      </div>
-    </SectionShell>
-  );
-}
-
-/* 08 — DESIGN & PRODUCTION: a bento of the crafts that build an event. */
+/* 07 — DESIGN & PRODUCTION: a bento of the crafts that build an event. */
 export function ProductionSection() {
   const s = S("production");
   const [g0, g1, g2, g3] = s.gallery;
@@ -358,8 +309,6 @@ export function ProductionSection() {
   );
 }
 
-
-
 export const nineSections: Record<string, () => React.ReactElement> = {
   weddings: WeddingsSection,
   corporate: CorporateSection,
@@ -367,7 +316,6 @@ export const nineSections: Record<string, () => React.ReactElement> = {
   college: CollegeSection,
   private: PrivateSection,
   destination: DestinationSection,
-  artists: ArtistsSection,
   production: ProductionSection,
 };
 

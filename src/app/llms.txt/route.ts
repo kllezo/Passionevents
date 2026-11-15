@@ -64,7 +64,7 @@ export function GET() {
     "## Main pages",
     "",
     `- [Home](${u}/): overview of the studio, services and founders`,
-    `- [What we do](${u}/what-we-do): all eight services on one page`,
+    `- [What we do](${u}/what-we-do): all seven services on one page`,
     `- [Founders](${u}/founders): Ramya and P. Sai Tanush`,
     `- [Reels](${u}/reels): the company's own Instagram reels — weddings, décor and concerts`,
     `- [Portfolio](${u}/portfolio): published event stories`,

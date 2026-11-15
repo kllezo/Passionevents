@@ -3,7 +3,7 @@ import { categories, type Category } from "./events";
 import type { ENQUIRY_CATEGORIES } from "@/lib/constants";
 
 /**
- * THE NINE SERVICES — the "What we do" experience (/what-we-do).
+ * THE SEVEN SERVICES — the "What we do" experience (/what-we-do).
  *
  * Sources:
  *  [instagram] the company's bio: "Weddings · Corporate · Parties · Concerts —
@@ -14,6 +14,8 @@ import type { ENQUIRY_CATEGORIES } from "@/lib/constants";
  *  [brief]     proposed in the client's restructuring brief — PLEASE CONFIRM
  *              before relying on them (College fests; Artist management as a
  *              stand-alone service)
+ *
+ * Concerts link to the Passion Live pages (/concerts).
  *
  * Photographs marked "Unsplash (temporary)" are mood imagery, never presented
  * as Passion Events' own work. Reel covers are the company's own.
@@ -90,8 +92,8 @@ export const services: Service[] = [
     title: "Concerts & Live Entertainment",
     lines: ["Concerts &", "live nights"],
     script: "electric",
-    href: "/services/concerts-and-live-entertainment",
-    hasCategoryPage: false,
+    href: "/concerts",
+    hasCategoryPage: true,
     short: "Live concerts and artist nights, produced end to end under Passion Live.",
     description:
       "Under our Passion Live banner we produce concerts and live nights — from Sameera Bharadwaj live in Bengaluru to Geetha Madhuri in concert. We bring the artist, the venue, the stage, the sound and the crowd together, and run the night from soundcheck to encore.",
@@ -159,28 +161,9 @@ export const services: Service[] = [
     source: "[site]",
   },
   {
-    key: "artists",
-    slug: "artist-and-entertainment-management",
-    index: "07",
-    title: "Artist & Entertainment Management",
-    lines: ["Artists &", "entertainment"],
-    script: "spotlight",
-    href: "/services/artist-and-entertainment-management",
-    hasCategoryPage: false,
-    short: "Singers, bands, DJs and performers — booked, briefed and looked after.",
-    description:
-      "We book and manage the talent that makes a night: playback singers, live bands, DJs, anchors and performers. Riders, travel, rehearsals, run-of-show and on-stage cues — handled by one team, for weddings, corporate nights and concerts alike.",
-    handles: ["Artist coordination", "Singer bookings", "DJ bookings", "Celebrity appearances", "Performer management", "Entertainment programming"],
-    image: stock.liveSinger,
-    gallery: [stock.liveGuitarist, stock.liveDrummer, stock.liveGuitarSpot],
-    reels: ["DeTkSCHtGHK", "DXletLRk1SB"],
-    enquiryCategory: "Concert",
-    source: "[instagram] artist highlights · [brief] stand-alone service — please confirm",
-  },
-  {
     key: "production",
     slug: "event-design-and-production",
-    index: "08",
+    index: "07",
     title: "Event Design & Production",
     lines: ["Design &", "production"],
     script: "seamless",

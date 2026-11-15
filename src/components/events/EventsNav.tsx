@@ -69,12 +69,18 @@ export function EventsNav() {
     };
   }, [pathname]);
 
-  // Close menus on route change.
+  // Close menus on route change. The pathname arrives a moment after load
+  // (null → "/about"); that first value is not a navigation, so it must not
+  // close a menu the visitor has just opened.
+  const lastPath = useRef<string | null>(null);
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- route change resets menu state
+    if (!pathnameRaw) return;
+    const prev = lastPath.current;
+    lastPath.current = pathnameRaw;
+    if (prev === null || prev === pathnameRaw) return;
     setOpen(false);
     setServicesOpen(false);
-  }, [pathname]);
+  }, [pathnameRaw]);
 
   // Full-screen menu timeline.
   useGSAP(
@@ -95,11 +101,25 @@ export function EventsNav() {
         tl.current = gsap.timeline({ paused: true }).set(el, { display: "flex" });
       });
     },
-    { scope: menuRef }
+    // Built at load: the menu is display:none until opened, so it never
+    // "comes into view" for the just-in-time setup.
+    { scope: menuRef, eager: true }
   );
 
   useEffect(() => {
-    if (!tl.current) return;
+    const el = menuRef.current;
+    if (!tl.current) {
+      // No timeline (not built yet, or an automated agent): show/hide directly.
+      if (el) el.style.display = open ? "flex" : "";
+      if (open) {
+        lenis?.stop();
+        document.body.style.overflow = "hidden";
+      } else {
+        lenis?.start();
+        document.body.style.overflow = "";
+      }
+      return;
+    }
     if (open) {
       tl.current.timeScale(1).play();
       lenis?.stop();
@@ -184,7 +204,7 @@ export function EventsNav() {
                         type="button"
                         aria-expanded={servicesOpen}
                         aria-controls="services-menu"
-                        aria-label="Show the eight services"
+                        aria-label="Show the seven services"
                         onClick={() => setServicesOpen((v) => !v)}
                         className="-ml-2 p-1.5 opacity-70"
                       >
@@ -201,17 +221,29 @@ export function EventsNav() {
                     }`}
                   >
                     <div className="grid grid-cols-3 gap-1 rounded-3xl border border-rose/20 bg-ivory/95 p-3 shadow-[0_30px_80px_-30px_rgb(23_19_17/0.35)] backdrop-blur-xl">
-                      {services.map((c) => (
-                        <Link key={c.key} href={c.href} className="flex gap-3 rounded-2xl p-3 transition-colors hover:bg-cream">
-                          <span className="font-serif text-sm italic text-rose">{c.index}</span>
-                          <span>
-                            <span className="block font-serif text-lg leading-tight text-ink">{c.title}</span>
-                            <span className="mt-1 block text-xs leading-snug text-stone">{c.short}</span>
-                          </span>
-                        </Link>
-                      ))}
+                      {services.map((c) => {
+                        const body = (
+                          <>
+                            <span className="font-serif text-sm italic text-rose">{c.index}</span>
+                            <span>
+                              <span className="block font-serif text-lg leading-tight text-ink">{c.title}</span>
+                              <span className="mt-1 block text-xs leading-snug text-stone">{c.short}</span>
+                            </span>
+                          </>
+                        );
+                        const cls = "flex gap-3 rounded-2xl p-3 transition-colors hover:bg-cream";
+                        return c.live ? (
+                          <UniverseLink key={c.key} href={c.href} to="live" className={cls}>
+                            {body}
+                          </UniverseLink>
+                        ) : (
+                          <Link key={c.key} href={c.href} className={cls}>
+                            {body}
+                          </Link>
+                        );
+                      })}
                       <Link href="/what-we-do" className="col-span-2 mt-1 rounded-2xl bg-ink px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-ivory">
-                        Explore all eight
+                        Explore all seven
                       </Link>
                       <Link href="/services" className="mt-1 rounded-2xl bg-cream px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-ink">
                         Individual services
@@ -282,11 +314,17 @@ export function EventsNav() {
         </ul>
         <div className="relative mt-10 space-y-6">
           <div data-menu-meta="" className="flex flex-wrap gap-2">
-            {services.map((c) => (
-              <Link key={c.key} href={c.href} className="rounded-full border border-ink/15 px-4 py-2 text-xs font-medium text-ink/80">
-                {c.title}
-              </Link>
-            ))}
+            {services.map((c) =>
+              c.live ? (
+                <UniverseLink key={c.key} href={c.href} to="live" onClick={() => setOpen(false)} className="rounded-full border border-ink/15 px-4 py-2 text-xs font-medium text-ink/80">
+                  {c.title}
+                </UniverseLink>
+              ) : (
+                <Link key={c.key} href={c.href} className="rounded-full border border-ink/15 px-4 py-2 text-xs font-medium text-ink/80">
+                  {c.title}
+                </Link>
+              )
+            )}
           </div>
           <div data-menu-meta="">
             <Link href="/contact#enquire" className="inline-flex rounded-full bg-ink px-7 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-ivory">

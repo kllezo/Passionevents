@@ -147,7 +147,7 @@ export function homePageJsonLd(description: string) {
   };
 }
 
-/** One of the eight services. */
+/** One of the seven services. */
 export function serviceJsonLd(s: Service) {
   return {
     "@context": "https://schema.org",

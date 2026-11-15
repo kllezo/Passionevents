@@ -29,6 +29,9 @@ const nextConfig = {
       { source: "/concerts/shows", destination: "/concerts/events", permanent: false },
       // Complete Event Management was retired as a separate service page.
       { source: "/services/complete-event-management", destination: "/what-we-do", permanent: true },
+      // Concerts live on Passion Live; artist management was retired as a separate page.
+      { source: "/services/concerts-and-live-entertainment", destination: "/concerts", permanent: true },
+      { source: "/services/artist-and-entertainment-management", destination: "/what-we-do", permanent: true },
       { source: "/concerts/shows/:slug", destination: "/concerts/events/:slug", permanent: false },
     ];
   },

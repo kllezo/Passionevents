@@ -13,13 +13,12 @@ import {
   CollegeSection,
   PrivateSection,
   DestinationSection,
-  ArtistsSection,
   ProductionSection,
 } from "@/components/events/whatwedo/Sections";
 
 export const metadata = pageMetadata({
   title: "What We Do — Weddings to Concerts",
-  description: "Eight event services from Hyderabad: weddings, corporate events, concerts, college fests, private and destination events, artists, production and full management.",
+  description: "Seven event services from Hyderabad: weddings, corporate events, concerts, college fests, private and destination events, and event design and production.",
   path: "/what-we-do",
 });
 
@@ -53,7 +52,6 @@ export default function WhatWeDoPage() {
       <CollegeSection />
       <PrivateSection />
       <DestinationSection />
-      <ArtistsSection />
       <ProductionSection />
       <FaqSection items={geoFaqs} index="10" title="Questions, answered." />
       <EnquirySection index="11" />

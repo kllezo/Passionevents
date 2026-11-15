@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { services, serviceBySlug } from "@/content/services";
-import { featuredArtists } from "@/content/proof";
 import { breadcrumbJsonLd, pageMetadata, serviceJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { Pic } from "@/components/shared/Pic";
@@ -31,8 +30,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 /**
- * Detail view for one of the eight services. Services that already have their
- * own landing page (weddings, corporate, private, destination, production)
+ * Detail view for one of the seven services. Services that already have their
+ * own landing page (weddings, corporate, concerts, private, destination, production)
  * redirect there, so every link to /services/<slug> works.
  */
 export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -83,12 +82,6 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               {s.lines[0]} <em className="text-rose-deep">{s.lines[1]}</em>
             </RevealText>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink/80">{s.description}</p>
-            {s.key === "artists" && (
-              <div className="mt-10 rounded-[1.5rem] bg-cream p-6">
-                <p className="eyebrow text-rose-deep">Artists from our shows</p>
-                <p className="mt-3 font-serif text-2xl leading-relaxed text-ink">{featuredArtists.map((a) => a.name).join(" · ")}</p>
-              </div>
-            )}
             <div className="mt-10 flex flex-wrap items-center gap-5">
               <EventsButton href="#enquire">Enquire about {s.title.split(" ")[0].toLowerCase()}</EventsButton>
               {s.live && (

@@ -134,7 +134,7 @@ export const posts: Post[] = [
           {
             type: "links",
             items: [
-              { label: "All eight services", href: "/what-we-do" },
+              { label: "All seven services", href: "/what-we-do" },
               { label: "Event management in Andhra Pradesh", href: "/event-management/andhra-pradesh" },
               { label: "Event management in Hyderabad and Telangana", href: "/event-management/telangana" },
               { label: "Send an enquiry", href: "/contact#enquire" },
@@ -347,8 +347,6 @@ export const posts: Post[] = [
             type: "links",
             items: [
               { label: "Passion Live", href: "/concerts" },
-              { label: "Concerts & live entertainment", href: "/services/concerts-and-live-entertainment" },
-              { label: "Artist & entertainment management", href: "/services/artist-and-entertainment-management" },
               { label: "Concerts in Bengaluru", href: "/event-management/bengaluru" },
             ],
           },

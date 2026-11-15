@@ -75,9 +75,15 @@ export function EventsFooter() {
             <ul className="mt-5 space-y-2.5 text-[0.95rem]">
               {services.map((c) => (
                 <li key={c.key}>
-                  <Link href={c.href} className="link-underline">
-                    {c.title}
-                  </Link>
+                  {c.live ? (
+                    <UniverseLink href={c.href} to="live" className="link-underline">
+                      {c.title}
+                    </UniverseLink>
+                  ) : (
+                    <Link href={c.href} className="link-underline">
+                      {c.title}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
