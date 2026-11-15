@@ -236,11 +236,11 @@ function MobileWorlds() {
         </span>
       </div>
 
-      <div ref={strip} className="relative mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[12vw] pb-4 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div ref={strip} className="relative mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[max(17vw,calc((100vw-340px)/2))] pb-4 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {categories.map((c) => {
           const live = Boolean(c.live);
           return (
-            <article key={c.key} data-cf="" className="w-[76vw] max-w-[380px] shrink-0 snap-center will-change-transform">
+            <article key={c.key} data-cf="" className="w-[66vw] max-w-[340px] shrink-0 snap-center will-change-transform">
               <CardLink live={live} href={c.href} className="block">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[1.5rem] border-[5px] border-ivory shadow-[0_40px_70px_-40px_rgb(94_52_64/0.7)]">
                   <Pic image={c.image} sizes="76vw" />

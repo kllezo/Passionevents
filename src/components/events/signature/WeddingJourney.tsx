@@ -156,9 +156,9 @@ function MobileRituals() {
         </h2>
       </div>
 
-      <div ref={strip} className="mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[10vw] pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div ref={strip} className="mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[max(17vw,calc((100vw-340px)/2))] pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {weddingJourney.map((s, i) => (
-          <article key={s.title} data-cf="" className="w-[80vw] max-w-[400px] shrink-0 snap-center will-change-transform">
+          <article key={s.title} data-cf="" className="w-[66vw] max-w-[340px] shrink-0 snap-center will-change-transform">
             <div className="relative flex min-h-[25rem] flex-col justify-end overflow-hidden rounded-[1.75rem] p-7 shadow-[0_40px_70px_-40px_rgb(0_0_0/0.55)]" style={{ backgroundColor: palette[i][0], color: palette[i][1] }}>
               <span className="pointer-events-none absolute inset-0 rounded-[1.75rem] bg-gradient-to-b from-white/20 via-transparent to-black/15 ring-1 ring-inset ring-white/25" aria-hidden="true" />
               <svg viewBox="-60 -60 120 120" className={`absolute -right-10 -top-10 size-52 transition-transform duration-[1.4s] ease-[var(--ease-silk)] ${i === active ? "rotate-[200deg]" : "rotate-0"}`} aria-hidden="true">

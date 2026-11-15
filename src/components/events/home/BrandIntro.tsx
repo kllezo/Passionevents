@@ -161,9 +161,9 @@ function MobilePillars() {
   useCoverflow(strip, { rotate: 12, scale: 0.1, dim: 0.4, onActive: setActive });
   return (
     <div className="lg:hidden">
-      <div ref={strip} className="-mx-5 mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[14vw] pb-4 [scrollbar-width:none] md:-mx-10 [&::-webkit-scrollbar]:hidden">
+      <div ref={strip} className="-mx-5 mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[max(17vw,calc((100vw-340px)/2))] pb-4 [scrollbar-width:none] md:-mx-10 [&::-webkit-scrollbar]:hidden">
         {pillars.map((p, i) => (
-          <article key={p.word} data-cf="" className="relative aspect-[3/4] w-[72vw] max-w-[340px] shrink-0 snap-center overflow-hidden rounded-[1.5rem] text-ivory shadow-[0_30px_60px_-35px_rgb(94_52_64/0.7)] will-change-transform">
+          <article key={p.word} data-cf="" className="relative aspect-[3/4] w-[66vw] max-w-[340px] shrink-0 snap-center overflow-hidden rounded-[1.5rem] text-ivory shadow-[0_30px_60px_-35px_rgb(94_52_64/0.7)] will-change-transform">
             <Pic image={p.image} sizes="72vw" />
             <span className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
             <span className="absolute left-5 top-5 font-serif text-lg italic text-blush">{String(i + 1).padStart(2, "0")}</span>
