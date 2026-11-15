@@ -53,7 +53,7 @@ export const founders = {
     src: "/media/founders/sai-tanush-1800.webp",
     width: 1199,
     height: 1800,
-    alt: "P. Sai Tanush, co-founder of Passion Events, smiling and leaning on a table at a live venue",
+    alt: "P. Sai Tanush, founder of Passion Events, smiling and leaning on a table at a live venue",
     credit: "Photograph: Phani Gogireddy / 24 Frames",
   },
   ramya: {

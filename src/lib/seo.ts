@@ -100,7 +100,8 @@ export function founderJsonLd(f: Founder, withContext = true) {
     "@id": `${site.url}/founders#${f.id}`,
     name: f.name,
     ...(f.alternateNames.length ? { alternateName: f.alternateNames } : {}),
-    jobTitle: "Co-founder",
+    // Title from the founder's role line: "Founder" for P. Sai Tanush, "Co-founder" for Ramya.
+    jobTitle: f.role.split(" · ")[0],
     description: f.bio[0],
     url: `${site.url}/founders`,
     ...(f.image ? { image: `${site.url}${f.image.src}` } : {}),

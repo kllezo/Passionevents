@@ -24,10 +24,10 @@ export const foundersList: Founder[] = [
     name: "Pabbathi Sai Tanush",
     displayName: "P. Sai Tanush",
     alternateNames: ["P. Sai Tanush", "Sai Tanush", "Pabbati Sai Thanush", "Sai Thanush"],
-    role: "Co-founder · Passion Events & Passion Live",
+    role: "Founder · Passion Events & Passion Live",
     image: founderImages.saiTanush,
     bio: [
-      "Sai Tanush co-founded Passion Events with Ramya around one simple promise — big or small, every event deserves to feel special.",
+      "Sai Tanush founded Passion Events with Ramya around one simple promise — big or small, every event deserves to feel special.",
       "He is the first conversation for most of our clients: listening to what a celebration needs to feel like, then bringing venues, vendors, artists and production together to make it happen.",
       "Alongside weddings and private celebrations, Tanush leads the company's work in concerts and live entertainment under Passion Live.",
     ],
