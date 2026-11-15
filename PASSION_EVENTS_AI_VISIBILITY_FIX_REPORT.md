@@ -72,7 +72,9 @@ Checked on https://passionevents.co after the Hostinger rebuild (15 Nov, ~4.5 mi
 
 hPanel → Websites → passionevents.co → Performance → CDN → Manage → **Security → Security level: Medium**. At this level the CDN answers some automated browsers with a JavaScript "Checking your browser" page (HTTP 403) instead of the site. Plain HTTP fetchers (curl, ChatGPT-User, OAI-SearchBot) got 200 in every test, but an AI tool that fetches with a headless browser would see only that challenge page — which matches "could not extract the page". CDN logs (7 days): 13,447 requests, 100 4xx, 81 × 429.
 
-This was **not changed**: it is a security setting on your account. Option: set Security level to **Low** (fewer challenges, still protected by the CDN), then re-test. The challenge was not bypassed in testing.
+**Update 15 Nov (with your approval): Security level changed Medium → Low** (hPanel confirmed "Security level updated successfully").
+
+Re-test 1 and 5 minutes later: automated Chrome (headless *and* visible) still gets the "Checking your browser" page, while a normal browser on the same machine and plain fetchers (Chrome, ChatGPT-User, OAI-SearchBot, PerplexityBot) all get **200**. So this check targets browser-automation signals and does not depend on the security level. hPanel has no other bot switch (Website optimisation = image settings; Traffic blocking = IP/country lists, none set). The only remaining options are "Essentially off" (not done — not approved) or asking Hostinger support to whitelist verified AI crawlers. The main AI search fetchers (OAI-SearchBot, ChatGPT-User) are plain HTTP clients and are not affected. The challenge was not bypassed in testing.
 
 ### 10 AI questions — where the site answers each
 
@@ -112,7 +114,7 @@ How to run the test: ask each question in ChatGPT (search on), Google AI Mode, P
 - Google's AI Overview currently mixes in details from passionevents.co.in and the number +91 73579 61694. This should correct as Google re-reads the site and the Business Profile is fixed; it cannot be edited directly.
 
 ### REQUIRES MY ACCOUNT ACCESS (manual steps for you)
-**Hostinger CDN security level** — Medium → Low (see "New finding" above). Your decision; I can change it if you say so.
+**Hostinger CDN security level** — changed to Low on 15 Nov. The browser check remains for automated browsers; to go further, either set "Essentially off" or ask Hostinger support whether the browser check can be relaxed for verified AI crawlers.
 
 **Google Business Profile** — the only profile found is named "kllezo", is **unverified**, and sits on a residential address. It was inspected, not changed. Steps:
 1. business.google.com → the "kllezo" profile → Edit profile → Business name: **Passion Events**.
