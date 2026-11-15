@@ -58,7 +58,8 @@ export function organizationJsonLd() {
     "@type": "EventPlanner",
     "@id": ORG_ID(),
     name: site.name,
-    alternateName: ["Passion Events Hyderabad", "Passion Events by Ramya & Tanush"],
+    // "PassionEvents" (one word) is how many people type the brand; it is the same business.
+    alternateName: ["PassionEvents", "Passion Events Hyderabad", "Passion Events by Ramya & Tanush"],
     url: site.url,
     logo: `${site.url}/brand/logo-1400.webp`,
     image: `${site.url}/brand/og-passion-events.jpg`,
@@ -117,8 +118,10 @@ export function websiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${site.url}/#website`,
+    // Preferred site name for Google (site-name structured data), with the one-word spelling and the domain as alternates.
     name: site.name,
-    url: site.url,
+    alternateName: ["PassionEvents", "passionevents.co"],
+    url: `${site.url}/`,
     inLanguage: "en-IN",
     publisher: { "@id": ORG_ID() },
   };

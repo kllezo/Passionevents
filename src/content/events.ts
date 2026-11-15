@@ -192,8 +192,24 @@ export const geoFaqs = [
     a: "Either. You can book a single service — such as decor, catering coordination, stage, sound and lighting, or artists — or hand over the complete event, from concept and planning to vendors, logistics, guests and on-site execution.",
   },
   {
+    q: "Does Passion Events plan weddings and destination weddings?",
+    a: "Yes. Weddings are the heart of Passion Events: engagements, haldis, sangeets, wedding days and receptions, planned and run by one team. We also plan destination weddings and events elsewhere in India, handling venues, guest travel and stays, décor and the full programme.",
+  },
+  {
+    q: "Does Passion Events provide stage, sound and lighting?",
+    a: "Yes. Stage design and fabrication, sound, lighting and LED screens are part of our event production work for weddings, corporate shows and concerts, and they can be booked on their own.",
+  },
+  {
+    q: "Can I book only decoration or only catering?",
+    a: "Yes. Décor, floral styling and theme design can be booked on their own, and so can catering coordination, photography, videography, artists, accommodation and transport. Book just what you need, or hand us the whole event.",
+  },
+  {
+    q: "Does Passion Events work outside Hyderabad?",
+    a: "Yes. Passion Events is based in Hyderabad and works across Andhra Pradesh and Telangana, and travels for destination weddings, events and concerts elsewhere in India, including Bengaluru.",
+  },
+  {
     q: "How do I contact Passion Events?",
-    a: "Send an enquiry through the contact page with your date, city, guest count and the services you need, or message @passionevents.p on Instagram.",
+    a: "Send an enquiry through the contact page with your date, city, guest count and the services you need, call or WhatsApp +91 63032 50045, email passionevents07@gmail.com, or message @passionevents.p on Instagram.",
   },
 ];
 

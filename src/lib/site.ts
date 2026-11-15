@@ -24,8 +24,9 @@ export const site = {
   launched: "2026-11-06",
   contact: {
     whatsapp: clean(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER),
-    phone: clean(process.env.NEXT_PUBLIC_CONTACT_PHONE),
-    email: clean(process.env.NEXT_PUBLIC_CONTACT_EMAIL),
+    // Supplied by the client (14 Nov 2026); environment variables still override.
+    phone: clean(process.env.NEXT_PUBLIC_CONTACT_PHONE) ?? "+91 63032 50045",
+    email: clean(process.env.NEXT_PUBLIC_CONTACT_EMAIL) ?? "passionevents07@gmail.com",
     instagram: clean(process.env.NEXT_PUBLIC_INSTAGRAM_URL),
   },
 } as const;

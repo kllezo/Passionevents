@@ -24,6 +24,8 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // One host only: www.passionevents.co → passionevents.co.
+      { source: "/:path*", has: [{ type: "host", value: "www.passionevents.co" }], destination: "https://passionevents.co/:path*", permanent: true },
       { source: "/concerts/shows", destination: "/concerts/events", permanent: false },
       // Complete Event Management was retired as a separate service page.
       { source: "/services/complete-event-management", destination: "/what-we-do", permanent: true },
