@@ -19,9 +19,46 @@ if (typeof window !== "undefined") {
   ScrollTrigger.config({ ignoreMobileResize: true });
   // Touch screens (iOS especially) scroll on a separate thread, so a pin can
   // engage a frame late and visibly jump; start pins a touch early there.
+  // (With a mouse or trackpad, Lenis drives scrolling in step with the pins,
+  // so anticipating would only make sections snap into place early.)
   if (window.matchMedia("(hover: none), (pointer: coarse)").matches) ScrollTrigger.defaults({ anticipatePin: 1 });
   // Development-only handle for debugging timelines from the console.
   if (process.env.NODE_ENV === "development") (window as unknown as { __pe: unknown }).__pe = { gsap, ScrollTrigger };
+  pauseOffscreenLoops();
+}
+
+/**
+ * Endless GSAP loops (garland beads, light beams, balloons, clouds, stickers)
+ * pause while what they move is off screen and resume before it scrolls back
+ * in — the GSAP counterpart of OffscreenPause for CSS animations. Nothing
+ * changes visually; off-screen work simply stops competing with scrolling.
+ */
+function pauseOffscreenLoops() {
+  const paused = new WeakSet<gsap.core.Animation>();
+  const anchorOf = (a: gsap.core.Animation): Element | null => {
+    const tween = a instanceof gsap.core.Timeline ? (a.getChildren(true, true, false)[0] as gsap.core.Tween | undefined) : (a as gsap.core.Tween);
+    const t = tween?.targets?.().find((x: unknown) => x instanceof Element);
+    return (t as Element | undefined) ?? null;
+  };
+  window.setInterval(() => {
+    if (document.hidden) return;
+    const vh = window.innerHeight;
+    const margin = 300;
+    for (const a of gsap.globalTimeline.getChildren(false, true, true)) {
+      if (a.repeat() !== -1) continue;
+      const el = anchorOf(a);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      const onScreen = (r.width > 0 || r.height > 0) && r.bottom > -margin && r.top < vh + margin;
+      if (!onScreen && !a.paused()) {
+        a.pause();
+        paused.add(a);
+      } else if (onScreen && paused.has(a)) {
+        paused.delete(a);
+        a.resume();
+      }
+    }
+  }, 500);
 }
 
 /** Motion vocabulary shared by both universes. */

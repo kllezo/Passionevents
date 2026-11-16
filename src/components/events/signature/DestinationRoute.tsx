@@ -64,7 +64,6 @@ export function DestinationRoute() {
             end: `+=${n * 55}%`,
             pin: true,
             scrub: 1,
-            anticipatePin: 1,
             onUpdate: (self) => show(Math.min(n - 1, Math.round(self.progress * (n - 1)))),
           },
         });

@@ -19,12 +19,21 @@ export function MobileDock() {
 
   useEffect(() => {
     let raf = 0;
+    // The blockers rarely change; look them up at most twice a second
+    // instead of searching the page on every frame.
+    let blockers: HTMLElement[] = [];
+    let found = 0;
     const check = () => {
       raf = 0;
       const y = window.scrollY;
       const vh = window.innerHeight;
-      const blockers = Array.from(document.querySelectorAll<HTMLElement>("#enquire, footer, #mobile-menu[aria-hidden='false']"));
+      const now = performance.now();
+      if (now - found > 500) {
+        found = now;
+        blockers = Array.from(document.querySelectorAll<HTMLElement>("#enquire, footer, #mobile-menu"));
+      }
       const covered = blockers.some((b) => {
+        if (b.id === "mobile-menu" && b.getAttribute("aria-hidden") !== "false") return false;
         const r = b.getBoundingClientRect();
         return r.top < vh * 0.92 && r.bottom > 0;
       });

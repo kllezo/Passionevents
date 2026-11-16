@@ -52,7 +52,7 @@ export function WeddingJourney() {
 
         const tl = gsap.timeline({
           defaults: { ease: "none" },
-          scrollTrigger: { trigger: pin, start: "top top", end: `+=${(n - 1) * 90}%`, pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true },
+          scrollTrigger: { trigger: pin, start: "top top", end: `+=${(n - 1) * 90}%`, pin: true, scrub: 1, invalidateOnRefresh: true },
         });
         tl.to(track, { x: () => -(track.scrollWidth - window.innerWidth), duration: n - 1 }, 0);
         for (let i = 1; i < n; i++) {

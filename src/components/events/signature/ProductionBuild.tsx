@@ -60,7 +60,6 @@ export function ProductionBuild() {
             end: `+=${n * 50}%`,
             pin: true,
             scrub: 1,
-            anticipatePin: 1,
             onUpdate: (self) => setActive(Math.min(n - 1, Math.floor(self.progress * n))),
           },
         });

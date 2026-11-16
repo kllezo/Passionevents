@@ -82,7 +82,6 @@ export function WhatWeDo() {
             end: `+=${(n - 1) * 32}%`,
             pin: true,
             scrub: 1,
-            anticipatePin: 1,
             invalidateOnRefresh: true,
             onRefresh: (self) => {
               layout();

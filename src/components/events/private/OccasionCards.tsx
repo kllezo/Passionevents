@@ -50,7 +50,7 @@ export function OccasionCards() {
         gsap.to(track, {
           x: () => -dist(),
           ease: "none",
-          scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: () => `+=${dist() * 1.1}`, pin: true, scrub: 0.8, anticipatePin: 1, invalidateOnRefresh: true, onUpdate: place, onRefresh: place },
+          scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: () => `+=${dist() * 1.1}`, pin: true, scrub: 0.8, invalidateOnRefresh: true, onUpdate: place, onRefresh: place },
         });
         place();
         return () => gsap.set(cards, { clearProps: "transform,filter,zIndex" });

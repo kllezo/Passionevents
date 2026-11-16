@@ -40,10 +40,13 @@ export const foundersList: Founder[] = [
     alternateNames: [],
     role: "Co-founder · Passion Events",
     image: founderImages.ramya,
-    // Biography still to come from Ramya — replace or extend these lines when it arrives.
+    // General lines written for the site (client asked for filler copy) — replace
+    // or extend with Ramya's own biography when it arrives.
     bio: [
       "Ramya co-founded Passion Events with Sai Tanush. Together they sign every celebration — “By Ramya & Tanush”.",
+      "For Ramya, an event is remembered for how it made people feel: the welcome at the door, the colours of the room, the moment a family sees everything come together.",
+      "She shares the promise the company was built on — big or small, we make it special — and the belief that no detail is too small to get right.",
     ],
-    focus: [],
+    focus: ["Celebrations & weddings", "Client care", "Details & finishing touches"],
   },
 ];

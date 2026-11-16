@@ -75,7 +75,6 @@ export function FlyThrough() {
             end: `+=${mobile ? 170 : 200}%`,
             pin: true,
             scrub: 1,
-            anticipatePin: 1,
           },
         });
         tl.to(cam, { z: depth, duration: 1, onUpdate: render }, 0)

@@ -158,7 +158,7 @@ export function CollegeSection() {
           if (!track || !pin) return;
           const dist = () => Math.max(0, track.scrollWidth - window.innerWidth + 80);
           const st = { trigger: pin, start: "top top", end: () => `+=${dist()}`, invalidateOnRefresh: true };
-          gsap.to(track, { x: () => -dist(), ease: "none", scrollTrigger: { ...st, pin: true, scrub: 1, anticipatePin: 1 } });
+          gsap.to(track, { x: () => -dist(), ease: "none", scrollTrigger: { ...st, pin: true, scrub: 1 } });
           gsap.fromTo(q("[data-fest-word]"), { xPercent: 0 }, { xPercent: -30, ease: "none", scrollTrigger: { ...st, scrub: true } });
         });
         return () => mm.revert();

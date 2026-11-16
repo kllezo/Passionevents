@@ -35,7 +35,7 @@ export function FanDeck({ images, word, script }: { images: SiteImage[]; word: s
         });
         const tl = gsap.timeline({
           defaults: { ease: "power3.inOut" },
-          scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: "+=200%", pin: true, scrub: 1, anticipatePin: 1 },
+          scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: "+=200%", pin: true, scrub: 1 },
         });
         // 1. fan into an arc
         tl.to(cards, {

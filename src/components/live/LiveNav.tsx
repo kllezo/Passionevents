@@ -54,17 +54,39 @@ export function LiveNav() {
   const tl = useRef<gsap.core.Timeline | null>(null);
   const lenis = useLenis();
 
+  // Once per frame at most, and only re-render when the state flips.
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 30);
-    on();
+    let raf = 0;
+    let last: boolean | null = null;
+    const check = () => {
+      raf = 0;
+      const s = window.scrollY > 30;
+      if (s !== last) {
+        last = s;
+        setScrolled(s);
+      }
+    };
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(check);
+    };
+    check();
     window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
+    return () => {
+      window.removeEventListener("scroll", on);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
+  // Close the menu on navigation — not when the pathname first arrives after
+  // load (null → "/concerts"), which would shut a menu just opened.
+  const lastPath = useRef<string | null>(null);
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- route change closes the menu
+    if (!pathnameRaw) return;
+    const prev = lastPath.current;
+    lastPath.current = pathnameRaw;
+    if (prev === null || prev === pathnameRaw) return;
     setOpen(false);
-  }, [pathname]);
+  }, [pathnameRaw]);
 
   useGSAP(
     () => {
@@ -82,11 +104,20 @@ export function LiveNav() {
         tl.current = gsap.timeline({ paused: true }).set(el, { display: "flex" });
       });
     },
-    { scope: menuRef }
+    // Built at load: the menu is display:none until opened, so it never
+    // "comes into view" for the just-in-time setup.
+    { scope: menuRef, eager: true }
   );
 
   useEffect(() => {
-    if (!tl.current) return;
+    if (!tl.current) {
+      // No timeline (automated agent, or not built yet): show/hide directly.
+      const el = menuRef.current;
+      if (el) el.style.display = open ? "flex" : "";
+      if (open) lenis?.stop();
+      else lenis?.start();
+      return;
+    }
     if (open) {
       tl.current.timeScale(1).play();
       lenis?.stop();

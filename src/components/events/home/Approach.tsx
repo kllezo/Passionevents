@@ -39,7 +39,7 @@ export function Approach({ index = "04" }: { index?: string }) {
         const n = words.length;
         const tl = gsap.timeline({
           defaults: { ease: "power2.inOut" },
-          scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: `+=${(n - 1) * 55}%`, pin: true, scrub: 0.8, anticipatePin: 1 },
+          scrollTrigger: { trigger: q("[data-pin]")[0], start: "top top", end: `+=${(n - 1) * 55}%`, pin: true, scrub: 0.8 },
         });
         tl.fromTo(q("[data-stem]"), { drawSVG: "0%" }, { drawSVG: "100%", duration: n - 1, ease: "none" }, 0);
         tl.from(q("[data-leaf]"), { scale: 0, transformOrigin: "0% 50%", stagger: (n - 1) / 8, duration: 0.3 }, 0);

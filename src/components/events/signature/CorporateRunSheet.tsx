@@ -42,7 +42,6 @@ export function CorporateRunSheet() {
             end: `+=${n * 45}%`,
             pin: true,
             scrub: 0.6,
-            anticipatePin: 1,
             onUpdate: (self) => setActive(Math.min(n - 1, Math.floor(self.progress * n))),
           },
         });

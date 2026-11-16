@@ -48,24 +48,68 @@ export function EventsNav() {
   const tl = useRef<gsap.core.Timeline | null>(null);
 
   // Hide on scroll down, reveal on scroll up; solid background after the hero.
+  // Runs at most once per frame; React state only changes when a value flips.
   useEffect(() => {
     let last = window.scrollY;
+    let raf = 0;
     const handler = () => {
+      raf = 0;
       const y = window.scrollY;
       setScrolled(y > 40);
-      // Over a dark full-bleed hero? Switch the bar to ivory type.
-      const hit = document.elementsFromPoint(window.innerWidth / 2, 48).find((el) => el.closest("[data-nav-theme='dark']"));
-      setOnDark(Boolean(hit));
       if (y > 400 && y > last + 4) setHidden(true);
       else if (y < last - 4) setHidden(false);
       last = y;
     };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(handler);
+    };
     handler();
-    const t = window.setTimeout(handler, 60);
-    window.addEventListener("scroll", handler, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.clearTimeout(t);
-      window.removeEventListener("scroll", handler);
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [pathname]);
+
+  // Over a dark full-bleed section? Switch the bar to ivory type. Watched with
+  // an IntersectionObserver on a 1px line at the bar's height (y = 48px)
+  // instead of hit-testing the page on every scroll event.
+  useEffect(() => {
+    const under = new Set<Element>();
+    let io: IntersectionObserver | null = null;
+    const watch = () => {
+      io?.disconnect();
+      under.clear();
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) under.add(e.target);
+            else under.delete(e.target);
+          }
+          setOnDark(under.size > 0);
+        },
+        { rootMargin: `-48px 0px -${Math.max(0, window.innerHeight - 49)}px 0px` }
+      );
+      const dark = document.querySelectorAll("[data-nav-theme='dark']");
+      dark.forEach((el) => io!.observe(el));
+      if (!dark.length) setOnDark(false);
+    };
+    watch();
+    // Streamed sections can arrive after navigation; look again shortly.
+    const t1 = window.setTimeout(watch, 400);
+    const t2 = window.setTimeout(watch, 1500);
+    let rt = 0;
+    const onResize = () => {
+      window.clearTimeout(rt);
+      rt = window.setTimeout(watch, 200);
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.clearTimeout(rt);
+      window.removeEventListener("resize", onResize);
+      io?.disconnect();
     };
   }, [pathname]);
 
