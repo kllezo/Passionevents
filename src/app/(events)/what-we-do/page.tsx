@@ -4,6 +4,7 @@ import { site } from "@/lib/site";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { EnquirySection } from "@/components/events/EnquirySection";
 import { FaqSection } from "@/components/events/FaqSection";
+import { brandQas } from "@/content/qa";
 import { geoFaqs } from "@/content/events";
 import { WhatWeDoIntro, SectionIndex } from "@/components/events/whatwedo/Intro";
 import {
@@ -53,7 +54,7 @@ export default function WhatWeDoPage() {
       <PrivateSection />
       <DestinationSection />
       <ProductionSection />
-      <FaqSection items={geoFaqs} index="10" title="Questions, answered." />
+      <FaqSection items={[...geoFaqs, ...brandQas.slice(0, 4)]} index="10" title="Questions, answered." />
       <EnquirySection index="11" />
     </>
   );

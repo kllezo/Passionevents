@@ -6,6 +6,8 @@ import { AboutHero } from "@/components/events/AboutHero";
 import { SectionLabel } from "@/components/events/SectionLabel";
 import { FoundersFeature } from "@/components/events/FoundersFeature";
 import { EnquirySection } from "@/components/events/EnquirySection";
+import { FaqSection } from "@/components/events/FaqSection";
+import { brandQas } from "@/content/qa";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { UniverseLink } from "@/components/shared/UniverseTransition";
 import { ImageReveal, ScrubWords } from "@/motion/primitives";
@@ -80,6 +82,7 @@ export default function AboutPage() {
       </section>
 
       <FoundersFeature index="03" />
+      <FaqSection items={brandQas} title="Passion Events, answered." />
       <EnquirySection index="04" />
     </>
   );

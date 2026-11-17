@@ -14,6 +14,8 @@ import { FinalCTA } from "@/components/live/FinalCTA";
 import { ProductionShowcase } from "@/components/live/ProductionShowcase";
 import { CautionTapes } from "@/components/live/CautionTapes";
 import { ConcertReels } from "@/components/live/ConcertReels";
+import { LiveFaq } from "@/components/live/LiveFaq";
+import { serviceQas } from "@/content/qa";
 
 const liveTitle = "Passion Live — Concerts, Live Music & Artist Bookings in India";
 export const metadata = {
@@ -102,6 +104,7 @@ export default function LiveHome() {
       </section>
 
       <Collaborate index="07" />
+      <LiveFaq items={serviceQas.concerts} index="08" />
       <FinalCTA />
     </>
   );

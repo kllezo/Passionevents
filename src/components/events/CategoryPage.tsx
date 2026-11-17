@@ -21,6 +21,9 @@ import { PortfolioGrid } from "./portfolio/PortfolioGrid";
 import { PortfolioSkeleton } from "./home/PortfolioPreview";
 import { EventsButton } from "./Button";
 import { Bloom } from "./botanical/Sprig";
+import { ServiceCatalogue } from "./ServiceCatalogue";
+import { FaqSection } from "./FaqSection";
+import { catalogue, serviceQas, type CatalogueKey } from "@/content/qa";
 
 /** Section on /what-we-do that each category page returns to. */
 const whatWeDoAnchor: Record<Category["key"], string> = {
@@ -166,6 +169,14 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
           </Suspense>
         </div>
       </section>
+
+      {/* The full service list and the questions people ask about it */}
+      {c.key in catalogue && (
+        <>
+          <ServiceCatalogue title={catalogue[c.key as CatalogueKey].title} items={catalogue[c.key as CatalogueKey].items} />
+          <FaqSection items={serviceQas[c.key as CatalogueKey]} title={`${c.title}, answered.`} />
+        </>
+      )}
 
       {/* Other categories */}
       <section className="bg-ivory py-24">

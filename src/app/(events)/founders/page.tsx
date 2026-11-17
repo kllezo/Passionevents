@@ -3,6 +3,8 @@ import { foundersList } from "@/content/founders";
 import { FoundersFeature } from "@/components/events/FoundersFeature";
 import { FounderMoments } from "@/components/events/FounderMoments";
 import { EnquirySection } from "@/components/events/EnquirySection";
+import { FaqSection } from "@/components/events/FaqSection";
+import { founderQas } from "@/content/qa";
 import { JsonLd } from "@/components/shared/JsonLd";
 
 export const metadata = pageMetadata({
@@ -28,6 +30,7 @@ export default function FoundersPage() {
         <FoundersFeature index="01" detailed />
       </div>
       <FounderMoments />
+      <FaqSection items={founderQas} title="The founders, answered." />
       <EnquirySection
         index="02"
         title={

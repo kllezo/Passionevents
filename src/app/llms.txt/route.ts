@@ -7,6 +7,7 @@ import { foundersList } from "@/content/founders";
 import { areas } from "@/content/areas";
 import { posts } from "@/content/blog";
 import { pastShows } from "@/content/shows";
+import { brandQas, catalogue, cityProfiles, serviceQas } from "@/content/qa";
 
 /**
  * /llms.txt — a plain-text brief for AI assistants and answer engines
@@ -83,13 +84,22 @@ export function GET() {
       ...(a.work.length ? ["", `Recent work: ${a.work.map((w) => `${w.label} (${w.detail})`).join("; ")}.`] : []),
       "",
     ]),
+    "## City pages",
+    "",
+    ...cityProfiles.map((c) => `- [Event management in ${c.name}](${u}/event-management/${c.id}): weddings, haldi, mehendi and sangeet, corporate events, concerts, college fests, private and destination events in ${c.name}, ${c.state}`),
+    "",
+    "## Full service catalogue",
+    "",
+    ...Object.values(catalogue).flatMap((k) => [`### [${k.title}](${u}${k.href})`, "", ...k.items.map((i) => `- ${i}`), ""]),
     "## Guides",
     "",
     ...posts.map((p) => `- [${p.h1}](${u}/blog/${p.slug}): ${p.description}`),
     "",
     "## Questions and answers",
     "",
-    ...geoFaqs.flatMap((f) => [`### ${f.q}`, "", f.a, ""]),
+    ...[...geoFaqs, ...brandQas, ...Object.values(serviceQas).flat()]
+      .filter((f, i, all) => all.findIndex((x) => x.q === f.q) === i)
+      .flatMap((f) => [`### ${f.q}`, "", f.a, ""]),
     "## Reels (the company's own footage)",
     "",
     ...reels.map((r) => `- [${r.title}${r.place ? `, ${r.place}` : ""}${r.date ? ` (${r.date})` : ""}](${reelUrl(r.id)}) — ${r.category}`),

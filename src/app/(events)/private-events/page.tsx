@@ -7,6 +7,9 @@ import { Pic } from "@/components/shared/Pic";
 import { ReelRail } from "@/components/shared/Reels";
 import { SectionLabel } from "@/components/events/SectionLabel";
 import { EnquirySection } from "@/components/events/EnquirySection";
+import { ServiceCatalogue } from "@/components/events/ServiceCatalogue";
+import { FaqSection } from "@/components/events/FaqSection";
+import { catalogue, serviceQas } from "@/content/qa";
 import { Bloom } from "@/components/events/botanical/Sprig";
 import { PrivateHero } from "@/components/events/private/PrivateHero";
 import { OccasionCards } from "@/components/events/private/OccasionCards";
@@ -94,6 +97,8 @@ export default function PrivateEventsPage() {
         </div>
       </section>
 
+      <ServiceCatalogue title={catalogue.private.title} items={catalogue.private.items} />
+      <FaqSection items={serviceQas.private} title="Private events, answered." />
       <EnquirySection index="05" defaultCategory={c.enquiryCategory} />
     </>
   );

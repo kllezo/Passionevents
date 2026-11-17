@@ -11,6 +11,9 @@ import { UniverseLink } from "@/components/shared/UniverseTransition";
 import { PageHero } from "@/components/events/PageHero";
 import { SectionLabel } from "@/components/events/SectionLabel";
 import { EnquirySection } from "@/components/events/EnquirySection";
+import { ServiceCatalogue } from "@/components/events/ServiceCatalogue";
+import { FaqSection } from "@/components/events/FaqSection";
+import { catalogue, serviceQas, type CatalogueKey } from "@/content/qa";
 import { EventsButton } from "@/components/events/Button";
 import { RevealText } from "@/motion/RevealText";
 import { StaggerList } from "@/motion/StaggerList";
@@ -160,6 +163,12 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         </div>
       </nav>
 
+      {s.key in catalogue && (
+        <>
+          <ServiceCatalogue title={catalogue[s.key as CatalogueKey].title} items={catalogue[s.key as CatalogueKey].items} />
+          <FaqSection items={serviceQas[s.key as CatalogueKey]} title={`${s.title.split(" & ")[0]}, answered.`} />
+        </>
+      )}
       <EnquirySection index="03" defaultCategory={s.enquiryCategory} />
     </>
   );

@@ -3,11 +3,12 @@ import { jwtVerify } from "jose";
 import { PrismaClient } from "@prisma/client";
 import { services } from "@/content/services";
 import { areas } from "@/content/areas";
+import { cityProfiles } from "@/content/qa";
 import { posts } from "@/content/blog";
 import { pastShows } from "@/content/shows";
 
 const SERVICE_SLUGS = new Set(services.map((s) => s.slug));
-const AREA_SLUGS = new Set<string>(areas.map((a) => a.slug));
+const AREA_SLUGS = new Set<string>([...areas.map((a) => a.slug), ...cityProfiles.map((c) => c.id)]);
 const POST_SLUGS = new Set(posts.map((p) => p.slug));
 const SHOW_SLUGS = new Set(pastShows.map((s) => s.slug));
 

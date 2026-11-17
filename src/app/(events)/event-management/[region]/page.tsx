@@ -13,13 +13,25 @@ import { ReelRail } from "@/components/shared/Reels";
 import { SectionLabel } from "@/components/events/SectionLabel";
 import { EnquirySection } from "@/components/events/EnquirySection";
 import { EventsButton } from "@/components/events/Button";
+import { CityPage } from "@/components/events/CityPage";
+import { cityProfile, cityProfiles, cityQas } from "@/content/qa";
+
+/** City pages share this route; a slug that is also a region (Bengaluru) stays the region page. */
+const cityOnly = (slug: string) => (areaBySlug(slug) ? undefined : cityProfile(slug));
 
 export function generateStaticParams() {
-  return areas.map((a) => ({ region: a.slug }));
+  return [...areas.map((a) => ({ region: a.slug })), ...cityProfiles.filter((c) => !areaBySlug(c.id)).map((c) => ({ region: c.id }))];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ region: string }> }): Promise<Metadata> {
   const { region } = await params;
+  const city = cityOnly(region);
+  if (city)
+    return pageMetadata({
+      title: `Event Management & Wedding Planner in ${city.name}`,
+      description: `Wedding planning, haldi, mehendi & sangeet, corporate events, concerts, college fests and parties in ${city.name} by Passion Events — By Ramya & Tanush.`,
+      path: `/event-management/${city.id}`,
+    });
   const a = areaBySlug(region);
   if (!a) return { title: "Areas we serve" };
   return { ...pageMetadata({ title: a.title, description: a.description, path: `/event-management/${a.slug}` }), title: { absolute: a.title } };
@@ -31,8 +43,13 @@ export async function generateMetadata({ params }: { params: Promise<{ region: s
  */
 export default async function RegionPage({ params }: { params: Promise<{ region: string }> }) {
   const { region } = await params;
+  const city = cityOnly(region);
+  if (city) return <CityPage city={city} />;
   const a = areaBySlug(region);
   if (!a) notFound();
+  // Bengaluru is a region and a city: add the city's questions to the region's.
+  const bengaluru = cityProfile(a.slug);
+  const faqs = bengaluru ? [...a.faqs, ...cityQas(bengaluru).filter((q) => !a.faqs.some((f) => f.q === q.q))] : a.faqs;
   const reelIds = a.work.map((w) => w.reel).filter((r): r is string => Boolean(r && reelById(r)));
   const others = areas.filter((x) => x.slug !== a.slug);
   const path = `/event-management/${a.slug}`;
@@ -60,7 +77,7 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
               itemListElement: services.map((s) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: s.title, url: `${site.url}${s.href}` } })),
             },
           },
-          faqJsonLd(a.faqs),
+          faqJsonLd(faqs),
         ]}
       />
 
@@ -121,7 +138,13 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {a.cities.map((c) => (
               <article key={c.id} id={c.id} className="scroll-mt-28 rounded-[1.75rem] bg-cream/70 p-7 ring-1 ring-ink/5 md:p-9">
-                <h3 className="font-serif text-3xl text-ink md:text-4xl">{`Event management in ${c.name}`}</h3>
+                <h3 className="font-serif text-3xl text-ink md:text-4xl">
+                  {cityOnly(c.id) ? (
+                    <Link href={`/event-management/${c.id}`} className="link-underline">{`Event management in ${c.name}`}</Link>
+                  ) : (
+                    `Event management in ${c.name}`
+                  )}
+                </h3>
                 {c.aka && <p className="mt-2 text-xs uppercase tracking-[0.18em] text-stone">{`Also searched as: ${c.aka.join(" · ")}`}</p>}
                 <p className="mt-5 leading-relaxed text-ink/80">{c.intro}</p>
                 <h4 className="mt-6 text-sm font-semibold uppercase tracking-[0.16em] text-rose-deep">{`What we plan in ${c.name.replace(/ \(.*\)$/, "")}`}</h4>
@@ -191,7 +214,7 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
             </ul>
           </div>
           <div className="divide-y divide-ink/15 border-y border-ink/15 lg:col-span-7 lg:col-start-6">
-            {a.faqs.map((f) => (
+            {faqs.map((f) => (
               <div key={f.q} className="py-6">
                 <h3 className="font-serif text-2xl text-ink">{f.q}</h3>
                 <p className="mt-3 max-w-2xl leading-relaxed text-stone">{f.a}</p>
