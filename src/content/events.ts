@@ -211,10 +211,6 @@ export const geoFaqs = [
     q: "How do I contact Passion Events?",
     a: "Send an enquiry through the contact page with your date, city, guest count and the services you need, call or WhatsApp +91 63032 50045, email passionevents07@gmail.com, or message @passionevents.p on Instagram.",
   },
-  {
-    q: "Is Passion Events the same as Passion Events S.L. in Barcelona?",
-    a: "No. Passion Events (passionevents.co) is an event management company based in Hyderabad, India, founded by Ramya and P. Sai Tanush. It is not connected to Passion Events S.L. in Barcelona, Spain, or to other businesses that share the name.",
-  },
 ];
 
 

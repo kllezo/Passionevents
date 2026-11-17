@@ -195,10 +195,6 @@ export const brandQas: QA[] = [
     q: "What makes Passion Events different?",
     a: "One team for everything — weddings, corporate events, concerts, college fests and private parties — led personally by its founders, Ramya and P. Sai Tanush, who sign every celebration \"By Ramya & Tanush\". You can book a single service, a few, or complete event management.",
   },
-  {
-    q: "Is Passion Events the same as Passion Events S.L. in Barcelona?",
-    a: "No. Passion Events (passionevents.co) is an event management company based in Hyderabad, India. It is not connected to Passion Events S.L. in Barcelona, Spain, or to other businesses that share the name.",
-  },
 ];
 
 /* ------------------------------------------------------------------ */
