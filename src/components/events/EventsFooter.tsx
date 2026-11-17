@@ -131,7 +131,7 @@ export function EventsFooter() {
         </div>
       </div>
 
-      {/* Areas we serve: every city links to its own section of a region page. */}
+      {/* Areas we serve: every city links to its own page (the only links to the city pages). */}
       <nav aria-labelledby="areas-title" className="mx-auto mb-12 max-w-[1600px] px-5 md:px-10">
         <p id="areas-title" className="eyebrow text-rose-deep">
           Areas we serve
@@ -145,7 +145,7 @@ export function EventsFooter() {
               <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-sm text-stone">
                 {a.cities.map((c) => (
                   <li key={c.id}>
-                    <Link href={`/event-management/${a.slug}#${c.id}`} className="link-underline">
+                    <Link href={c.id === a.slug ? `/event-management/${a.slug}` : `/event-management/${c.id}`} className="link-underline">
                       {c.name.replace(/ \(.*\)$/, "")}
                     </Link>
                   </li>

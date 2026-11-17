@@ -1,10 +1,7 @@
-import Link from "next/link";
-import { cityProfiles } from "@/content/qa";
 import { SectionLabel } from "./SectionLabel";
 
 /**
- * The full list of what a service covers, plus the cities it is offered in
- * (each linking to that city's page). Plain, crawlable text.
+ * The full list of what a service covers. Plain, crawlable text.
  */
 export function ServiceCatalogue({ title, items, label = "Everything we handle" }: { title: string; items: string[]; label?: string }) {
   return (
@@ -23,16 +20,6 @@ export function ServiceCatalogue({ title, items, label = "Everything we handle" 
               <li key={i} className="flex gap-3 border-b border-ink/10 pb-2.5 text-ink/85">
                 <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rotate-45 bg-coral" />
                 {i}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-10 text-xs font-semibold uppercase tracking-[0.18em] text-rose-deep">Available in</p>
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {cityProfiles.map((c) => (
-              <li key={c.id}>
-                <Link href={`/event-management/${c.id}`} className="inline-flex rounded-full border border-ink/15 bg-ivory px-4 py-1.5 text-sm text-ink transition-colors hover:border-rose hover:bg-ivory/60">
-                  {`${title.split(" & ")[0]} in ${c.name}`}
-                </Link>
               </li>
             ))}
           </ul>
