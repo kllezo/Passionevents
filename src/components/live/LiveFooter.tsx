@@ -96,7 +96,7 @@ export function LiveFooter() {
 
       <div className="mx-auto mt-12 flex max-w-[1700px] flex-col gap-2 border-t border-white/10 px-5 py-8 font-grotesk text-xs text-fog md:flex-row md:justify-between md:px-10">
         <p>
-          © <Year /> {site.name} · {site.liveName}. All rights reserved. Updated <time dateTime={site.contentUpdated}>{new Date(`${site.contentUpdated}T00:00:00Z`).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })}</time>.
+          © <Year /> {site.name} · {site.liveName}. All rights reserved.
         </p>
         <p className="uppercase tracking-[0.25em]">Turn the night into a movement</p>
       </div>
