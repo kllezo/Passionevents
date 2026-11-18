@@ -65,7 +65,7 @@ export function ProductionShowcase() {
             <li key={c.k} data-tile="" className={`group relative isolate overflow-hidden rounded-[1.25rem] bg-void ${i === 0 ? "aspect-[4/5] sm:col-span-2 sm:aspect-[16/10] lg:aspect-auto" : "aspect-[4/3] lg:aspect-auto"} ${c.area}`}>
               <div data-wipe="" className="absolute inset-0">
                 <div data-img="" className="absolute inset-0 transition-transform duration-[1.4s] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.05]">
-                  <Pic image={c.image} alt="" sizes={c.sizes} tone="dark" />
+                  <Pic image={c.image} alt={`${c.title} for a Passion Live concert: ${c.text}`} sizes={c.sizes} tone="dark" />
                 </div>
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/5" />

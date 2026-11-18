@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { pageMetadata } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import { meraEventsUrl } from "@/content/proof";
 import { site } from "@/lib/site";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { LiveHero } from "@/components/live/LiveHero";
@@ -27,14 +28,23 @@ export default function LiveHome() {
   return (
     <>
       <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          name: "Passion Live",
-          url: `${site.url}/concerts`,
-          parentOrganization: { "@type": "Organization", name: site.name, url: site.url },
-          description: site.liveDescription,
-        }}
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "@id": `${site.url}/concerts#organization`,
+            name: "Passion Live",
+            alternateName: "Passion Live by Passion Events",
+            url: `${site.url}/concerts`,
+            parentOrganization: { "@id": `${site.url}/#organization`, "@type": "EventPlanner", name: site.name, url: site.url },
+            description: site.liveDescription,
+            sameAs: [site.contact.instagram, meraEventsUrl].filter(Boolean),
+          },
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Passion Live concerts", path: "/concerts" },
+          ]),
+        ]}
       />
       <LiveHero />
       <VelocityMarquee words={["Live", "Loud", "Together"]} className="bg-void" />

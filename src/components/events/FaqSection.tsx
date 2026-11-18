@@ -19,7 +19,7 @@ export function FaqSection({ items, index, title = "Good to know." }: { items: {
           {items.map((f, i) => (
             <details key={f.q} open={i === 0} className="group py-6 [&_summary::-webkit-details-marker]:hidden">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-serif text-2xl text-ink md:text-3xl">
-                {f.q}
+                <h3>{f.q}</h3>
                 <span className="grid size-10 shrink-0 place-items-center rounded-full border border-ink/20 text-xl transition-transform duration-500 group-open:rotate-45">+</span>
               </summary>
               <p className="mt-4 max-w-2xl text-lg leading-relaxed text-stone">{f.a}</p>

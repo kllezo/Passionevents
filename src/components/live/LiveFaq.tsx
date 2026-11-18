@@ -23,7 +23,7 @@ export function LiveFaq({ items, index }: { items: { q: string; a: string }[]; i
           {items.map((f, i) => (
             <details key={f.q} open={i === 0} className="group py-6 [&_summary::-webkit-details-marker]:hidden">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-grotesk text-lg uppercase tracking-[0.06em] text-white md:text-xl">
-                {f.q}
+                <h3>{f.q}</h3>
                 <span className="grid size-10 shrink-0 place-items-center rounded-full border border-white/25 text-xl text-volt transition-transform duration-500 group-open:rotate-45">+</span>
               </summary>
               <p className="mt-4 max-w-3xl leading-relaxed text-fog">{f.a}</p>

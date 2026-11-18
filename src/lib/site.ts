@@ -19,7 +19,7 @@ export const site = {
   contactPerson: "Pabbathi Sai Tanush",
   eventsExecuted: 50,
   /** Last time the site's main content was reviewed (shown on the home page and in its schema). */
-  contentUpdated: "2026-11-14",
+  contentUpdated: "2026-11-18",
   /** First publication of this site. */
   launched: "2026-11-06",
   contact: {

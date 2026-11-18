@@ -201,10 +201,53 @@ export function faqJsonLd(items: { q: string; a: string }[]) {
   };
 }
 
+/** A compact copy of the business entity, so every page names who it is about. */
+function orgRef() {
+  return {
+    "@type": "EventPlanner",
+    "@id": ORG_ID(),
+    name: site.name,
+    alternateName: ["PassionEvents", "Passion Events Hyderabad", "Passion Events by Ramya & Tanush"],
+    url: site.url,
+    logo: `${site.url}/brand/logo-1400.webp`,
+    ...(site.contact.phone ? { telephone: site.contact.phone } : {}),
+    address: { "@type": "PostalAddress", addressLocality: "Hyderabad", addressRegion: "Telangana", addressCountry: "IN" },
+    founder: foundersList.map((f) => ({ "@type": "Person", name: f.name })),
+    sameAs: [site.contact.instagram, meraEventsUrl].filter(Boolean),
+  };
+}
+
+/**
+ * The page's breadcrumb trail, together with the page itself as a WebPage:
+ * what it is, which site it belongs to, who publishes it and when it last
+ * changed. Every inner page renders this, so each one carries both.
+ */
 export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
+  const last = items[items.length - 1];
+  const url = `${site.url}${last?.path ?? "/"}`;
   return {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, item: `${site.url}${it.path}` })),
+    "@graph": [
+      orgRef(),
+      {
+        "@type": "WebPage",
+        "@id": url,
+        url,
+        name: `${last?.name ?? site.name} | ${site.name}`,
+        inLanguage: "en-IN",
+        isPartOf: { "@id": `${site.url}/#website` },
+        about: { "@id": ORG_ID() },
+        publisher: { "@id": ORG_ID() },
+        author: { "@id": ORG_ID() },
+        dateModified: site.contentUpdated,
+        breadcrumb: { "@id": `${url}#breadcrumb` },
+        speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "[data-summary]"] },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, item: `${site.url}${it.path}` })),
+      },
+    ],
   };
 }

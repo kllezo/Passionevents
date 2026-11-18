@@ -61,7 +61,7 @@ export function PageHero({
             {title}
           </RevealText>
           {script && <p className="mt-2 font-script text-6xl text-blush md:text-8xl">{script}</p>}
-          {intro && <div className="mt-8 max-w-2xl text-lg leading-relaxed text-ivory/80 md:text-xl">{intro}</div>}
+          {intro && <div data-summary="" className="mt-8 max-w-2xl text-lg leading-relaxed text-ivory/80 md:text-xl">{intro}</div>}
           {children}
         </div>
       </section>
@@ -78,7 +78,7 @@ export function PageHero({
             {title}
           </RevealText>
           {script && <p className="-mt-2 pl-[0.4em] font-script text-6xl text-coral md:text-8xl">{script}</p>}
-          {intro && <div className="mt-8 max-w-xl text-lg leading-relaxed text-stone md:text-xl">{intro}</div>}
+          {intro && <div data-summary="" className="mt-8 max-w-xl text-lg leading-relaxed text-stone md:text-xl">{intro}</div>}
           {children}
         </div>
         <div className="relative lg:col-span-5">

@@ -185,7 +185,7 @@ export function EventsFooter() {
 
       <div className="mx-auto mt-16 flex max-w-[1600px] flex-col gap-3 border-t border-ink/10 px-5 py-8 text-xs text-stone md:flex-row md:items-center md:justify-between md:px-10">
         <p>
-          © <Year /> {site.name}. {site.byline}. All rights reserved.
+          © <Year /> {site.name}. {site.byline}. All rights reserved. <span className="whitespace-nowrap">Updated <time dateTime={site.contentUpdated}>{new Date(`${site.contentUpdated}T00:00:00Z`).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })}</time>.</span>
         </p>
         <p className="font-serif text-base italic text-rose-deep">Concept · Planning · Design · Production · Execution</p>
       </div>
