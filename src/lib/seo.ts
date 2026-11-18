@@ -7,6 +7,9 @@ import type { Post } from "@/content/blog";
 import { reelCover } from "@/content/reels";
 import { meraEventsUrl } from "@/content/proof";
 
+/** The Google Business Profile (knowledge graph entry) for Passion Events, Hyderabad. */
+const GOOGLE_PROFILE = "https://www.google.com/search?kgmid=/g/11z_gp99j9";
+
 /** Per-page metadata with canonical URL + Open Graph in one call. */
 export function pageMetadata({
   title,
@@ -52,7 +55,7 @@ const ORG_ID = () => `${site.url}/#organization`;
  * figure from the client's brief, contact details from environment variables.
  */
 export function organizationJsonLd() {
-  const sameAs = [site.contact.instagram, meraEventsUrl].filter(Boolean);
+  const sameAs = [site.contact.instagram, meraEventsUrl, GOOGLE_PROFILE].filter(Boolean);
   return {
     "@context": "https://schema.org",
     "@type": "EventPlanner",
@@ -65,7 +68,7 @@ export function organizationJsonLd() {
     image: `${site.url}/brand/og-passion-events.jpg`,
     description: site.description,
     // Other businesses called "Passion Events" exist (Barcelona, Mumbai); say plainly which one this is.
-    disambiguatingDescription: "Event company based in Hyderabad, Telangana, founded by Ramya and P. Sai Tanush (“By Ramya & Tanush”), with the concert brand Passion Live and Instagram @passionevents.p. Not affiliated with Passion Events S.L. (Barcelona, Spain) or other companies of the same name.",
+    disambiguatingDescription: "Event company based in Hyderabad, Telangana, founded by Ramya and P. Sai Tanush (“By Ramya & Tanush”), with the concert brand Passion Live and Instagram @passionevents.p. Its only website is passionevents.co. Not affiliated with passionevents.co.in, Passion Events S.L. (Barcelona, Spain) or other companies of the same name.",
     slogan: "Big or small. We make it special.",
     founder: foundersList.map((f) => founderJsonLd(f, false)),
     foundingLocation: { "@type": "Place", name: "Hyderabad, Telangana, India" },
@@ -213,7 +216,7 @@ function orgRef() {
     ...(site.contact.phone ? { telephone: site.contact.phone } : {}),
     address: { "@type": "PostalAddress", addressLocality: "Hyderabad", addressRegion: "Telangana", addressCountry: "IN" },
     founder: foundersList.map((f) => ({ "@type": "Person", name: f.name })),
-    sameAs: [site.contact.instagram, meraEventsUrl].filter(Boolean),
+    sameAs: [site.contact.instagram, meraEventsUrl, GOOGLE_PROFILE].filter(Boolean),
   };
 }
 
