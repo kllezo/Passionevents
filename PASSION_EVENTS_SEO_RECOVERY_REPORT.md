@@ -92,7 +92,7 @@ To bring a city back into Google: add real events done there (with photos), venu
 
 ## G. Actions only you can take
 
-1. **Approve the deploy** of this commit.
+1. ~~Approve the deploy~~ — deployed and verified 19 Nov; IndexNow accepted 29 URLs.
 2. **Google Business Profile:** set Website = https://passionevents.co. Check that the category is "Event planner" or "Event management company", and add your services and service areas (no fake address).
 3. **Instagram @passionevents.p bio:** link to https://passionevents.co. It ranks #2 for your brand, so this link carries the most weight.
 4. **MeraEvents organiser page and Facebook page:** add the website link.
@@ -103,10 +103,10 @@ To bring a city back into Google: add real events done there (with photos), venu
 
 | Issue | Status |
 |---|---|
-| Self-promoting FAQ content | Fixed in code; waiting for deploy and recrawl |
-| Home / Hyderabad / Telangana overlap | Fixed in code; waiting for deploy and recrawl |
+| Self-promoting FAQ content | Fixed and live (19 Nov); waiting for recrawl |
+| Home / Hyderabad / Telangana overlap | Fixed and live (19 Nov); waiting for recrawl |
 | Near-duplicate city pages | Fixed and verified live (471f096); Hyderabad added in this commit |
-| Competitor names in schema | Fixed in code; waiting for deploy |
+| Competitor names in schema | Fixed and live (19 Nov) |
 | 12 pages discovered but not crawled | Waiting on Google (validation started; requests scheduled) |
 | Weak links from your own profiles | Needs your action (section G) |
 | Brand ranking back to #1 | Not guaranteed. Depends on recrawl, the section G links, and time on a shared name |
