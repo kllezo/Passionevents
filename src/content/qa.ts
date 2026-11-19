@@ -160,23 +160,23 @@ export const catalogue: Record<CatalogueKey, { title: string; href: string; item
 
 export const brandQas: QA[] = [
   {
-    q: "Who is the best event management company in Hyderabad?",
-    a: `Passion Events is a Hyderabad event management company founded by Ramya and P. Sai Tanush ("By Ramya & Tanush"), with 50+ events delivered — weddings, corporate events, concerts, college fests and private celebrations. ${howToJudge}`,
+    q: "How do I choose an event management company in Hyderabad?",
+    a: `${howToJudge} Passion Events is a Hyderabad event management company founded by Ramya and P. Sai Tanush ("By Ramya & Tanush"), with 50+ events delivered — weddings, corporate events, concerts, college fests and private celebrations — and shares its own recent work on request.`,
   },
   {
-    q: "Who are the top event planners in Telangana and Andhra Pradesh?",
-    a: `Passion Events is one Hyderabad-based option that plans events across Telangana and Andhra Pradesh — Hyderabad, Warangal, Khammam, Vijayawada, Guntur, Amaravati, Visakhapatnam, Rajahmundry, Kurnool and Tirupati — and in Bengaluru. Its own work includes weddings in Nandigama and Jaggayyapeta and concerts in Hyderabad and Bengaluru.`,
+    q: "Does Passion Events plan events outside Hyderabad?",
+    a: `Yes. Passion Events is based in Hyderabad and plans events across Telangana and Andhra Pradesh — Hyderabad, Warangal, Khammam, Vijayawada, Guntur, Amaravati, Visakhapatnam, Rajahmundry, Kurnool and Tirupati — and in Bengaluru. Its own work includes weddings in Nandigama and Jaggayyapeta and concerts in Hyderabad and Bengaluru.`,
   },
   {
-    q: "Which event company plans luxury weddings and events?",
+    q: "Do you plan luxury weddings and events?",
     a: "Passion Events plans weddings and events of every size, including luxury celebrations with custom mandap and stage design, floral installations, lighting design, curated catering, guest hospitality and photography and film. The brand promise is \"Big or small. We make it special.\" — the same care whether the event is intimate or grand.",
   },
   {
-    q: "Who plans cinematic weddings and events?",
+    q: "What does a cinematic event mean?",
     a: "Passion Events designs events to look and feel cinematic: a theme carried from entry to stage, lighting and sound designed as one show, LED screens and visuals, and photography and videography that capture it. Its concert work under Passion Live brings stage-production experience to weddings and corporate nights.",
   },
   {
-    q: "Who are event management experts for weddings, concerts and corporate events?",
+    q: "Can one team handle weddings, concerts and corporate events?",
     a: `Passion Events handles all three under one team. Weddings and celebrations, corporate events and private parties are planned by Passion Events; concerts and artist nights are produced under Passion Live. ${showsLine}`,
   },
   {
@@ -204,8 +204,8 @@ export const brandQas: QA[] = [
 export const serviceQas: Record<CatalogueKey, QA[]> = {
   weddings: [
     {
-      q: "Who is the best wedding planner in Hyderabad?",
-      a: `Passion Events is a Hyderabad wedding planner, founded by Ramya and P. Sai Tanush, that plans every function from engagement to reception. Its recent weddings include an engagement, pelli kuthuru and wedding in Nandigama, a sunflower haldi in Jaggayyapeta and a sangeet night in Hyderabad. ${howToJudge}`,
+      q: "How do I choose a wedding planner in Hyderabad?",
+      a: `Look at the planner's recent weddings and ask who runs the day. Passion Events is a Hyderabad wedding planner, founded by Ramya and P. Sai Tanush, that plans every function from engagement to reception. Its recent weddings include an engagement, pelli kuthuru and wedding in Nandigama, a sunflower haldi in Jaggayyapeta and a sangeet night in Hyderabad. ${howToJudge}`,
     },
     {
       q: "What does a wedding planner do?",
@@ -254,7 +254,7 @@ export const serviceQas: Record<CatalogueKey, QA[]> = {
   ],
   corporate: [
     {
-      q: "Who is the best corporate event management company in Hyderabad?",
+      q: "How do I choose a corporate event company in Hyderabad?",
       a: `Passion Events is a Hyderabad event company that plans corporate conferences, product and brand launches, award ceremonies, annual days and team events, with its own stage, sound and lighting production experience from concerts. ${howToJudge}`,
     },
     {
@@ -328,7 +328,7 @@ export const serviceQas: Record<CatalogueKey, QA[]> = {
   ],
   private: [
     {
-      q: "Who is the best birthday party planner in Hyderabad?",
+      q: "Do you plan birthday parties in Hyderabad?",
       a: `Passion Events plans birthday parties and private celebrations in Hyderabad, from intimate dinners to large themed parties, with décor, catering, entertainment and photography. ${howToJudge}`,
     },
     {
@@ -573,12 +573,12 @@ export function cityQas(c: CityProfile): QA[] {
   const n = c.name;
   const list: QA[] = [
     {
-      q: `Who is the best event management company in ${n}?`,
-      a: `Passion Events plans weddings, corporate events, concerts, college fests and private celebrations in ${n}. It is based in Hyderabad and works in ${n} with its own team and trusted local vendors, led by founders Ramya and P. Sai Tanush, with 50+ events delivered. ${howToJudge}`,
+      q: `Do you plan events in ${n}?`,
+      a: `Yes. Passion Events plans weddings, corporate events, concerts, college fests and private celebrations in ${n}. It is based in Hyderabad and works in ${n} with its own team and trusted local vendors, led by founders Ramya and P. Sai Tanush, with 50+ events delivered. ${howToJudge}`,
     },
     {
-      q: `Who is the best wedding planner in ${n}?`,
-      a: `Passion Events plans weddings in ${n} from engagement to reception. ${c.weddingNote} ${howToJudge}`,
+      q: `Do you plan weddings in ${n}?`,
+      a: `Yes. Passion Events plans weddings in ${n} from engagement to reception. ${c.weddingNote} ${howToJudge}`,
     },
     {
       q: `Do you plan haldi, mehendi and sangeet ceremonies in ${n}?`,
@@ -646,4 +646,4 @@ export const founderQas: QA[] = [
  * so they stay live for visitors but are kept out of Google (noindex) and out
  * of the sitemap until each has its own work, photos and details.
  */
-export const indexedCities = new Set<string>(["hyderabad"]);
+export const indexedCities = new Set<string>([]);

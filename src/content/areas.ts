@@ -130,8 +130,8 @@ export const areas: Area[] = [
   {
     slug: "telangana",
     name: "Telangana",
-    title: "Event Management in Hyderabad & Telangana | Passion Events",
-    h1: "Event management in Hyderabad and Telangana",
+    title: "Event Management in Telangana — Warangal, Khammam & More | Passion Events",
+    h1: "Event management across Telangana",
     description: "Passion Events is based in Hyderabad: weddings, corporate events, concerts and parties across Hyderabad, Warangal, Khammam and Telangana.",
     summary:
       "Hyderabad is home for Passion Events. Our team, vendors and production partners are here, which is why most of our weddings, corporate events and concerts start in the city. We also plan events across Telangana, including Warangal and Khammam.",
