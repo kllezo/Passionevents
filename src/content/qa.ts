@@ -640,3 +640,10 @@ export const founderQas: QA[] = [
     a: "It is the founders' signature on every Passion Events celebration — a promise that the people who founded the company stand behind each event.",
   },
 ];
+
+/**
+ * City pages Google may index. The other city pages share most of their text,
+ * so they stay live for visitors but are kept out of Google (noindex) and out
+ * of the sitemap until each has its own work, photos and details.
+ */
+export const indexedCities = new Set<string>(["hyderabad"]);

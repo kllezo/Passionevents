@@ -14,7 +14,7 @@ import { SectionLabel } from "@/components/events/SectionLabel";
 import { EnquirySection } from "@/components/events/EnquirySection";
 import { EventsButton } from "@/components/events/Button";
 import { CityPage } from "@/components/events/CityPage";
-import { cityProfile, cityProfiles, cityQas } from "@/content/qa";
+import { cityProfile, cityProfiles, cityQas, indexedCities } from "@/content/qa";
 
 /** City pages share this route; a slug that is also a region (Bengaluru) stays the region page. */
 const cityOnly = (slug: string) => (areaBySlug(slug) ? undefined : cityProfile(slug));
@@ -26,12 +26,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ region: string }> }): Promise<Metadata> {
   const { region } = await params;
   const city = cityOnly(region);
-  if (city)
-    return pageMetadata({
+  if (city) {
+    const meta = pageMetadata({
       title: `Event Management & Wedding Planner in ${city.name}`,
       description: `Wedding planning, haldi, mehendi & sangeet, corporate events, concerts, college fests and parties in ${city.name} by Passion Events — By Ramya & Tanush.`,
       path: `/event-management/${city.id}`,
     });
+    return indexedCities.has(city.id) ? meta : { ...meta, robots: { index: false, follow: true } };
+  }
   const a = areaBySlug(region);
   if (!a) return { title: "Areas we serve" };
   return { ...pageMetadata({ title: a.title, description: a.description, path: `/event-management/${a.slug}` }), title: { absolute: a.title } };

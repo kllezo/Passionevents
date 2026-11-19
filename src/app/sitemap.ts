@@ -4,7 +4,7 @@ import { getSitemapEvents } from "@/lib/events";
 import { pastShows } from "@/content/shows";
 import { services } from "@/content/services";
 import { areas } from "@/content/areas";
-import { cityProfiles } from "@/content/qa";
+import { cityProfiles, indexedCities } from "@/content/qa";
 import { posts } from "@/content/blog";
 
 // Service detail pages that are their own page (the other five redirect to
@@ -46,7 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     })),
     ...cityProfiles
-      .filter((c) => !areas.some((a) => a.slug === c.id))
+      .filter((c) => !areas.some((a) => a.slug === c.id) && indexedCities.has(c.id))
       .map((c) => ({
         url: `${site.url}/event-management/${c.id}`,
         changeFrequency: "weekly" as const,
