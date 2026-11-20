@@ -38,6 +38,9 @@ export const instagramUrl = "https://www.instagram.com/passionevents.p/";
 /** The company's ticketing page on MeraEvents (confirmed as theirs by the client, 14 Nov 2026). */
 export const meraEventsUrl = "https://www.meraevents.com/o/Passion-Events";
 
+/** The company's Facebook page (confirmed as theirs by the client, 20 Nov 2026). */
+export const facebookUrl = "https://www.facebook.com/61575369551242";
+
 /**
  * Ticketed shows as listed on MeraEvents (checked 14 Nov 2026). Each links to
  * its public listing, so the date and venue can be verified independently.
