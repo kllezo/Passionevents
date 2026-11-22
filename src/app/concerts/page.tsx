@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
-import { facebookUrl, meraEventsUrl } from "@/content/proof";
+import { facebookUrl, linkedInUrl, meraEventsUrl } from "@/content/proof";
 import { site } from "@/lib/site";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { LiveHero } from "@/components/live/LiveHero";
@@ -38,7 +38,7 @@ export default function LiveHome() {
             url: `${site.url}/concerts`,
             parentOrganization: { "@id": `${site.url}/#organization`, "@type": "EventPlanner", name: site.name, url: site.url },
             description: site.liveDescription,
-            sameAs: [site.contact.instagram, facebookUrl, meraEventsUrl].filter(Boolean),
+            sameAs: [site.contact.instagram, facebookUrl, linkedInUrl, meraEventsUrl].filter(Boolean),
           },
           breadcrumbJsonLd([
             { name: "Home", path: "/" },

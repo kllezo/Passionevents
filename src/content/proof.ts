@@ -41,6 +41,9 @@ export const meraEventsUrl = "https://www.meraevents.com/o/Passion-Events";
 /** The company's Facebook page (confirmed as theirs by the client, 20 Nov 2026). */
 export const facebookUrl = "https://www.facebook.com/61575369551242";
 
+/** The company's LinkedIn page (confirmed as theirs by the client, 22 Nov 2026). */
+export const linkedInUrl = "https://www.linkedin.com/company/passion-events/";
+
 /**
  * Ticketed shows as listed on MeraEvents (checked 14 Nov 2026). Each links to
  * its public listing, so the date and venue can be verified independently.

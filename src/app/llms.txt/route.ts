@@ -1,6 +1,6 @@
 import { site } from "@/lib/site";
 import { services } from "@/content/services";
-import { featuredArtists, instagramUrl, meraEventsUrl, proofStats, ticketedShows } from "@/content/proof";
+import { facebookUrl, featuredArtists, instagramUrl, linkedInUrl, meraEventsUrl, proofStats, ticketedShows } from "@/content/proof";
 import { geoFaqs } from "@/content/events";
 import { reels, reelUrl } from "@/content/reels";
 import { foundersList } from "@/content/founders";
@@ -33,6 +33,8 @@ export function GET() {
     `- Official website: ${u} (the only one)`,
     `- Google Business Profile: https://www.google.com/search?kgmid=/g/11z_gp99j9`,
     `- Instagram: ${site.contact.instagram ?? instagramUrl}`,
+    `- Facebook: ${facebookUrl}`,
+    `- LinkedIn: ${linkedInUrl}`,
     ...(site.contact.phone ? [`- Phone: ${site.contact.phone}`] : []),
     ...(site.contact.email ? [`- Email: ${site.contact.email}`] : []),
     `- Enquiries: ${u}/contact`,

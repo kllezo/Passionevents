@@ -5,7 +5,7 @@ import { foundersList, type Founder } from "@/content/founders";
 import { allCities } from "@/content/areas";
 import type { Post } from "@/content/blog";
 import { reelCover } from "@/content/reels";
-import { facebookUrl, meraEventsUrl } from "@/content/proof";
+import { facebookUrl, linkedInUrl, meraEventsUrl } from "@/content/proof";
 
 /** The Google Business Profile (knowledge graph entry) for Passion Events, Hyderabad. */
 const GOOGLE_PROFILE = "https://www.google.com/search?kgmid=/g/11z_gp99j9";
@@ -55,7 +55,7 @@ const ORG_ID = () => `${site.url}/#organization`;
  * figure from the client's brief, contact details from environment variables.
  */
 export function organizationJsonLd() {
-  const sameAs = [site.contact.instagram, facebookUrl, meraEventsUrl, GOOGLE_PROFILE].filter(Boolean);
+  const sameAs = [site.contact.instagram, facebookUrl, linkedInUrl, meraEventsUrl, GOOGLE_PROFILE].filter(Boolean);
   return {
     "@context": "https://schema.org",
     "@type": "EventPlanner",
@@ -216,7 +216,7 @@ function orgRef() {
     ...(site.contact.phone ? { telephone: site.contact.phone } : {}),
     address: { "@type": "PostalAddress", addressLocality: "Hyderabad", addressRegion: "Telangana", addressCountry: "IN" },
     founder: foundersList.map((f) => ({ "@type": "Person", name: f.name })),
-    sameAs: [site.contact.instagram, facebookUrl, meraEventsUrl, GOOGLE_PROFILE].filter(Boolean),
+    sameAs: [site.contact.instagram, facebookUrl, linkedInUrl, meraEventsUrl, GOOGLE_PROFILE].filter(Boolean),
   };
 }
 
