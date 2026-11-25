@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps<"/concerts/events/[
     const when = `${dd} ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][m - 1]} ${y}`;
     return pageMetadata({
       title: `${show.title} (${when})`,
-      description: `${show.artist} live at ${show.venue}, ${show.area}, ${show.city} on ${when} — photos from the night. Presented by Passion Live, the concert brand of Passion Events.`,
+      description: `${show.artist} live at ${show.venue}, ${show.area}, ${show.city} on ${when}. Photos from the night, by Passion Live (Passion Events).`,
       path: `/concerts/events/${show.slug}`,
       image: showPhotoSrc(show.photos[0].name, 1200),
       live: true,

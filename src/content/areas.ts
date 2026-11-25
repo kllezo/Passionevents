@@ -130,7 +130,7 @@ export const areas: Area[] = [
   {
     slug: "telangana",
     name: "Telangana",
-    title: "Event Management in Telangana — Warangal, Khammam & More | Passion Events",
+    title: "Event Management in Telangana | Passion Events",
     h1: "Event management across Telangana",
     description: "Passion Events is based in Hyderabad: weddings, corporate events, concerts and parties across Hyderabad, Warangal, Khammam and Telangana.",
     summary:
