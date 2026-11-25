@@ -5,6 +5,7 @@ import { Check, Loader2, MessageCircle } from "lucide-react";
 import { BUDGET_RANGES, ENQUIRY_CATEGORIES, ENQUIRY_SERVICES } from "@/lib/constants";
 import { gsap } from "@/motion/gsap";
 import { enquiryWhatsappUrl } from "@/lib/enquiry-whatsapp";
+import { track } from "@/lib/track";
 
 type Theme = "events" | "live";
 type Status = "idle" | "submitting" | "success" | "error";
@@ -141,6 +142,8 @@ export function EnquiryForm({
         return;
       }
       setName(payload.fullName.split(" ")[0]);
+      // Count the enquiry in GA4 (form and event type only, no personal details).
+      track("generate_lead", { form_source: source, event_type: payload.category });
       // Open the WhatsApp chat with the enquiry filled in. Browsers may block
       // this after the network wait; the success panel then offers the button.
       let opened = false;

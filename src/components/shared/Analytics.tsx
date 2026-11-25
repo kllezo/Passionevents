@@ -5,6 +5,8 @@ import Script from "next/script";
  * GA4 measurement ID (G-XXXXXXXXXX), so no tracking runs until the client
  * chooses to turn it on. Loads after the page is interactive; GA4's enhanced
  * measurement records client-side navigations as page views.
+ * Also counts taps on phone and WhatsApp links (click_call, click_whatsapp);
+ * the enquiry form sends generate_lead (lib/track.ts).
  * NEXT_PUBLIC_ values are read at build time: set it, then rebuild.
  */
 export function Analytics() {
@@ -14,7 +16,7 @@ export function Analytics() {
     <>
       <Script src={`https://www.googletagmanager.com/gtag/js?id=${id}`} strategy="afterInteractive" />
       <Script id="ga4-init" strategy="afterInteractive">
-        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${id}');`}
+        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${id}');document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;if(!a)return;var h=a.getAttribute('href')||'';if(h.indexOf('tel:')===0)gtag('event','click_call');else if(h.indexOf('wa.me')>-1||h.indexOf('whatsapp.com')>-1)gtag('event','click_whatsapp');},true);`}
       </Script>
     </>
   );
