@@ -8,8 +8,8 @@ import { founderQas } from "@/content/qa";
 import { JsonLd } from "@/components/shared/JsonLd";
 
 export const metadata = pageMetadata({
-  title: "Founders — Ramya & P. Sai Tanush",
-  description: "Meet the founders of Passion Events, Ramya and Pabbathi Sai Tanush — the signature behind every celebration we create.",
+  title: "Founder P. Sai Tanush & Co-founder Ramya",
+  description: "Meet the founders of Passion Events: founder Pabbathi Sai Tanush and co-founder Ramya — the signature behind every celebration we create.",
   path: "/founders",
   image: "/media/founders/sai-tanush-900.webp",
 });

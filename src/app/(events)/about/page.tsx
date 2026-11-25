@@ -15,7 +15,7 @@ import { RevealText } from "@/motion/RevealText";
 
 export const metadata = pageMetadata({
   title: "Our Story",
-  description: "Passion Events is a Hyderabad event company founded by Ramya and Sai Tanush — weddings, corporate events, private celebrations and concerts across India.",
+  description: "Passion Events is a Hyderabad event company founded by P. Sai Tanush with co-founder Ramya — weddings, corporate events, private celebrations and concerts across India.",
   path: "/about",
 });
 

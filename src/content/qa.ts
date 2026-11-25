@@ -161,7 +161,7 @@ export const catalogue: Record<CatalogueKey, { title: string; href: string; item
 export const brandQas: QA[] = [
   {
     q: "How do I choose an event management company in Hyderabad?",
-    a: `${howToJudge} Passion Events is a Hyderabad event management company founded by Ramya and P. Sai Tanush ("By Ramya & Tanush"), with 50+ events delivered — weddings, corporate events, concerts, college fests and private celebrations — and shares its own recent work on request.`,
+    a: `${howToJudge} Passion Events is a Hyderabad event management company founded by P. Sai Tanush with co-founder Ramya ("By Ramya & Tanush"), with 50+ events delivered — weddings, corporate events, concerts, college fests and private celebrations — and shares its own recent work on request.`,
   },
   {
     q: "Does Passion Events plan events outside Hyderabad?",
@@ -193,7 +193,7 @@ export const brandQas: QA[] = [
   },
   {
     q: "What makes Passion Events different?",
-    a: "One team for everything — weddings, corporate events, concerts, college fests and private parties — led personally by its founders, Ramya and P. Sai Tanush, who sign every celebration \"By Ramya & Tanush\". You can book a single service, a few, or complete event management.",
+    a: "One team for everything — weddings, corporate events, concerts, college fests and private parties — led personally by founder P. Sai Tanush and co-founder Ramya, who sign every celebration \"By Ramya & Tanush\". You can book a single service, a few, or complete event management.",
   },
 ];
 
@@ -205,7 +205,7 @@ export const serviceQas: Record<CatalogueKey, QA[]> = {
   weddings: [
     {
       q: "How do I choose a wedding planner in Hyderabad?",
-      a: `Look at the planner's recent weddings and ask who runs the day. Passion Events is a Hyderabad wedding planner, founded by Ramya and P. Sai Tanush, that plans every function from engagement to reception. Its recent weddings include an engagement, pelli kuthuru and wedding in Nandigama, a sunflower haldi in Jaggayyapeta and a sangeet night in Hyderabad. ${howToJudge}`,
+      a: `Look at the planner's recent weddings and ask who runs the day. Passion Events is a Hyderabad wedding planner, founded by P. Sai Tanush with co-founder Ramya, that plans every function from engagement to reception. Its recent weddings include an engagement, pelli kuthuru and wedding in Nandigama, a sunflower haldi in Jaggayyapeta and a sangeet night in Hyderabad. ${howToJudge}`,
     },
     {
       q: "What does a wedding planner do?",
@@ -574,7 +574,7 @@ export function cityQas(c: CityProfile): QA[] {
   const list: QA[] = [
     {
       q: `Do you plan events in ${n}?`,
-      a: `Yes. Passion Events plans weddings, corporate events, concerts, college fests and private celebrations in ${n}. It is based in Hyderabad and works in ${n} with its own team and trusted local vendors, led by founders Ramya and P. Sai Tanush, with 50+ events delivered. ${howToJudge}`,
+      a: `Yes. Passion Events plans weddings, corporate events, concerts, college fests and private celebrations in ${n}. It is based in Hyderabad and works in ${n} with its own team and trusted local vendors, led by founder P. Sai Tanush and co-founder Ramya, with 50+ events delivered. ${howToJudge}`,
     },
     {
       q: `Do you plan weddings in ${n}?`,
