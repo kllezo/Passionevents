@@ -7,6 +7,7 @@ import { RevealText } from "@/motion/RevealText";
 import { StaggerList } from "@/motion/StaggerList";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { breadcrumbJsonLd } from "@/lib/seo";
+import { site } from "@/lib/site";
 import { PageHero } from "./PageHero";
 import { FanDeck } from "./FanDeck";
 import { SectionLabel } from "./SectionLabel";
@@ -18,6 +19,8 @@ import { PrivateOccasions } from "./signature/PrivateOccasions";
 import { DestinationRoute } from "./signature/DestinationRoute";
 import { ProductionBuild } from "./signature/ProductionBuild";
 import { PortfolioGrid } from "./portfolio/PortfolioGrid";
+import { WorkGallery } from "./portfolio/WorkGallery";
+import { weddingWork, weddingWorkDate, type WorkPhoto } from "@/content/wedding-work";
 import { PortfolioSkeleton } from "./home/PortfolioPreview";
 import { EventsButton } from "./Button";
 import { Bloom } from "./botanical/Sprig";
@@ -44,8 +47,22 @@ const categoryDbKey: Record<Category["key"], string> = {
   production: "PRODUCTION",
 };
 
+/** Client-supplied photos shown with (or, when there are no published stories, instead of) the dashboard portfolio. */
+const staticWork: Partial<Record<Category["key"], { photos: WorkPhoto[]; date?: string }>> = {
+  weddings: { photos: weddingWork, date: weddingWorkDate },
+};
+
 async function CategoryWork({ category }: { category: Category }) {
   const events = await safeRead("category work", () => getPortfolioEvents(categoryDbKey[category.key]), []);
+  const own = staticWork[category.key];
+  if (own) {
+    return (
+      <div className="space-y-24">
+        <WorkGallery photos={own.photos} date={own.date} />
+        {events.length > 0 && <PortfolioGrid events={events} />}
+      </div>
+    );
+  }
   if (events.length === 0) {
     return (
       <div className="rounded-[2rem] border border-dashed border-rose/40 bg-cream/60 p-10 text-center md:p-16">
@@ -88,6 +105,7 @@ export function CategoryPage({ categoryKey }: { categoryKey: Category["key"] }) 
             provider: { "@type": "EventPlanner", name: "Passion Events" },
             areaServed: { "@type": "Country", name: "India" },
             description: c.description,
+            ...(staticWork[c.key] ? { image: staticWork[c.key]!.photos.map((p) => `${site.url}${p.image.src.replace(/\.webp$/, "-1200.webp")}`) } : {}),
           },
         ]}
       />
