@@ -222,7 +222,7 @@ export const geoFaqs = [
 export const homeFaqs = [
   {
     q: "What is Passion Events?",
-    a: "Passion Events is an event management company based in Hyderabad, founded by P. Sai Tanush with co-founder Ramya. It plans and runs weddings, corporate events, concerts, college fests, private parties and destination events, and offers A to Z event services from the first idea to the last guest leaving.",
+    a: "Passion Events is an event management company based in Hyderabad, founded by P. Sai Tanush with co-founder Ramya. It plans and runs weddings, corporate events, concerts, college fests, private parties and destination events, and offers A to Z event services from the first idea to the last guest leaving. Its concert brand is Passion Live, and its only website is passionevents.co. It is a separate company from other businesses named Passion Events, such as passionevents.co.in.",
   },
   {
     q: "Which cities does Passion Events work in?",
