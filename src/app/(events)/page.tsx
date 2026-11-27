@@ -14,7 +14,7 @@ import { EnquirySection } from "@/components/events/EnquirySection";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { homePageJsonLd, organizationJsonLd, pageMetadata, websiteJsonLd } from "@/lib/seo";
 
-const description = "Passion Events is an event management company in Hyderabad, founded by P. Sai Tanush with co-founder Ramya: weddings, corporate events, concerts and parties across AP, Telangana and Bengaluru.";
+const description = "Passion Events is a Hyderabad event management company founded by P. Sai Tanush with co-founder Ramya, for weddings, corporate events, concerts and parties.";
 
 export const metadata = {
   ...pageMetadata({
